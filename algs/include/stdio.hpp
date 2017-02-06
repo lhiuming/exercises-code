@@ -4,6 +4,14 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <cstdio>
+
+using std::vector;
+using std::string;
+using std::cin;
+using std::cout;
+using std::endl;
 
 namespace algs {
 
@@ -16,8 +24,11 @@ void read_vector(std::vector<V>& ret) {
 }
 
 // reading integers
-std::vector<int> read_ints();
-
+std::vector<int> read_ints() {
+  std::vector<int> a;
+  read_vector(a);
+  return a;
+}
 // generic priting function
 template<class V>
 void print_vector(const std::vector<V>& s) {
@@ -27,7 +38,13 @@ void print_vector(const std::vector<V>& s) {
 }
 
 // print integers vertically
-void print_ints(const std::vector<int>&);
+void print_ints(const std::vector<int>& a) {
+  typedef std::vector<int>::size_type size_t;
+  for (size_t i = 0; i < a.size(); i++) {
+    std::printf("%4d", a[i]);
+  }
+  std::cout << std::endl;
+}
 
 } // namespace algs
 

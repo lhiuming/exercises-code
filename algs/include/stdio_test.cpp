@@ -1,6 +1,6 @@
 // test the stdio functions
 
-#include "stdio.h"
+#include "stdio.hpp"
 #include <iostream>
 #include <vector>
 #include <string>

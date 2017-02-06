@@ -46,6 +46,15 @@ void selection_sort(vector<Comparable>& a) {
   }
 }
 
+template<class Comparable>
+void insertion_sort(vector<Comparable>& a) {
+  typedef typename vector<Comparable>::size_type size_t;
+  size_t n = a.size();
+  for (size_t i = 1; i < n; ++i)
+    for (size_t j = i; j > 0 && a[j] < a[j-1]; --j)
+      exch(a, j, j-1);
+}
+
 } // namespace algs
 
 #endif
