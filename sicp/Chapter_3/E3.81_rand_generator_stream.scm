@@ -1,0 +1,25 @@
+(define (random-number input)
+  (define (generate ops-rest current)
+    (cons-stream
+      (stream-car current)
+      (dispatch-stream ops-rest (stream-cdr current))))
+  (define (reset ops-rest new-init)
+    (let ((new-current (new-rand new-init)))
+      (cons-stream
+        (stream-car new-current)
+        (dispatch-stream ops-rest (stream-cdr new-current)))))
+  (define (new-rand init)
+    (define self
+      (cons-stream init
+                   (stream-map rand-update self)))
+    self)
+  (define (dispatch-stream ops current)
+    (let ((op (stream-car ops)))
+      (cond ((stream-null? ops)
+               the-empty-stream)
+            ((eq? op 'generate)
+               (generate (stream-cdr ops) current))
+            ((and (pair? op) (eq? (car op) 'reset))
+               (reset (stream-cdr ops) (cdr op)))
+            (else (error "Invalid operation--", op)))))
+  (dispatch-stream input (new-rand 33)))

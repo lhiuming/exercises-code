@@ -1,0 +1,11 @@
+(define (ripple-carry-adder list-a list-b list-s c)
+  (define (iter list-a list-b list-s c-out)
+    (if (null? list-a)
+        0
+        (let ((c-in (make-wire)))
+          (full-adder (car list-a) (car list-b) c-in (car list-s) c-out)
+          (iter (cdr list-a) (cdr list-b) (cdr list-s) c-in))))
+  (if (and (eq? (length list-a) (length list-b))
+           (eq? (length list-b) (length list-s)))
+      (iter list-a list-b list-s c)
+      (error "Inequal list length -- " list-a list-b list-c)))

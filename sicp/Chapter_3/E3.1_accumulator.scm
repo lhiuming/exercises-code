@@ -1,0 +1,5 @@
+(define (make-accumulator initial)
+  (define (accumulate n)
+    (begin (set! initial (+ initial n))
+           initial))
+  accumulate)

@@ -1,0 +1,13 @@
+(define (fringe tree)
+  (define (reconstruct the-tree)
+    (let ((branch (car the-tree))
+          (tail   (cdr the-tree)))
+    (cons (car branch) (cons (cdr branch) tail))))
+  (if (pair? tree)
+      (cond ((null? (car tree))
+               (fringe (cdr tree)))
+            ((pair? (car tree))
+               (fringe (reconstruct tree)))
+            (else
+               (cons (car tree) (fringe (cdr tree)))))
+      tree))

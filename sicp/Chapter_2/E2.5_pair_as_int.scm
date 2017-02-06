@@ -1,0 +1,15 @@
+(define (cons a b)
+  (* (expt 2 a) (expt 3 b)))
+(define (exsert-iter p n i)
+  (if (= (modulo p n) 0)
+      (exsert-iter (/ p n) n (+ i 1))
+      i))
+(define (car p)
+  (exsert-iter p 2 0))      
+(define (cdr p)
+  (exsert-iter p 3 0))
+
+;test code
+(define p (cons 7 11))
+(car p)
+(cdr P)

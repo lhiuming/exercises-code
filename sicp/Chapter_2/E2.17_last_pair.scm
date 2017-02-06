@@ -1,0 +1,5 @@
+(define (last-pair l)
+  (let ((cdr-l (cdr l)))
+  (if (null? cdr-l)
+      (car l)
+      (last-pair cdr-l))))

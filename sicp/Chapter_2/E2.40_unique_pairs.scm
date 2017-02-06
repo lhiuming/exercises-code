@@ -1,0 +1,25 @@
+(define (unique-pairs n)
+  (define (j-i-pair i)
+    (map (lambda (j) (list j i)) (range 1 (- i 1))))
+  (flatmap j-i-pair (range 2 n)))
+
+(define (prime-sum-pairs n)
+  (define (prime-sum? pair)
+    (prime? (+ (car pair) (cadr pair))))
+  (filter prime-sum? (unique-pairs n)))
+
+;;; test code
+(define (prime? n)
+  (define (iter i)
+    (cond ((< n (square i)) true)
+          ((= 0 (modulo n i)) false)
+          (else (iter (+ i 1)))))
+  (iter 2))
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+(define (range a b)
+  (if (= a b)
+      (list a)
+      (cons a (range (+ a 1) b))))
+
+(prime-sum-pairs 6)

@@ -1,0 +1,21 @@
+(define (count-frac N D k)
+  (define (rec-cf i)
+    (if (= i k)
+        (/ (N k) (D k))
+        (/ (N i) (+ (D i)
+                    (rec-cf (+ i 1))))))
+  (rec-cf 1))
+
+(define (count-frac-iter N D k)
+  (define (iter-cf i result)
+    (if (= i 0)
+        result
+        (iter-cf (- i 1) (/ (N i) (+ (D i) result)))))
+  (iter-cf k 0))
+
+(count-frac (lambda (i) 1.0)
+            (lambda (i) 1.0)
+            11)
+(count-frac-iter (lambda (i) 1.0)
+                 (lambda (i) 1.0)
+                 11)
