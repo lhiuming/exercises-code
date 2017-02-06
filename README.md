@@ -8,6 +8,7 @@ My programming exercises for a variety of books.
 
 - algs: Robert Sedgewick, Kevin Wayne, *Algorithms*, Fourth Edition.
 - cppprimer: Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, *C++ Primer*, Fifth Edition.
+- fcg: Steve Marschner, Peter Shirley, *Fundamentals of Computer Graphics*, Fourth Edition.
 
 ### Finished
 
