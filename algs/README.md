@@ -1,6 +1,6 @@
-# Solutions to <Algorithms>
+# Solutions to *Algorithms*
 
-C++ solutions to some exercises, and implementation of algorithms listed in the book \<Algorithms\>, 4th Edition, in C++.
+C++ solutions to some exercises, and implementation of algorithms listed in the book *Algorithms*, 4th Edition, in C++.
 
 ## Notes
 
@@ -8,7 +8,8 @@ This implementation use std::vector in C++ STL as the default data structure to 
 
 ## Algorithm List
 
-1. Selection sort (src/sort.h)
+1. Selection sort (include/sort.h)
+2. Insertion sort (include/sort.h)
 
 ## Todos
 
