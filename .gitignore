@@ -1,2 +1,4 @@
-# Mac files
+# NOTE: each sub project has it specific .gitignore file
+
+# macOS files
 .DS_Store

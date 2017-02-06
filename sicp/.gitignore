@@ -1,6 +1,8 @@
+# Scheme tmp files ?
 *.swp
+.elc
+
+# Emacs auto save ?
 *~
 \#*\#
-.elc
 .\#*
-
