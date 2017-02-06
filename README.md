@@ -15,5 +15,4 @@ My programming exercises for a variety of books.
 
 ### Paused
 
-- sicp: Harold Abelson and Gerald Jay Sussman
-with Julie Sussman, <*Structure and Interpretation of Computer Programs*>, Second Edition. Booksite: https://mitpress.mit.edu/sicp/
+- sicp: Harold Abelson, Gerald Jay Sussman, Julie Sussman, <*Structure and Interpretation of Computer Programs*>, Second Edition. Booksite: https://mitpress.mit.edu/sicp/
