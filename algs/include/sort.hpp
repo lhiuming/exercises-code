@@ -1,11 +1,11 @@
-#ifndef ALGS_SRC_SORT_H
-#define ALGS_SRC_SORT_H
+#ifndef ALGS_SORT_H
+#define ALGS_SORT_H
 
 #include <vector>
 
-using std::vector;
-
 namespace algs {
+
+using std::vector;
 
 // utilities
 

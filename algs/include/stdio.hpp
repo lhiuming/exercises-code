@@ -1,17 +1,11 @@
 // partially implemented StdIn and StdOut library
-#ifndef ALGS_SRC_STDIO_H
-#define ALGS_SRC_STDIO_H
+#ifndef ALGS_STDIO_H
+#define ALGS_STDIO_H
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include <cstdio>
-
-using std::vector;
-using std::string;
-using std::cin;
-using std::cout;
-using std::endl;
 
 namespace algs {
 
