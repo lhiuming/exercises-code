@@ -6,13 +6,13 @@ My programming exercises for a variety of books.
 
 ### Working
 
-- algs: Robert Sedgewick, Kevin Wayne, <*Algorithms*>, Fourth Edition.
-- cppprimer: Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, <*C++ Primer*>, Fifth Edition.
+- algs: Robert Sedgewick, Kevin Wayne, *Algorithms*, Fourth Edition.
+- cppprimer: Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, *C++ Primer*, Fifth Edition.
 
 ### Finished
 
-- acceleratedcpp: Andrew Koenig, Barbara E. Moo., <*Accelerated C++: Practical Programming by Example*>.
+- acceleratedcpp: Andrew Koenig, Barbara E. Moo., *Accelerated C++: Practical Programming by Example*.
 
 ### Paused
 
-- sicp: Harold Abelson, Gerald Jay Sussman, Julie Sussman, <*Structure and Interpretation of Computer Programs*>, Second Edition. Booksite: https://mitpress.mit.edu/sicp/
+- sicp: Harold Abelson, Gerald Jay Sussman, Julie Sussman, *Structure and Interpretation of Computer Programs*, Second Edition. Book-site: https://mitpress.mit.edu/sicp/
