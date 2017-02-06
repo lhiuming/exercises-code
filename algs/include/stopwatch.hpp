@@ -1,4 +1,5 @@
 // simpel stopwatch class working as timer
+// This <chrono> takes me quite some time to understand ... 
 #ifndef ALGS_STOPWATCH_H
 #define ALGS_STOPWATCH_H
 
