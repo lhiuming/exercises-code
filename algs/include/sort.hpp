@@ -55,6 +55,22 @@ void insertion_sort(vector<Comparable>& a) {
       exch(a, j, j-1);
 }
 
+template<class Comparable>
+void shellsort(vector<Comparable>& a) {
+  using size_t = typename vector<Comparable>::size_type;
+  size_t n = a.size();
+  size_t h = 1;
+  while (h < n / 3) h = 3 * h - 1; // an efficient sequence
+  while (h >= 1) {
+    // h sort the array, using insertion sort
+    for (size_t i = h; i < n; i++) {
+      for (size_t j = i; j >= h && a[j] < a[j-h]; j -= h)
+        exch(a, j, j-h);
+    }
+    h = h / 3; // update
+  }
+}
+
 } // namespace algs
 
 #endif

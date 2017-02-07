@@ -23,6 +23,10 @@ public:
     for (std::vector<double>::size_type i = 0; i < a.size(); ++i)
       a[i] = uniform();
   }
+  static void uniform(std::vector<int>& a, int r) {
+    for (std::vector<int>::size_type i = 0; i < a.size(); ++i)
+      a[i] = uniform(r);
+  }
 private:
   // no instantiation
   StdRandom() {}

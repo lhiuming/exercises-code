@@ -38,6 +38,11 @@ int main()
   t = inp;
   algs::insertion_sort(t);
   cout << algs::is_sorted(t) << endl;
+  // shellsort
+  cout << "shellort: \t";
+  t = inp;
+  algs::shellsort(t);
+  cout << algs::is_sorted(t) << endl;
 
   return 0;
 }
