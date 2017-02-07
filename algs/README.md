@@ -10,7 +10,7 @@ This implementation use std::vector in C++ STL as the default data structure to 
 
 1. Selection sort (include/sort.h)
 2. Insertion sort (include/sort.h)
-
+3. Shellsort (include/sort.h) 
 ## Todos
 
 - more solutions

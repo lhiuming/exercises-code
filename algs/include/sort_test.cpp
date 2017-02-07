@@ -1,12 +1,12 @@
 // test the sorting algorithms
 #include "sort.hpp"
+#include "stdrandom.hpp"
 #include "stdio.hpp"
 #include <vector>
 #include <iostream>
 
-using std::vector;
-using std::cout;
-using std::endl;
+using namespace algs;
+using namespace std;
 
 int main()
 {
@@ -25,24 +25,25 @@ int main()
   // test sorting
   // read input integer list
   cout << "-- sorting --" << endl;
-  vector<int> inp = algs::read_ints();
+  vector<int> rand_int(15);
+  StdRandom::uniform(rand_int, 9);
   cout << "original: ";
-  algs::print_ints(inp);
+  print_ints(rand_int);
   // selection sort
-  auto t = inp;
+  vector<int> t = rand_int;
   cout << "selection sort:\t";
-  algs::selection_sort(t);
-  cout << algs::is_sorted(t) << endl;
+  selection_sort(t);
+  cout << is_sorted(t) << endl;
   // insertion sort
   cout << "insertion sort:\t";
-  t = inp;
-  algs::insertion_sort(t);
-  cout << algs::is_sorted(t) << endl;
+  t = rand_int;
+  insertion_sort(t);
+  cout << is_sorted(t) << endl;
   // shellsort
   cout << "shellort: \t";
-  t = inp;
-  algs::shellsort(t);
-  cout << algs::is_sorted(t) << endl;
+  t = rand_int;
+  shellsort(t);
+  cout << is_sorted(t) << endl;
 
   return 0;
 }
