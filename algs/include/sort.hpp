@@ -57,7 +57,7 @@ void insertion_sort(vector<Comparable>& a) {
 
 template<class Comparable>
 void shellsort(vector<Comparable>& a) {
-  using size_t = typename vector<Comparable>::size_type;
+  typedef typename vector<Comparable>::size_type size_t;
   size_t n = a.size();
   size_t h = 1;
   while (h < n / 3) h = 3 * h - 1; // an efficient sequence
