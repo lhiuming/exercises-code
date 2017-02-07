@@ -18,6 +18,11 @@ public:
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     return dist(generator);
   }
+  // higher-order functions
+  static void uniform(std::vector<double>& a) {
+    for (std::vector<double>::size_type i = 0; i < a.size(); ++i)
+      a[i] = uniform();
+  }
 private:
   // no instantiation
   StdRandom() {}
