@@ -18,6 +18,7 @@ double time(string alg, Comparable a) {
   Stopwatch timer;
   if (alg == "Insertion") insertion_sort(a);
   else if (alg == "Selection") selection_sort(a);
+  else if (alg == "Shell") shellsort(a);
   else
     cout << "No matching sorting algorithm: " << alg << endl;
   return timer.elapsedTime();
