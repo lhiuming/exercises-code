@@ -12,6 +12,9 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 1. Selection sort (include/sort.h)
 2. Insertion sort (include/sort.h)
 3. Shellsort (include/sort.h)
+4. Top-down mergesort (todo)
+5. Bottom-up mergesort (todo)
+
 
 ## Todos
 

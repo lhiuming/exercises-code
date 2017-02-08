@@ -71,6 +71,10 @@ void shellsort(vector<Comparable>& a) {
   }
 }
 
+//@TODO: impleentation of two version of mergesort
+void mergesort_td() {}
+void mergesort_bu() {}
+
 } // namespace algs
 
 #endif
