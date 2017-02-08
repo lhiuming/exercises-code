@@ -14,7 +14,8 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 3. Shellsort (include/sort.h)
 4. Top-down mergesort (todo)
 5. Bottom-up mergesort (todo)
-
+6. Quicksort (todo)
+7. Quicksort with 3-way partitioning (todo)
 
 ## Todos
 
