@@ -1,0 +1,9 @@
+# A triangle at the xz positive corner, facing toward +y.
+# Load it inde a mesh viewer to check.
+#
+# I use G.Viewer: http://masc.cs.gmu.edu/wiki/ObjViewer
+
+v 0 0 0
+v 0 0 1
+v 1 0 0
+f 1 2 3
