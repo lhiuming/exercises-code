@@ -19,3 +19,8 @@ All.
 
 ### 2.5
 All. Noted exercises: 2.5.23 A* algorithm.
+
+## Chapter 3
+
+### 3.1
+All.
