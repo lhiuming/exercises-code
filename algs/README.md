@@ -19,9 +19,10 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 8. Heapsort (todo)
     - MaxPQ class (todo)
 
-9. SequentialSearchST class (todo)
-10. BinarySearchST class (todo)
-11. BinarySearchTreeST class (todo) 
+9. Sequential Search Tree class (todo)
+11. Binary Search Tree class (todo)
+12. Red-black Binary Search Tree class (todo)
+    - @NOTE: Implement a complete RBBST if schedule allows. 
 
 ## Addition Algorithms
 

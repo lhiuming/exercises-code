@@ -24,3 +24,9 @@ All. Noted exercises: 2.5.23 A* algorithm.
 
 ### 3.1
 All.
+
+### 3.2
+All.
+
+### 3.3
+All. 
