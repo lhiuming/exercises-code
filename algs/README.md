@@ -21,6 +21,7 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 9. SequentialSearchST class (todo)
 10. BinarySearchST class (todo)
+11. BinarySearchTreeST class (todo) 
 
 ## Addition Algorithms
 
