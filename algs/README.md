@@ -24,7 +24,14 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 12. Red-black Binary Search Tree Symbol Table class (todo)
     - @NOTE: Implement a complete RBBST if schedule allows.
 13. Separate Chaining Hash Symbol Table (todo)
-14. Linear Probing Hash Symbol Table (todo) 
+14. Linear Probing Hash Symbol Table (todo)
+
+15. Adjacency-list Graph class (todo)
+  - Linked-list Bag class (todo)
+16. Depth-first search for paths (todo)
+17. Breadth-first search for paths (todo)
+18. Depth-first search for connected components (todo)
+19. Symbol Graph class (todo)
 
 ## Addition Algorithms
 
