@@ -31,7 +31,10 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 16. Depth-first search for paths (todo)
 17. Breadth-first search for paths (todo)
 18. Depth-first search for connected components (todo)
-19. Symbol Graph class (todo)
+19. Adjacency-list Directed Digraph class (todo)
+20. Reachability / Directed Depth-first search (todo)
+  - Depth-first directed paths (todo)
+  - Breadth-first directed paths (todo) 
 
 ## Addition Algorithms
 
