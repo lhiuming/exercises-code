@@ -34,7 +34,11 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 19. Adjacency-list Directed Digraph class (todo)
 20. Reachability / Directed Depth-first search (todo)
   - Depth-first directed paths (todo)
-  - Breadth-first directed paths (todo) 
+  - Breadth-first directed paths (todo)
+21. Directed cycle (todo)
+22. Depth-first Order (todo)
+23. Topological sort (todo)
+24. Kosaraju strong connected components (todo) 
 
 ## Addition Algorithms
 
