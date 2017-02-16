@@ -38,7 +38,12 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 21. Directed cycle (todo)
 22. Depth-first Order (todo)
 23. Topological sort (todo)
-24. Kosaraju strong connected components (todo) 
+24. Kosaraju strong connected components (todo)
+
+25. Edge Weighted Graph class (todo)
+  - Edge class (todo)
+26. Lazy version of Prim's MST algorithm (todo)
+27. Eager version of Prim's MST algorithm (todo) 
 
 ## Addition Algorithms
 
