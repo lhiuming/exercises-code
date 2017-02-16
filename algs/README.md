@@ -42,8 +42,13 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 25. Edge Weighted Graph class (todo)
   - Edge class (todo)
-26. Lazy version of Prim's MST algorithm (todo)
-27. Eager version of Prim's MST algorithm (todo) 
+26. Lazy version of Prim's MST (todo)
+27. Eager version of Prim's MST (todo)
+
+28. Edge-weighted Directed Graph class (todo)
+  - Directed Weighted Edge class (todo)
+29. Dijkstra's Shortest-path (todo) 
+
 
 ## Addition Algorithms
 
