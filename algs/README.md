@@ -47,9 +47,14 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 28. Edge-weighted Directed Graph class (todo)
   - Directed Weighted Edge class (todo)
-29. Dijkstra's Shortest-path (todo)
-30. ...
+29. Dijkstra's shortest-path (todo)
+30. Shortest-path in edge-weighted DAG (todo)
+31. Bellman-ford shortest-path (todo)
 
+32. Least-significant-digit-first string sort (todo)
+33. Most-significant-digit-first string sort (todo)
+34. Three-way string quicksort (todo)
+35.0 
 
 ## Addition Algorithms
 
