@@ -47,7 +47,8 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 28. Edge-weighted Directed Graph class (todo)
   - Directed Weighted Edge class (todo)
-29. Dijkstra's Shortest-path (todo) 
+29. Dijkstra's Shortest-path (todo)
+30. ...
 
 
 ## Addition Algorithms
