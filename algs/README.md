@@ -18,14 +18,14 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 7. Quicksort with 3-way partitioning (todo)
 8. Heapsort (todo)
     - MaxPQ class (todo)
-
+<!-- -->
 9. Sequential Search Tree Symbol Table class (todo)
 11. Binary Search Tree Symbol Table class (todo)
 12. Red-black Binary Search Tree Symbol Table class (todo)
     - @NOTE: Implement a complete RBBST if schedule allows.
 13. Separate Chaining Hash Symbol Table (todo)
 14. Linear Probing Hash Symbol Table (todo)
-
+<!-- -->
 15. Adjacency-list Graph class (todo)
   - Linked-list Bag class (todo)
 16. Depth-first search for paths (todo)
@@ -39,22 +39,28 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 22. Depth-first Order (todo)
 23. Topological sort (todo)
 24. Kosaraju strong connected components (todo)
-
+<!-- -->
 25. Edge Weighted Graph class (todo)
   - Edge class (todo)
 26. Lazy version of Prim's MST (todo)
 27. Eager version of Prim's MST (todo)
-
+<!-- -->
 28. Edge-weighted Directed Graph class (todo)
   - Directed Weighted Edge class (todo)
 29. Dijkstra's shortest-path (todo)
 30. Shortest-path in edge-weighted DAG (todo)
 31. Bellman-ford shortest-path (todo)
-
+<!-- -->
 32. Least-significant-digit-first string sort (todo)
 33. Most-significant-digit-first string sort (todo)
 34. Three-way string quicksort (todo)
-35.0 
+<!-- -->
+35. Trie Symbol Table class (todo)
+36. Ternary Search Trie Symbol Table (todo)
+<!-- -->
+37. Knuth-Morris-Pratt substring search (todo)
+  - @NOTE: very hard to understand; worthwhile to implement.
+
 
 ## Addition Algorithms
 
