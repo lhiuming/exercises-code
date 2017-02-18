@@ -68,5 +68,6 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 ## Todos
 
+- Finish some useful part of the mentioned algorithms, according to application examples in Chapter 6. 
 - Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.
