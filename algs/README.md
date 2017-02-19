@@ -9,6 +9,7 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 ## Basic Algorithms and Data Structure
 
+<!-- Chapter 1, sort  -->
 1. Selection sort (include/sort.h)
 2. Insertion sort (include/sort.h)
 3. Shellsort (include/sort.h)
@@ -18,14 +19,14 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 7. Quicksort with 3-way partitioning (todo)
 8. Heapsort (todo)
     - MaxPQ class (todo)
-<!-- -->
+<!-- Chapter 2, search-->
 9. Sequential Search Tree Symbol Table class (todo)
 11. Binary Search Tree Symbol Table class (todo)
 12. Red-black Binary Search Tree Symbol Table class (todo)
     - @NOTE: Implement a complete RBBST if schedule allows.
 13. Separate Chaining Hash Symbol Table (todo)
 14. Linear Probing Hash Symbol Table (todo)
-<!-- -->
+<!-- Chapter 3, graph -->
 15. Adjacency-list Graph class (todo)
   - Linked-list Bag class (todo)
 16. Depth-first search for paths (todo)
@@ -39,27 +40,30 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 22. Depth-first Order (todo)
 23. Topological sort (todo)
 24. Kosaraju strong connected components (todo)
-<!-- -->
+<!-- weighted graph -->
 25. Edge Weighted Graph class (todo)
   - Edge class (todo)
 26. Lazy version of Prim's MST (todo)
 27. Eager version of Prim's MST (todo)
-<!-- -->
+<!-- weighted directed graph -->
 28. Edge-weighted Directed Graph class (todo)
   - Directed Weighted Edge class (todo)
 29. Dijkstra's shortest-path (todo)
 30. Shortest-path in edge-weighted DAG (todo)
 31. Bellman-ford shortest-path (todo)
-<!-- -->
+<!-- Chapter 5, strings -->
 32. Least-significant-digit-first string sort (todo)
 33. Most-significant-digit-first string sort (todo)
 34. Three-way string quicksort (todo)
-<!-- -->
+<!-- trie -->
 35. Trie Symbol Table class (todo)
 36. Ternary Search Trie Symbol Table (todo)
-<!-- -->
+<!-- substring search -->
 37. Knuth-Morris-Pratt substring search (todo)
   - @NOTE: very hard to understand; worthwhile to implement.
+38. Boyer-Moore substring search (todo)
+
+
 
 
 ## Addition Algorithms
@@ -68,6 +72,6 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 ## Todos
 
-- Finish some useful part of the mentioned algorithms, according to application examples in Chapter 6. 
+- Finish some useful part of the mentioned algorithms, according to application examples in Chapter 6.
 - Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.
