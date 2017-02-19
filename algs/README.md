@@ -62,9 +62,11 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 37. Knuth-Morris-Pratt substring search (todo)
   - @NOTE: very hard to understand; worthwhile to implement.
 38. Boyer-Moore substring search (todo)
-
-
-
+39. Rabin-Karp fingerprint search (todo)
+40. Regular expression pattern matching (todo)
+<!-- data compression -->
+41. Huffman compression (todo)
+42. LZW compression and expansion (todo)
 
 ## Addition Algorithms
 
@@ -72,6 +74,6 @@ C++ solutions to some exercises, and implementation of algorithms listed in the 
 
 ## Todos
 
-- Finish some useful part of the mentioned algorithms, according to application examples in Chapter 6.
+- work on the Chapter 6, and implement some algorithms in the mean time in need.
 - Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.

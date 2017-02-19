@@ -6,13 +6,13 @@ My programming exercises for a variety of books.
 
 ### Working
 
-- algs: Robert Sedgewick, Kevin Wayne, *Algorithms*, Fourth Edition.
+- [algs](algs/): Robert Sedgewick, Kevin Wayne, *Algorithms*, Fourth Edition.
 - cppprimer: Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, *C++ Primer*, Fifth Edition.
-- fcg: Steve Marschner, Peter Shirley, *Fundamentals of Computer Graphics*, Fourth Edition.
+- [fcg](fcg/): Steve Marschner, Peter Shirley, *Fundamentals of Computer Graphics*, Fourth Edition.
 
 ### Finished
 
-- acceleratedcpp: Andrew Koenig, Barbara E. Moo., *Accelerated C++: Practical Programming by Example*.
+- [acceleratedcpp](acceleratedcpp/): Andrew Koenig, Barbara E. Moo., *Accelerated C++: Practical Programming by Example*.
 
 ### Paused
 
