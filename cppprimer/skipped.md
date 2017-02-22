@@ -50,6 +50,8 @@ p130, 3.44, 3.45
 
 ## Chapter 4
 
-All skipped.
+All.
 
-last page: 141
+## Chapter 5
+
+p174, 5.1, 5.2
