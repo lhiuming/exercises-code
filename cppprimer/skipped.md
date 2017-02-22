@@ -1,6 +1,6 @@
 # Skipped Exercises
 
-Solutions to the following exercises are not given in this repository.
+Solutions to the following exercises are not given in this repository. This pages is created merely for reviewing purpose.
 
 ## Chapter 1
 
@@ -59,4 +59,9 @@ p174, 5.4
 p178, 5.5, 5.6, 5.7, 5.8
 p183, 5.9, 5.10, 5.11, 5.12, 5.13
 p188, 5.15, 5.16, 5.17
-p190, 5.18 
+p190, 5.18
+p191, 5.20
+p192, 5.21
+p198, 5.23, 5.24
+
+## Chapter 6
