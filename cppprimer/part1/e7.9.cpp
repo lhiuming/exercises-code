@@ -7,7 +7,7 @@
 
 using namespace std;
 
-istream &read(istream &is, Person &p)
+istream &read(istream &is, Person &p) // a friend function to Person 
 {
   is >> Person.name >> Person.address;
   return is;
