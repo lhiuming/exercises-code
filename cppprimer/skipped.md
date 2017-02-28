@@ -103,6 +103,8 @@ p299, 7.52
 p300, 7.53 ~ 7.55
 p304, 7.56 ~ 7.58
 
+<!-- Part I ends; Part II starts -->
+
 ## Chapter 8
 
 p314, 8.3
@@ -110,3 +112,22 @@ p319, 8.5, 8.6
 p320, 8.7, 8.8
 p322, 8.9 ~ 8.12
 p323, 8.13, 8.14
+
+## Chapter 12
+
+p458, 12.1, 12.3 ~ 12.4
+p463, 12.6 ~ 12.9
+p467, 12.10 ~ 12.13
+p469, 12.14 ~ 12.15
+p470, 12.17, 12.18
+p476, 12.19 ~ 12.22 <!-- skipped session 12.1.6 weak_ptr    -->
+p480, 12.23 ~ 12.25 <!-- skipped section 12.2 Dynamic Array -->
+p484, 12.26         <!-- same as above -->
+p487, 12.27 ~ 12.29 <!-- skipped section 12.3 (example program) -->
+p490, 12.30 ~ 12.33 <!-- same as above -->
+
+<!-- Part II ends; Part III starts -->
+
+## Chapter 13
+
+p499, 13.1 ~ 13.4
