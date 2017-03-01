@@ -83,7 +83,7 @@ p245, 6.49 ~ 6.51
 p247, 6.52, 6.53
 p250, 6.55, 6.56
 
-## Chapter 7
+## Chapter 7 <!-- Part I ends -->
 
 p256, 7.1
 p260, 7.2, 7.3
@@ -103,9 +103,7 @@ p299, 7.52
 p300, 7.53 ~ 7.55
 p304, 7.56 ~ 7.58
 
-<!-- Part I ends; Part II starts -->
-
-## Chapter 8
+## Chapter 8 <!-- Part II starts -->
 
 p314, 8.3
 p319, 8.5, 8.6
@@ -113,7 +111,7 @@ p320, 8.7, 8.8
 p322, 8.9 ~ 8.12
 p323, 8.13, 8.14
 
-## Chapter 12
+## Chapter 12 <!-- Part II ends -->
 
 p458, 12.1, 12.3 ~ 12.4
 p463, 12.6 ~ 12.9
@@ -126,8 +124,16 @@ p484, 12.26         <!-- same as above -->
 p487, 12.27 ~ 12.29 <!-- skipped section 12.3 (example program) -->
 p490, 12.30 ~ 12.33 <!-- same as above -->
 
-<!-- Part II ends; Part III starts -->
-
-## Chapter 13
+## Chapter 13 <!-- Part III starts -->
 
 p499, 13.1 ~ 13.4
+p501, 13.6, 13.7
+p504, 13.9, 13.10, 13.12
+p506, 13.14 ~ 13.17
+p510, 13.18 ~ 13.21
+p513, 13.23 ~ 13.26
+p516, 13.27, 13.28
+p519, 13.29 ~ 13.32
+p524, 13.33 ~ p548, 13.58 <!-- skipped the example and advanced chapters -->
+
+## Chapter 14 

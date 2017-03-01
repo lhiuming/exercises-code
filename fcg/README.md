@@ -5,5 +5,4 @@ In Progress.
 
 ## todos
 
-- implement SVG class
-- reastering the point images
+- fix the making problem in asst1
