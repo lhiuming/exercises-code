@@ -156,4 +156,9 @@ p583, 14.45 ~ p589 14.53 <!-- skipped the advanced section 14.9 -->
 
 ## Chapter 15
 
+p595, 15.1, 15.2
+
+
+
+
 ## Chapter 16 <!-- Part III ends -->
