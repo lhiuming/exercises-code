@@ -1,6 +1,6 @@
 # exercises-code
 
-My programming exercises for a variety of books. Each book has a corresponding sub-directory, the naming of which is arbitrary. 
+My programming exercises for a variety of books. Each book has a corresponding sub-directory, the naming of which is arbitrary.
 
 ## Book list
 
@@ -8,14 +8,15 @@ My programming exercises for a variety of books. Each book has a corresponding s
 
 Books that are been working on.
 
-- [cppprimer](cppprimer/): Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, *C++ Primer*, Fifth Edition.
 - [fcg](fcg/): Steve Marschner, Peter Shirley, *Fundamentals of Computer Graphics*, Fourth Edition.
+- [csapp](csapp/): Randal E. Bryant, David R. O'Hallaron, *Computer Systems: A Programmer's Perspective*, Third Edition.
 
 ### Paused
 
  The following are scheduled for later improvement.
 
 - [algs](algs/): Robert Sedgewick, Kevin Wayne, *Algorithms*, Fourth Edition.
+- [cppprimer](cppprimer/): Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, *C++ Primer*, Fifth Edition.
 
 ### Terminated
 
