@@ -1,8 +1,9 @@
-# solutions to *Fundamentals of Computer Graphics*
+# Solutions to *Fundamentals of Computer Graphics*
 
 In Progress.
 
-
 ## todos
 
-- fix the making problem in asst1
+- Finish the course;
+- Go through the book exercises;
+- Add a description for this sub-repository.
