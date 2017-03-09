@@ -4,6 +4,5 @@ In Progress.
 
 ## todos
 
-- Finish the course;
-- Go through the book exercises;
+- Go through the book exercises, along side the CMU assignments. 
 - Add a description for this sub-repository.
