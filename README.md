@@ -8,7 +8,6 @@ My programming exercises for a variety of books. Each book has a corresponding s
 
 Books that are been working on.
 
-- [fcg](fcg/): Steve Marschner, Peter Shirley, *Fundamentals of Computer Graphics*, Fourth Edition.
 - [csapp](csapp/): Randal E. Bryant, David R. O'Hallaron, *Computer Systems: A Programmer's Perspective*, Third Edition.
 
 ### Paused
