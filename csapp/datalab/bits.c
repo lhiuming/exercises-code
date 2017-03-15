@@ -184,24 +184,20 @@ int logicalShift(int x, int n) {
 int bitCount(int x) {
   /* Count in grids to save operation numbers. Adds each grid to the left.
    * Notices the total count won't exceed 32 -> at most 6 bits.
-   *
-   * @TODO: I don't know why count_2 lose 2 bits sometimes.
-   *   Fixed by converting x to unsigned. But my machine do use 32bit for int.
    */
+  int grid_16 = 0xff + (0xff << 8);       // 00000000000000001111111111111111
+  int grid_8 = grid_16 ^ (grid_16 << 8);  // 00000000111111110000000011111111
+  int grid_4 = grid_8  ^ (grid_8  << 4);  // 00001111000011110...
+  int grid_2 = grid_4  ^ (grid_4  << 2);  // 0011001100110...
+  int grid_1 = grid_2  ^ (grid_2  << 1);  // 010101010...
 
-  int grid_16 = 0xff + (0xff << 8);
-  int grid_8 = grid_16 ^ (grid_16 << 8);
-  int grid_4 = grid_8  ^ (grid_8  << 4);
-  int grid_2 = grid_4  ^ (grid_4  << 2);
-  int grid_1 = grid_2  ^ (grid_2  << 1);
-
-  unsigned count_1 = x;
-  int count_2  = (count_1  >> 1  & grid_1)  + (count_1  & grid_1);
-  int count_4  = (count_2  >> 2  & grid_2)  + (count_2  & grid_2);
-  int count_8  = (count_4  >> 4  & grid_4)  + (count_4  & grid_4);
-  int count_16 = (count_8  >> 8  & grid_8)  + (count_8  & grid_8);
-  int count    = (count_16 >> 16 & grid_16) + (count_16 & grid_16);
-  return count;
+  int count_1 = x;
+  int count_2  = (count_1  >> 1  & grid_1 ) + (count_1  & grid_1 );
+  int count_4  = (count_2  >> 2  & grid_2 ) + (count_2  & grid_2 );
+  int count_8  = (count_4  >> 4  & grid_4 ) + (count_4  & grid_4 );
+  int count_16 = (count_8  >> 8  & grid_8 ) + (count_8  & grid_8 );
+  int count_32 = (count_16 >> 16 & grid_16) + (count_16 & grid_16);
+  return count_32;
 }
 /*
  * bang - Compute !x without using !
@@ -226,6 +222,7 @@ int bang(int x) {
  *   Rating: 1
  */
 int tmin(void) {
+  // using the standard 2's complement definition in 32-bits.
   return 1 << 31;
 }
 /*
@@ -238,7 +235,16 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+  /* truncated the input by setting the (32-n+1) MSBs to the sign bit.
+   * if the turncated result is equal to x, then it fits n-bit-integer.
+   */
+
+  int allones = 1 << 31 >> 31;  // used as all-ones-bits and -1 value
+  int m = n + allones;  // m = n - 1;
+  int mask = allones << m;
+  int MSBs = x >> 31 << 31 >> 31 << m;
+  int truncated = (x & ~mask) | MSBs;
+  return !(truncated ^ x);
 }
 /*
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
@@ -249,7 +255,12 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
-    return 2;
+  /* increase lowest n bits to allow "round toward zero" for negative numbers.
+   */
+  int MSBs = x >> 31 << 31 >> 31;
+  int nmask = ~(~0 << n);
+  int nbits = MSBs & nmask;
+  return (x + nbits) >> n;
 }
 /*
  * negate - return -x
@@ -259,7 +270,7 @@ int divpwr2(int x, int n) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  return ~x + 1;
 }
 /*
  * isPositive - return 1 if x > 0, return 0 otherwise
@@ -269,7 +280,13 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  return 2;
+  /* x is positive when the MSB of x and x-1 are both 0.
+   * In other words, non-positive when eigher x and x-1 is 1.
+   */
+  int minus_one = ~0;
+  int MSB1 = (~x >> 31) & 1;
+  int MSB2 = (~(x + minus_one) >> 31) & 1;
+  return MSB1 & MSB2;
 }
 /*
  * isLessOrEqual - if x <= y  then return 1, else return 0
@@ -279,7 +296,16 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+  /* When x and y have the same sign, checking the sign of y-x is valid;
+   * when x and y have different sign, return 1 only when y is non-negative.
+   */
+  int signx = (x >> 31) & 1;
+  int signy = (y >> 31) & 1;
+  int is_same_sign = !(signx ^ signy);
+  int y_min_x = y + (~x + 1);
+  int neg_diff = (y_min_x >> 31) & 1;
+
+  return (is_same_sign & !neg_diff) | (!is_same_sign & !signy);
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
@@ -289,7 +315,9 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  return 2;
+ /* @TODO: no idea how to do this!
+  */
+  return 1 | 1111;
 }
 /*
  * float_neg - Return bit-level equivalent of expression -f for
@@ -303,7 +331,11 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+ unsigned frac_bits = uf & 0x007fffff;
+ unsigned exp_bits = (uf >> 23) & 0x000000ff;
+ if (frac_bits != 0 && exp_bits == 0x000000ff)
+   return uf;
+ return uf ^ (1 << 31);
 }
 /*
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -315,6 +347,10 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
+  /* @TODO: some how difficult; not comfortable with this many free operations!
+   */
+  int sign = x & 0x80000000;
+  if (x < 0) x = -x;
   return 2;
 }
 /*
@@ -329,5 +365,30 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-  return 2;
+  /* @TODO: some how difficult
+   */
+  unsigned frac_bits = uf & 0x007fffff;
+  unsigned exp_bits = (uf >> 23) & 0x000000ff;
+
+  // if NaN or infinite
+  if (exp_bits == 0x000000ff) {
+    printf("special\n");
+    return uf; }
+
+  // if non normalized and don't need to be turned normlaized
+  if (exp_bits == 0 && !(frac_bits >> 22)) {
+    printf("don't need to be normalized\n");
+    return (uf & ~0x007fffff) + (frac_bits << 1);
+  }
+
+  // if has space in the exponent bits
+  if (exp_bits < 254u) {
+    printf("have space in expo\n");
+    return uf + 0x00800000;
+  }
+
+  // if no space in the exponents, return infinite
+  printf("overflow to inf\n");
+  return (uf + 0x00800000) & ~0x007fffff;
+
 }
