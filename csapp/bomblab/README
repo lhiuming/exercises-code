@@ -1,1 +1,8 @@
-This is an x86-64 bomb for self-study students. 
+This is an x86-64 bomb for self-study students.
+
+My Notes:
+
+objdump_d and objdum_t are outputs of objdump program when the bomb is fed as
+input. 
+
+strings_bomb is the output of ">strings bomb".
