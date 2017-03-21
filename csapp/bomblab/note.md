@@ -12,6 +12,7 @@ The first phase (char string) is hard-coded in the phase_1() function, at addres
   allocated by the caller.I guess it is called as
   read_six_numbers(char* input, int ret[]).
 - first number is 1 (  cmpl   $0x1,(%rsp)  )
-- other numbers are checked by a loop (starting from +27):
-  - n2 should equal to n1 + n1 (which is 2);
-  - n3 should equal to n7???
+- other numbers are checked by a for-loop:
+  - initializing at +52 and +57; starting from +27;
+  - condition is an address-comparison: %rbx < %rbp;
+  - n_i should be equal to 2 * n_(i-1), for i = 2 ~ 6.

@@ -1,5 +1,5 @@
 Border relations with Canada have never been better.
-phase202020202
+1  2 4 8  16 32 later char and inter-number-spaces are irrelevant ^_^ len<78
 phase303030303
 phase404040404
 phase505050505
