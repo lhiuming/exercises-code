@@ -6,14 +6,10 @@ CC = gcc
 CFLAGS =-Wall -m32 # disable optimization; buggy in clang on Darwin64
 LIBS = -lm
 
-all: btest fshow ishow bugtest
+all: btest fshow ishow
 
 btest: btest.c bits.c decl.c tests.c btest.h bits.h
 	$(CC) $(CFLAGS) $(LIBS) -o btest bits.c btest.c decl.c tests.c
-
-# my debug test
-bugtest: bugtest.c
-	$(CC) $(CFLAGS) -o bugtest bugtest.c tests.c
 
 fshow: fshow.c
 	$(CC) $(CFLAGS) -o fshow fshow.c
