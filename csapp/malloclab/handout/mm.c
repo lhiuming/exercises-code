@@ -7,7 +7,7 @@
  *
  * At the head region of the heap, we maitained a fixed size array of root
  * pointers for all size class.For a
- * SegList of size k, it store free blocks of size up to 2^k bytes.
+ * SegList of size k, it store free blocks of size at least 2^k bytes.
  *
  * NOTE TO STUDENTS: Replace this header comment with your own header
  * comment that gives a high level description of your solution.
@@ -44,28 +44,50 @@ team_t team = {
 
 /* single word (4) or double word (8) alignment */
 #define ALIGNMENT 8
+#define CHUNK 1 << 12
 
 /* rounds up to the nearest multiple of ALIGNMENT */
 #define ALIGN(size) (((size) + (ALIGNMENT-1)) & ~0x7)
 
+/* size of some overhead */
+#define SIZE_T_SIZE sizeof(size_t)
+#define POINTER_SIZE (sizeof(void *))
+#define HDR_SIZE SIZE_T_SIZE
+#define LINK_SIZE (POINTER_SIZE + POINTER_SIZE)
+#define FTR_SIZE SIZE_T_SIZE
+#define MIN_BLOCK_SIZE ALIGN(HDR_SIZE + LINK_SIZE + FTR_SIZE)
+
 /* Pack a size, a allocated bit and a prev-allocated bit into a word */
-#define PACK(size, alloc, allco_prev) ((size)|(alloc)|(allco_prev))
+#define PACK(size, alloc_prev, alloc) ((size)|(alloc_prev)|(alloc))
 
 /* Read and write a word at address p */
-#define GET(p)      (*(unsigned int *)(p))
-#define PUT(p, val) (*(unsigned int *)(p) = (val))
+#define GETW(p) (*(uint32 *) (p))  /* a word is 4 bytes */
+#define GETD(p) (*(uint64 *) (p))  /* a dword is 8 bytes */
+#define GETD(p) (*(uint64 *) (p))
+#define GETS(p) (*(size_t *) (p))  /* a size_t length memory */
 
-/* Read and write node address at the 'next' and 'prev' slot */
-//#define GET_NEXT(p)  
+/* Read the size and allocaterd fileds from block header p */
+#define GET_SIZE(p)       (GETS(p) & ~0x7)
+#define GET_ALLOC(p)      (GETS(p) & 0x1)
+#define GET_ALLOC_PREV(p) (GETS(p) & 0x2)
 
-/* size of some overhead */
-#define SIZE_T_SIZE 8
-#define POINTER_SIZE (sizeof(void *))
-#define ROOT_NODE_SIZE POINTER_SIZE
-#define HDR_SIZE (SIZE_T_SIZE + POINTER_SIZE + POINTER_SIZE)
+/* locate header and footer for a block address bp */
+#define HDRP(bp)  ((char *) (bp))
+#define FTRP(bp)  ((char *) (bp) + GET_SIZE(HDRP(bp)) - SIZE_T_SIZE)
+
+/* Read and write node address at the 'next' and 'prev' slot for a free bp */
+#define GET_SUCC_ADDR(fbp) (* ((char *) (fbp) + SIZE_T_SIZE))
+#define GET_PRED_ADDR(fbp) (* ((char *) (fbp) + SIZE_T_SIZE + POINTER_SIZE))
+
+/*
+ * moving around blocks for a block address bp. The second command works only
+ * if the previous block is free (check it by GET_ALLOC_PREV )
+ */
+#define NEXT_BLKP(bp) ((char *)(bp) + GET_SIZE(HDRP(bp)))
+#define PREV_BLKP(bp) ((char *)(bp) - GET_SIZE(HDRP(bp) - SIZE_T_SIZE))
 
 /* size range of SegList as power of 2 */
-#define SIZE_SEGLIST_MIN 1
+#define SIZE_SEGLIST_MIN 0
 #define SIZE_SEGLIST_MAX (SIZE_SEGLIST_MIN)
 
 /* a debug function, used privately */
@@ -75,28 +97,33 @@ void mm_check(void);
  * private variables used by the allocator package.
  */
 static char *mm_seglist_root;  /* points to root of the smallest SegList */
+static char *mm_listp;         /* points to prologue block */
 
 /*
  * mm_init - initialize the malloc package.
  */
 int mm_init(void)
 {
-  /* alocate the root-nodes block */
+  /* alocate the root-nodes region */
   int total_roots = SIZE_SEGLIST_MAX - SIZE_SEGLIST_MIN + 1;
-  mm_seglist_root = mem_sbrk(ALIGN(ROOT_NODE_SIZE * total_roots));
+  mm_seglist_root = mem_sbrk(ALIGN(POINTER_SIZE * total_roots));
 
-  /* initialize all SegList with a free block of maximum size */
-  size_t max_size = 1 << SIZE_SEGLIST_MIN;
-  for (int i = 0; i < total_roots; i++, max_size << 1) {
-    char *block_start = (char *)mem_sbrk(ALIGN(HEADER_SIZE + max_size));
-    PUT(block_start, PACK(max_size, 0x2, 0);
-    *(block_start + 1) = 0;                    /* points next to null */
-    *(block_start + 2) = mm_seglist_root + i;  /* points back to root */
-    *(mm_seglist_root + i) = block_start;      /* root points to this block */
+  /* initialize all SegList root with a null pointer */
+  for (int i = 0; i < total_roots; i++) {
+    *(mm_seglist_root + i) = 0;
   }
 
-    mm_check();
-    return 0;
+  /*
+   * alway reserved two padding blcok to save boundary check
+   *     One is prologue block, which is at a minimun size.
+   *     The other one is epilogue block , which have a size 0 to indicate
+   * the end.
+   */
+  mm_listp = mem_sbrk(ALIGN(SIZE_T_SIZE + SIZE_T_SIZE));
+  GETS(mm_listp) = PACK(HDR_SIZE, 0x2, 0x1);
+  GETS(HDRP(NEXT_BLKP(mm_listp))) = PACK(0, 0x2, 0x1);
+
+  return 0;
 }
 
 /*
@@ -105,14 +132,17 @@ int mm_init(void)
  */
 void *mm_malloc(size_t size)
 {
-    int newsize = ALIGN(size + SIZE_T_SIZE);
-    void *p = mem_sbrk(newsize);
-    if (p == (void *)-1)
-	return NULL;
-    else {
-        *(size_t *)p = size;
-        return (void *)((char *)p + SIZE_T_SIZE);
-    }
+  int newsize = ALIGN(size + SIZE_T_SIZE);
+  void *p = mem_sbrk(newsize);
+  if (p == (void *)-1)
+	  return NULL;
+  else {
+    /* discard the epilogue block */
+    GETS((char *) p - SIZE_T_SIZE) = PACK(newsize, 0x2, 0x1);
+    /* reconstruct the epilogue block at the end */
+    GETS((char *) p + newsize) = PACK(0, 0x2, 0x1);
+    return p;
+  }
 }
 
 /*
