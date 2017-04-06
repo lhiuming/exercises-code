@@ -132,6 +132,11 @@ int mm_init(void)
  */
 void *mm_malloc(size_t size)
 {
+  /* find a size class that fits, and allocate a block is hit a suitable node */
+
+  /* if no suitable exist, split a free block from a larger block */
+
+  /* but for now, just ask mem_sbrk ... */
   int newsize = ALIGN(size + SIZE_T_SIZE);
   void *p = mem_sbrk(newsize);
   if (p == (void *)-1)
