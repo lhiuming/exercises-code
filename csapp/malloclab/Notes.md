@@ -14,5 +14,5 @@ block or equal to NULL pointer is no free block exists in its size class.
 
 ## Progress (TODOs)
 
-- complete malloc to look up free list 
-- implement free
+- implement check
+- implement realloc

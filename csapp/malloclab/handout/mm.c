@@ -80,7 +80,9 @@ team_t team = {
 /* locate header and footer for a block address bp.
  * the footer locating is only safe for free block pointer ! */
 #define HDRP(bp)  ((char *) (bp))
-#define FTRP(fbp) ((char *) (fbp) + GET_SIZE(HDRP(fbp)) - SIZE_T_SIZE)
+#define FTRP(fbp) ((char *) (fbp) + GET_SIZE(HDRP(fbp)) - FTR_SIZE)
+#define PAYL(bp)  ((char *) (bp) + HDR_SIZE)
+#define PAYL_TO_BP(p) ( (char *) (p) - HDR_SIZE );
 
 /* locate the slot for 'next' and 'prev' for a free block address fbp */
 #define SUCCP(fbp) (HDRP(fbp) + SIZE_T_SIZE)
@@ -104,12 +106,12 @@ team_t team = {
 #define PREV_BLKP(fbp) ((char *)(fbp) - GET_SIZE(HDRP(fbp) - SIZE_T_SIZE))
 
 /* size range of SegList as power of 2 */
-#define SEGLIST_NUM  10
+#define SEGLIST_NUM  15
 
 /* some general purpose macro */
 #define MIN(i, j) ((i) < (j) ? (i) : (j))
 #define MAX(i, j) ((i) > (j) ? (i) : (j))
-
+#define MM_NODEBUG
 
 /**************************************
  * Implementing the interface alocator
@@ -123,6 +125,8 @@ static char *mm_listp;         /* points to prologue block */
 void mm_distribute(char *);    /* distribute a free block to seg lists */
 void mm_check(void);           /* debug checking */
 void mm_insert(char *, char *);/* insert the new block into a list */
+void mm_remove(char *node_hdr);/* remove a free block from seg list */
+char *mm_split(char *, size_t);/* split a free block */
 
 /*
  * mm_init - Initialize the malloc package.
@@ -132,7 +136,6 @@ int mm_init(void)
   /* total initial break */
   size_t seglist_region = ALIGN(SEGLIST_ROOT_SIZE * SEGLIST_NUM);
   size_t padding_region = PROL_SIZE + EPIL_SIZE;
-  assert(padding_region == ALIGN(padding_region));
   mm_seglist_root = mem_sbrk(seglist_region + padding_region);
   mm_listp = mm_seglist_root + seglist_region;
 
@@ -155,8 +158,10 @@ int mm_init(void)
   GETS(mm_listp) = PACK(0, 0x2, 0x1);
   GETS(mm_listp + PROL_SIZE) = PACK(0, 0x2, 0x1);
 
+  #ifndef MM_NODEBUG
   printf(">>> Finished initialization <<< \n");
   printf("mm_listp is %lx \n", (unsigned long) mm_listp);
+  #endif
 
   return 0;
 }
@@ -167,12 +172,11 @@ int mm_init(void)
  */
 void *mm_malloc(size_t size)
 {
+  #ifndef MM_NODEBUG
   printf("malloc(%zu) requested.\n", size);
+  #endif
 
   size_t blocksize = ALIGN(SIZE_T_SIZE + size);
-
-  /* debug check: blocksize must larger than the small class */
-  assert(blocksize >= GET_CLASS_SIZE(mm_seglist_root));
 
   /* find a size class k that fits blocksize.
    * that is, find the the largest class such that blocksize >= class_min. */
@@ -183,30 +187,47 @@ void *mm_malloc(size_t size)
       break;
     }
 
-  printf("\t fit to class %zu (min %lu)\n", target_class, MIN_BLOCK_SIZE << target_class);
+  #ifndef MM_NODEBUG
+  printf("\t %zu fit to class %zu (min %lu)\n", blocksize, target_class, MIN_BLOCK_SIZE << target_class);
+  #endif
 
   /* search the segList for a free block. */
   char *targer_root = mm_seglist_root + SEGLIST_ROOT_SIZE * target_class;
-  char *node_p = targer_root;
+  char *node_bp = targer_root;
   while (target_class < SEGLIST_NUM) {
 
     /* follow the link */
-    node_p = SUCC_BLKP(node_p);
+    node_bp = SUCC_BLKP(node_bp);
 
     /* if reach the end of list, use a larger-size-class */
-    if (node_p == 0) {
+    if (node_bp == 0) {
       target_class++;
-      node_p = (mm_seglist_root + SEGLIST_ROOT_SIZE * target_class);
+      node_bp = (mm_seglist_root + SEGLIST_ROOT_SIZE * target_class);
       continue;
     }
 
     /* if hit a free block that is big enough, allocated it. */
-    if (GET_SIZE(HDRP(node_p)) >= blocksize) {
+    size_t node_size;
+    if ( (node_size = GET_SIZE(HDRP(node_bp)) ) >= blocksize ) {
+
+      #ifndef MM_NODEBUG
+      printf("\t got a usable free block in class %zu \n", target_class);
+      #endif
+
       /* TODO: split the block if more than 1/4 of the space is wasted.
        * this must happend if the block comes from a larger-size-class. */
-      /* TODO: mark this block as allocated */
-      /* TODO: remove it from the list */
-      /* TODO: return the propieary address */
+      if ( (node_size - blocksize) > (node_size >> 2) ) {
+        #ifndef MM_NODEBUG
+        printf("\t too mush wasted; going to split the node of size %zu \n", node_size);
+        #endif
+        mm_distribute(mm_split(node_bp, blocksize));
+      }
+
+      /* remove it from free list */
+      mm_remove(node_bp);
+
+      /* return the propieary address */
+      return PAYL(node_bp);
     }
 
   } /* end while */
@@ -214,44 +235,76 @@ void *mm_malloc(size_t size)
   /* even the biggest-size-class have no space,
    * so we have to expand the heap */
 
+  #ifndef MM_NODEBUG
   printf("\t no space in any class! ");
+  #endif
 
-  /* ask memlib for a new chunk.
-   * we add MIN_BLOCK_SIZE to ensure that brk_size > blocksize */
-  size_t brk_size = MAX(CHUNK, blocksize + MIN_BLOCK_SIZE);
-  printf("trying to break for %i \n", (int) brk_size);
+  /* ask memlib for a new chunk. */
+  size_t brk_size = MAX(CHUNK, blocksize);
   void *p = mem_sbrk(brk_size);
   if (p == (void *)-1) {
+
+    #ifndef MM_NODEBUG
+    printf("failed to break for %i \n", (int) brk_size);
+    #endif
+
     return NULL;
   } else {
 
+    #ifndef MM_NODEBUG
     printf("\t expand the heap to 0x%lx + %i = 0x%lx, \n", (unsigned long)p, (int) brk_size, (unsigned long)p + brk_size);
+    #endif
 
-    /* read prev_alloc from the epilogue block before allocating */
-    size_t prev_alloc = GET_ALLOC_PREV((char *)p - EPIL_SIZE);
+    /* make up the return block.
+     * NOTE: also take care of the epilogue block */
+    char *retn_bp = (char *)p - EPIL_SIZE;
+    char *epil_bp = retn_bp + brk_size;
+    size_t prev_alloc = GET_ALLOC_PREV(retn_bp); /* forom the epilogue */
+    GETS(HDRP(retn_bp)) = PACK(brk_size, prev_alloc, 0x1);
+    GETS(HDRP(epil_bp)) = PACK(0, 0x1, 0x1);  /* recover the epilogue */
 
-    /* divide the new chunk into two pieces */
-    char *p_retn_hdr = (char *)p - EPIL_SIZE;
-    char *p_free_hdr = p_retn_hdr + blocksize;
-    char *p_epil_hdr = p_retn_hdr + brk_size;
-    GETS(p_retn_hdr) = PACK(blocksize, prev_alloc, 0x1);  /* return block */
-    GETS(p_free_hdr) = PACK(brk_size - blocksize, 0x2, 0x0); /* new free block */
-    GETS(p_epil_hdr) = PACK(0, 0x0, 0x1);  /* recover the epilogue */
-
-    /* TODO: distribute the new free space to seg lists */
-    mm_distribute(p_free_hdr);
+    /* split the new block if there is more space than required */
+    if ( (brk_size - blocksize) >= MIN_BLOCK_SIZE) {
+      #ifndef MM_NODEBUG
+      printf("\t expand too much, let split the new block. \n");
+      #endif
+      mm_distribute(mm_split(retn_bp, blocksize));
+    }
 
     /* return the payload address */
-    return p_retn_hdr + HDR_SIZE;
+    return PAYL(retn_bp);
 
   } /* end if */
 }
 
 /*
- * mm_free - Freeing a block does nothing.
+ * mm_free - Freeing a by marking it free and distribute it.
+ * TODO: do coallase to improve performance
  */
 void mm_free(void *ptr)
 {
+  #ifndef MM_NODEBUG
+  printf("free(%lx) requested. \n", (unsigned long) ptr);
+  #endif
+
+  char *this_bp = PAYL_TO_BP(ptr);
+  char *next_bp = NEXT_BLKP(this_bp);
+  size_t alloc_prev = GET_ALLOC_PREV(HDRP(this_bp));
+
+  /* mark the block as free */
+  GETS(HDRP(this_bp)) = PACK(GET_SIZE(HDRP(this_bp)), alloc_prev,  0x0);
+
+  /* TODO: colaseing ? */
+  #ifndef MM_NODEBUG
+  if ((alloc_prev == 0x0) || (GET_ALLOC(HDRP(next_bp)) == 0x0))
+    printf("\t we might want to coallse this. \n");
+  #endif
+
+  /* distribute it into seg lists */
+  #ifndef MM_NODEBUG
+  printf("\t distribute this block with size %zu. \n", GET_SIZE(HDRP(this_bp)));
+  #endif
+  mm_distribute(this_bp);
 }
 
 /*
@@ -280,25 +333,23 @@ void *mm_realloc(void *ptr, size_t size)
  */
  void mm_check(void)
  {
+   #ifndef MM_NODEBUG
    printf("(mm_check) Checks nothing.\n");
+   #endif
  }
 
  /*
-  * mm_distribute - Split and add the free block to seg lists.
+  * mm_distribute - Add a free block to a seg list.
+  * TODO: we may improve this by spliting the free block before insert.
   */
  void mm_distribute(char *free_hdr)
  {
-   /* DEBUG: make sure the block is free */
-   assert(GET_ALLOC(free_hdr) == 0x0);
-   printf("\t distributing a free block at 0x%lx ", (unsigned long) free_hdr);
 
    size_t fb_size = GET_SIZE(free_hdr);
 
-    printf("with size %i \n", (int) fb_size);
-
-   /* DEBUG check: the block size must larger than the smallest class-size */
-   assert(fb_size >= GET_CLASS_SIZE(mm_seglist_root));
-   assert(fb_size >= MIN_BLOCK_SIZE);
+   #ifndef MM_NODEBUG
+   printf("\t distributing a free block with size %i \n", (int) fb_size);
+   #endif
 
    /* find the largest seglist that can populate this free block.
     * then insert it */
@@ -306,25 +357,24 @@ void *mm_realloc(void *ptr, size_t size)
    /* get a small enough class */
    while (fb_size < GET_CLASS_SIZE(last_list))
      last_list = SMALLER_CLASS(last_list);
+   #ifndef MM_NODEBUG
    printf("\t target list is %lu with size %lu\n", (last_list - mm_seglist_root)/SEGLIST_ROOT_SIZE, GET_CLASS_SIZE(last_list));
+   #endif
    /* insert the block */
    mm_insert(free_hdr, last_list);
 
  }
 
  /*
-  * mm_insert - Insert a new free block into a seg list.
+  * mm_insert - Insert a new free block into the provided seg list.
   * Currently implementation just put the block at the head
   */
 void mm_insert(char *free_bp, char *target_list)
 {
   // DEBUG checks
+  #ifndef MM_NODEBUG
   printf("\t inserting at target list %lu \n", ((char *)target_list - mm_seglist_root)/SEGLIST_ROOT_SIZE);
-
-  /* debug checks */
-  assert((unsigned long) target_list >= (unsigned long) mm_seglist_root);
-  assert((unsigned long) target_list <= (unsigned long) mm_seglist_root + SEGLIST_NUM * SEGLIST_ROOT_SIZE);
-  assert(GET_SIZE(HDRP(free_bp)) >= GET_CLASS_SIZE(target_list));
+  #endif
 
   /* currently we just put it at the head */
   char *first_node = SUCC_BLKP(target_list);  /* address to first node */
@@ -334,4 +384,51 @@ void mm_insert(char *free_bp, char *target_list)
   if (first_node != 0)
     PRED_BLKP(first_node) = free_bp;        /* old -> new (optional) */
 
+}
+
+/*
+ * mm_remove - Remove a node from the seg list, and mark it as allocated
+ *     given the block pointer.
+ */
+void mm_remove(char *node_bp)
+{
+  /* remove it from the list */
+  char *pred_node_bp = PRED_BLKP(node_bp);
+  char *succ_node_bp = SUCC_BLKP(node_bp);
+  SUCC_BLKP(pred_node_bp) = succ_node_bp;
+  if (succ_node_bp != 0) PRED_BLKP(succ_node_bp) = pred_node_bp;
+
+  /* mark it as allocated by overwriting the alloc bit.
+   * thus we insure that all free block are inside the seg lists */
+  GETS(HDRP(node_bp)) = ( GETS(HDRP(node_bp)) | 0x1 );
+
+}
+
+/*
+ * mm_split - Split a block into two blocks by the given size of the
+ *     first half, and return the block pointer to the second half.
+ * After splitting, the second half is marked as free.
+ * The split_size must be aligned and larger than MIN_BLOCK_SIZE.
+ */
+char *mm_split(char *first_bp, size_t split_size)
+{
+  char *second_bp = first_bp + split_size;
+  size_t second_size = GET_SIZE(HDRP(first_bp)) - split_size;
+  size_t first_alloc = GET_ALLOC(first_bp);
+
+  /* set up the first block; we keeps the status of the inpu block */
+  GETS(HDRP(first_bp)) = PACK(split_size, GET_ALLOC_PREV(first_bp), first_alloc);
+  if (first_alloc == 0) /* only free block has footer */
+    GETS(FTRP(first_bp)) = PACK(split_size, 0x0, 0x0);
+
+  /* set up the second block; mark it as free */
+  GETS(HDRP(second_bp)) = PACK(second_size, first_alloc >> 1, 0x0);
+  GETS(FTRP(second_bp)) = PACK(second_size, 0x0, 0x0);
+
+  /* update the header of next block in the heap */
+  char * next_bp_hdr = HDRP(second_bp + second_size);
+  GETS(next_bp_hdr) = PACK(GET_SIZE(next_bp_hdr), 0x0, GET_ALLOC(next_bp_hdr));
+
+  /* return pointer to the second block */
+  return second_bp;
 }
