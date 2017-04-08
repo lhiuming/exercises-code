@@ -12,7 +12,7 @@ block or equal to NULL pointer is no free block exists in its size class.
 - try to use advanced gdb if having hard time in debugging! (see recitation for
   malloc).
 
-## Progress
+## Progress (TODOs)
 
-- implement mm_distribute, used both in mm_malloc, mm_free
+- complete malloc to look up free list 
 - implement free
