@@ -14,6 +14,8 @@ static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64;
 
 /* Local functions */
 void handle_request(int connfd);
+void clienterror(int fd, char *cause, char *errnum,
+   char *shortmsg, char *longmsg);
 
 
 int main(int argc, char **argv)
@@ -49,10 +51,69 @@ int main(int argc, char **argv)
     printf("[proxy] Connected to (%s, %s)\n", client_hostname, client_port);
 
     /* TODO: Handle the request */
+    handle_request(connfd);
 
     /* Close the connection after handeling */
-    Cloase(clientfd);
+    Close(connfd);
   }
 
   exit(0);
+}
+
+
+/*
+ * handle_request - Handle the transaction.
+ */
+void handle_request(int fd)
+{
+  rio_t rio;
+  char buf[MAXLINE], method[MAXLINE], url[MAXLINE], version[MAXLINE];
+
+  /* Read and parse the Header.
+   * Return a error message if the request is not supported. */
+  Rio_readinitb(&rio, fd);
+  if (!Rio_readlineb(&rio, buf, MAXLINE)) {
+    printf("Not request header!\n");
+    return;
+  } else {
+    printf("[proxy] Read request: \n%s", buf);
+  }
+  sscanf(buf, "%s %s %s", method, url, version);
+  printf("[proxy] Parsed as method: %s; url: %s; ver: %s;\n", method, url, version);
+  if (strcasecmp(method, "GET")) {
+    clienterror(fd, method, "501", "Not Implemented",
+                "Proxy does not implement this method");
+    return;
+  }
+
+  /* 
+
+  return ;
+}
+
+
+/*
+ * clienterror - returns an error message to the client
+ * This code is copied from tiny.c
+ */
+void clienterror(int fd, char *cause, char *errnum,
+		 char *shortmsg, char *longmsg)
+{
+    char buf[MAXLINE], body[MAXBUF];
+
+    /* Build the HTTP response body */
+    sprintf(body, "<html><title>Proxy Error</title>");
+    sprintf(body, "%s<body bgcolor=""ffffff"">\r\n", body);
+    sprintf(body, "%s%s: %s\r\n", body, errnum, shortmsg);
+    sprintf(body, "%s<p>%s: %s\r\n", body, longmsg, cause);
+    sprintf(body, "%s<hr><em>My Proxy</em>\r\n", body);
+
+    /* Print the HTTP response */
+    sprintf(buf, "HTTP/1.0 %s %s\r\n", errnum, shortmsg);
+    Rio_writen(fd, buf, strlen(buf));
+    sprintf(buf, "Content-type: text/html\r\n");
+    Rio_writen(fd, buf, strlen(buf));
+    sprintf(buf, "Content-length: %d\r\n\r\n", (int)strlen(body));
+    Rio_writen(fd, buf, strlen(buf));
+    Rio_writen(fd, body, strlen(body));
 }
