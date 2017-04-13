@@ -14,6 +14,7 @@ static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64;
 
 /* Local functions */
 void handle_request(int connfd);
+int convert_request(int fd, char *ret);
 void clienterror(int fd, char *cause, char *errnum,
    char *shortmsg, char *longmsg);
 
@@ -50,7 +51,7 @@ int main(int argc, char **argv)
                 client_port, MAXLINE, 0);
     printf("[proxy] Connected to (%s, %s)\n", client_hostname, client_port);
 
-    /* TODO: Handle the request */
+    /* Handle the request */
     handle_request(connfd);
 
     /* Close the connection after handeling */
@@ -66,29 +67,65 @@ int main(int argc, char **argv)
  */
 void handle_request(int fd)
 {
-  rio_t rio;
-  char buf[MAXLINE], method[MAXLINE], url[MAXLINE], version[MAXLINE];
+  char header[MAXBUF];
 
-  /* Read and parse the Header.
+  /* Get a proxy header for the request */
+  convert_request(fd, header);
+  printf("[proxy] The converted header looks like: \n%s", header);
+
+  /* Get the proxied content */
+
+  /* Serve the request connection */
+
+  return ;
+}
+
+/*
+ * convert_request - Read the request and convert it to a proxied request.
+ */
+int convert_request(int fd, char *ret)
+{
+  rio_t rio;
+  char buf[MAXLINE], method[MAXLINE], version[MAXLINE];
+  char prtl[MAXLINE], host[MAXLINE], dir[MAXLINE], sep[MAXLINE];
+
+  /* Read and parse the request.
    * Return a error message if the request is not supported. */
   Rio_readinitb(&rio, fd);
   if (!Rio_readlineb(&rio, buf, MAXLINE)) {
     printf("Not request header!\n");
-    return;
+    return -1;
   } else {
-    printf("[proxy] Read request: \n%s", buf);
+    printf("[proxy] Read header: \n%s", buf);
   }
-  sscanf(buf, "%s %s %s", method, url, version);
-  printf("[proxy] Parsed as method: %s; url: %s; ver: %s;\n", method, url, version);
+  sscanf(buf, "%s %5[htp]%3[:/]%[^/]%1[/]%s %s", method, prtl, sep, host, sep, dir, version);
+  printf("[proxy] Parsed as method: %s; prtl: %s; host: %s; dir: %s; ver: %s;\n",
+   method, prtl, host, dir, version);
   if (strcasecmp(method, "GET")) {
     clienterror(fd, method, "501", "Not Implemented",
                 "Proxy does not implement this method");
-    return;
+    return -1;
+  }
+  if (strcasecmp(version, "HTTP/1.0") && strcasecmp(version, "HTTP/1.1")) {
+    clienterror(fd, version, "501", "Invalid Protocol",
+                "Proxy does not supported this protocol");
+    return -1;
   }
 
-  /* 
+  /* Contruct the to-be-sent request */
+  sprintf(ret, "GET /%s HTTP/1.0\n", dir);
+  sprintf(ret, "%sHost: %s\n", ret, host);
 
-  return ;
+  /* Append the rest of accepted request into the return header */
+  Rio_readlineb(&rio, buf, MAXLINE);
+  while (strcmp(buf, "\r\n")) {
+    printf("[proxy] Rest included: %s", buf);
+    sprintf(ret, "%s%s", ret, buf);
+    Rio_readlineb(&rio, buf, MAXLINE);
+  }
+  sprintf(ret, "%s\r\n", ret);  // dont forget the requent-end symbol "\r\n"
+
+  return 0;
 }
 
 
