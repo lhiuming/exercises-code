@@ -15,6 +15,7 @@ static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64;
 /* Local functions */
 void handle_request(int connfd);
 int convert_request(int fd, char *ret);
+void parse_url(char *url, char *port, char *dir);
 void clienterror(int fd, char *cause, char *errnum,
    char *shortmsg, char *longmsg);
 
@@ -56,6 +57,7 @@ int main(int argc, char **argv)
 
     /* Close the connection after handeling */
     Close(connfd);
+    printf("[proxy] Closed connection to (%s, %s)\n", client_hostname, client_port);
   }
 
   exit(0);
@@ -70,7 +72,8 @@ void handle_request(int fd)
   char header[MAXBUF];
 
   /* Get a proxy header for the request */
-  convert_request(fd, header);
+  if (convert_request(fd, header))
+    return;
   printf("[proxy] The converted header looks like: \n%s", header);
 
   /* Get the proxied content */
@@ -87,7 +90,7 @@ int convert_request(int fd, char *ret)
 {
   rio_t rio;
   char buf[MAXLINE], method[MAXLINE], version[MAXLINE];
-  char prtl[MAXLINE], host[MAXLINE], dir[MAXLINE], sep[MAXLINE];
+  char host[MAXLINE], port[MAXLINE], dir[MAXLINE];
 
   /* Read and parse the request.
    * Return a error message if the request is not supported. */
@@ -98,9 +101,10 @@ int convert_request(int fd, char *ret)
   } else {
     printf("[proxy] Read header: \n%s", buf);
   }
-  sscanf(buf, "%s %5[htp]%3[:/]%[^/]%1[/]%s %s", method, prtl, sep, host, sep, dir, version);
-  printf("[proxy] Parsed as method: %s; prtl: %s; host: %s; dir: %s; ver: %s;\n",
-   method, prtl, host, dir, version);
+  sscanf(buf, "%s %s %s", method, host, version);
+  parse_url(host, port, dir);
+  printf("[proxy] Parsed as method: %s; host: %s; port: %s; dir: %s; ver: %s;\n",
+   method, host, port, dir, version);
   if (strcasecmp(method, "GET")) {
     clienterror(fd, method, "501", "Not Implemented",
                 "Proxy does not implement this method");
@@ -113,8 +117,10 @@ int convert_request(int fd, char *ret)
   }
 
   /* Contruct the to-be-sent request */
-  sprintf(ret, "GET /%s HTTP/1.0\n", dir);
-  sprintf(ret, "%sHost: %s\n", ret, host);
+  sprintf(ret, "GET /%s HTTP/1.0\n", dir);  // GET header lines
+  sprintf(ret, "%sHost: %s\n", ret, host);  // Host line
+  sprintf(ret, "%sConnection: close\n", ret);        // a requirement
+  sprintf(ret, "%sProxy-Connection: close\n", ret);  // another requirement
 
   /* Append the rest of accepted request into the return header */
   Rio_readlineb(&rio, buf, MAXLINE);
@@ -128,6 +134,36 @@ int convert_request(int fd, char *ret)
   return 0;
 }
 
+
+/*
+ * parse_url - Parse the url into two parts: host, port (opional), and
+ *     directory (optional);
+ */
+void parse_url(char *url, char *port,  char *dir)
+{
+  char dump[MAXLINE]; // placeholder
+
+  /* clean port and dir before using */
+  port[0] = '\0';
+  dir[0] = '\0';
+
+  /* Get the host name first, and store it at url.
+   * The rest is put at dir temporarily */
+  sscanf(url, "http%[s:/]%[^:/]%s", dump, url, dir);
+  printf("host is %s \n", url);
+
+  /* Fill port if there is a port.
+   * The rest is put in dir, including potential '/' */
+  if (dir[0] == ':') {
+    if (sscanf(dir, ":%[^/]%s", port, dir) == 1)
+      dir[0] = '\0';  // if no dir resd, clean it.
+  } else {
+    port[0] = '\0';
+  }
+  printf("port is %s\n", port);
+  printf("dir is %s\n", dir);
+
+}
 
 /*
  * clienterror - returns an error message to the client
