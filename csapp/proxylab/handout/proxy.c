@@ -14,10 +14,11 @@ static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64;
 
 /* Local functions */
 void handle_request(int connfd);
-int convert_request(int fd, char *ret);
+int convert_request(int fd, char *ret, char *hn, char *port);
 void parse_url(char *url, char *port, char *dir);
-void clienterror(int fd, char *cause, char *errnum,
-   char *shortmsg, char *longmsg);
+int fetch_and_serve(int connfd, char *request, char *hostname, char *port);
+void clienterror(int fd, char *cause, char *errnum, char *shortmsg,
+  char *longmsg);
 
 
 int main(int argc, char **argv)
@@ -37,7 +38,6 @@ int main(int argc, char **argv)
 
   /* Open a listenfd by the first argumetn as a port */
   listenfd = Open_listenfd(argv[1]);
-  printf("[proxy] Successfully open a listenfd.\n");
 
   /* Iteratively handle reuqest. */
   // TODO: make it concurrent.
@@ -56,6 +56,7 @@ int main(int argc, char **argv)
     handle_request(connfd);
 
     /* Close the connection after handeling */
+    // NOTE: when use thread, the thread should close it.
     Close(connfd);
     printf("[proxy] Closed connection to (%s, %s)\n", client_hostname, client_port);
   }
@@ -69,43 +70,46 @@ int main(int argc, char **argv)
  */
 void handle_request(int fd)
 {
-  char header[MAXBUF];
+  char request[MAXBUF];
+  char hostname[MAXLINE], port[MAXLINE];
 
   /* Get a proxy header for the request */
-  if (convert_request(fd, header))
+  if (convert_request(fd, request, hostname, port))
     return;
-  printf("[proxy] The converted header looks like: \n%s", header);
+  printf("[proxy] The converted request looks like: \n%s", request);
 
   /* Get the proxied content */
-
-  /* Serve the request connection */
+  if (fetch_and_serve(fd, request, hostname, port))
+    return;
+  printf("[proxy] Served the request finished.\n");
 
   return ;
 }
 
+
 /*
  * convert_request - Read the request and convert it to a proxied request.
  */
-int convert_request(int fd, char *ret)
+int convert_request(int fd, char *ret, char *host, char *port)
 {
   rio_t rio;
   char buf[MAXLINE], method[MAXLINE], version[MAXLINE];
-  char host[MAXLINE], port[MAXLINE], dir[MAXLINE];
+  char dir[MAXLINE];
 
   /* Read and parse the request header line */
+  printf("[proxy] Reading request header ... "); fflush(0);
   Rio_readinitb(&rio, fd);
   if (!Rio_readlineb(&rio, buf, MAXLINE)) {
     printf("Not request header!\n");
     return -1;
-  } else {
-    printf("[proxy] Read header: \n%s", buf);
   }
+  printf(" got: %s\n", buf);
   sscanf(buf, "%s %s %s", method, host, version);
 
   /* Parse the url into: host [: port] [dir] */
   parse_url(host, port, dir);
-  printf("[proxy] Parsed as method: %s; host: %s; port: %s; dir: %s; ver: %s;\n",
-   method, host, port, dir, version);
+  if (!strcmp(port, "")) sprintf(port, "80"); // default port : 80
+  printf("[proxy] Parsed url: %s, %s, %s\n", host, port, dir);
 
   /* Return an error message if the request is not supported. */
   if (strcasecmp(method, "GET")) {
@@ -120,7 +124,7 @@ int convert_request(int fd, char *ret)
   }
 
   /* Contruct the to-be-sent request */
-  sprintf(ret, "GET /%s HTTP/1.0\n", dir);  // GET header lines
+  sprintf(ret, "GET %s HTTP/1.0\n", dir);  // GET header lines
   sprintf(ret, "%sHost: %s\n", ret, host);  // Host line
   sprintf(ret, "%sConnection: close\n", ret);        // a requirement
   sprintf(ret, "%sProxy-Connection: close\n", ret);  // another requirement
@@ -128,7 +132,6 @@ int convert_request(int fd, char *ret)
   /* Append the rest of accepted request into the return header */
   Rio_readlineb(&rio, buf, MAXLINE);
   while (strcmp(buf, "\r\n")) {
-    printf("[proxy] Rest included: %s", buf);
     sprintf(ret, "%s%s", ret, buf);
     Rio_readlineb(&rio, buf, MAXLINE);
   }
@@ -152,8 +155,7 @@ void parse_url(char *url, char *port,  char *dir)
 
   /* Get the host name first, and store it at url.
    * The rest is put at dir temporarily */
-  sscanf(url, "http%[s:/]%[^:/]%s", dump, url, dir);
-  printf("host is %s \n", url);
+  sscanf(url, "http%[s:]//%[^:/]%s", dump, url, dir);
 
   /* Fill port if there is a port.
    * The rest is put in dir, including potential '/' */
@@ -163,10 +165,40 @@ void parse_url(char *url, char *port,  char *dir)
   } else {
     port[0] = '\0';
   }
-  printf("port is %s\n", port);
-  printf("dir is %s\n", dir);
-
 }
+
+
+/*
+ * fetch_web - Get the wen contetn from target server.
+ */
+int fetch_and_serve(int connfd, char *request, char *hostname, char *port)
+{
+  rio_t rio;
+  int clientfd;
+  char buf[MAXLINE];
+
+  /* Connect to the server */
+  printf("[proxy] Fetching from (%s, %s) ... \n", hostname, port);
+  clientfd = Open_clientfd(hostname, port);
+
+  /* Write the request */
+  printf("[proxy] Writing request ... \n");
+  Rio_writen(clientfd, request, MAXLINE);
+
+  /* read the fetched content into the same request buffer */
+  printf("[proxy] Reading and feeding response ... \n");
+  Rio_readinitb(&rio, clientfd);
+  Rio_readlineb(&rio, buf, MAXLINE);
+  sprintf(request, "%s", buf); // this will overwrite request buffer
+  while (strcmp(buf, "\r\n")) {
+    Rio_writen(connfd, buf, MAXLINE);
+    Rio_readlineb(&rio, buf, MAXLINE);
+  }
+  Rio_writen(connfd, buf, MAXLINE); // append the ending symbol;
+
+  return 0;
+}
+
 
 /*
  * clienterror - returns an error message to the client
