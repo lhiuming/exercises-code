@@ -92,8 +92,7 @@ int convert_request(int fd, char *ret)
   char buf[MAXLINE], method[MAXLINE], version[MAXLINE];
   char host[MAXLINE], port[MAXLINE], dir[MAXLINE];
 
-  /* Read and parse the request.
-   * Return a error message if the request is not supported. */
+  /* Read and parse the request header line */
   Rio_readinitb(&rio, fd);
   if (!Rio_readlineb(&rio, buf, MAXLINE)) {
     printf("Not request header!\n");
@@ -102,9 +101,13 @@ int convert_request(int fd, char *ret)
     printf("[proxy] Read header: \n%s", buf);
   }
   sscanf(buf, "%s %s %s", method, host, version);
+
+  /* Parse the url into: host [: port] [dir] */
   parse_url(host, port, dir);
   printf("[proxy] Parsed as method: %s; host: %s; port: %s; dir: %s; ver: %s;\n",
    method, host, port, dir, version);
+
+  /* Return an error message if the request is not supported. */
   if (strcasecmp(method, "GET")) {
     clienterror(fd, method, "501", "Not Implemented",
                 "Proxy does not implement this method");
