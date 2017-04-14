@@ -8,18 +8,17 @@ My programming exercises for a variety of books. Each book has a corresponding s
 
 Books that are been working on.
 
-- [csapp](csapp/): Randal E. Bryant, David R. O'Hallaron, *Computer Systems: A Programmer's Perspective*, Third Edition.
-
 ### Paused
 
  The following are scheduled for later improvement.
 
-- [algs](algs/): Robert Sedgewick, Kevin Wayne, *Algorithms*, Fourth Edition.
-- [cppprimer](cppprimer/): Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, *C++ Primer*, Fifth Edition.
+- Robert Sedgewick, Kevin Wayne, [Algorithms](algs/), Fourth Edition.
+- Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, [C++ Primer](cppprimer/), Fifth Edition.
 
-### Terminated
+### Finished
 
-Those that I consider finished or have no plan to continue currently.
+Those that I had worked on and considered finished.
 
-- [sicp](sicp/): Harold Abelson, Gerald Jay Sussman, Julie Sussman, *Structure and Interpretation of Computer Programs*, Second Edition. Book-site: https://mitpress.mit.edu/sicp/
-- [acceleratedcpp](acceleratedcpp/): Andrew Koenig, Barbara E. Moo., *Accelerated C++: Practical Programming by Example*.
+- Harold Abelson, Gerald Jay Sussman, Julie Sussman, [Structure and Interpretation of Computer Programs](sicp/), Second Edition. Book-site: https://mitpress.mit.edu/sicp/
+- Andrew Koenig, Barbara E. Moo., [Accelerated C++: Practical Programming by Example](acceleratedcpp/).
+- Randal E. Bryant, David R. O'Hallaron, [Computer Systems: A Programmer's Perspective](csapp/), Third Edition.
