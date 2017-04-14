@@ -10,9 +10,10 @@
 #define MAX_OBJECT_SIZE 102400
 
 /* You won't lose style points for including this long line in your code */
-static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
+//static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
 
 /* Local functions */
+void *thread(void *vargp);
 void handle_request(int connfd);
 int convert_request(int fd, char *ret, char *hn, char *port);
 void parse_url(char *url, char *port, char *dir);
@@ -23,10 +24,11 @@ void clienterror(int fd, char *cause, char *errnum, char *shortmsg,
 
 int main(int argc, char **argv)
 {
-  int listenfd, connfd;
+  int listenfd, *connfdp;
   socklen_t clientlen;
   struct sockaddr_storage clientaddr;  // sockaddr_storage extends sockaddr/SA
   char client_hostname[MAXLINE], client_port[MAXLINE];
+  pthread_t tid;
 
   /* Check that the port argument exist */
   if (argc < 2) {
@@ -34,35 +36,50 @@ int main(int argc, char **argv)
     exit(1);
   }
 
-  printf("%s", user_agent_hdr);
-
   /* Open a listenfd by the first argumetn as a port */
   listenfd = Open_listenfd(argv[1]);
 
   /* Iteratively handle reuqest. */
   // TODO: make it concurrent.
   while (1) {
-    clientlen = sizeof(struct sockaddr_storage); // initialized to maximum
-
     /* Wating for a incoming connection. */
-    connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
+    clientlen = sizeof(struct sockaddr_storage); // initialized to maximum
+    connfdp = Malloc(sizeof(int));
+    *connfdp = Accept(listenfd, (SA *)&clientaddr, &clientlen);
 
-    /* If connection success, report it first */
+    /* If connection success, grap the information  */
     Getnameinfo((SA *)&clientaddr, clientlen, client_hostname, MAXLINE,
                 client_port, MAXLINE, 0);
     printf("[proxy] Connected to (%s, %s)\n", client_hostname, client_port);
 
-    /* Handle the request */
-    handle_request(connfd);
-
-    /* Close the connection after handeling */
-    // NOTE: when use thread, the thread should close it.
-    Close(connfd);
-    printf("[proxy] Closed connection to (%s, %s)\n", client_hostname, client_port);
+    /* Handle the request by a new thread */
+    Pthread_create(&tid, NULL, thread, connfdp);
+    printf("[proxy] Thread %li is handling.\n", (long int)tid);
   }
 
   exit(0);
 }
+
+/*
+ * thread - Wrapper the handle_request into a thread task.
+ */
+void *thread(void *vargp) {
+  pthread_t selfid = pthread_self();
+  int connfd = *((int *)vargp);
+
+  Pthread_detach(selfid); // main thread dont join this
+  Free(vargp);  // is allocated in main trhead
+
+  /* Call the handler */
+  handle_request(connfd);
+
+  /* Close the connection after handeling */
+  Close(connfd);  // thread responsibility
+  printf("[proxy] Disconnect.\n");
+
+  return NULL;
+}
+
 
 
 /*
