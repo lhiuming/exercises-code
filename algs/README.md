@@ -2,7 +2,7 @@
 
 C++ solutions to some exercises, and implementation of algorithms listed in the book *Algorithms*, 4th Edition, in C++. Implementation of algorithms are put in
 [include](include/) and [src](src/), and solutions are put in folder for each
-chapters like [Chapter1](Chapter1/). 
+chapters like [Chapter1](Chapter1/).
 
 ## Notes
 
@@ -15,12 +15,20 @@ chapters like [Chapter1](Chapter1/).
 - Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.
 
-## Basic Algorithms and Data Structure
+## Implemented Algorithms and Data Structures
+
+### Sort ([sort.h](include/sort.h))
+
+1. Selection sort
+2. Insertion sort
+3. Shellsort
+
+## Basic Algorithms and Data Structures List
 
 <!-- Chapter 1, sort  -->
-1. Selection sort (include/sort.h)
-2. Insertion sort (include/sort.h)
-3. Shellsort (include/sort.h)
+1. Selection sort
+2. Insertion sort
+3. Shellsort
 4. Top-down mergesort (todo)
 5. Bottom-up mergesort (todo)
 6. Quicksort (todo)
