@@ -21,7 +21,7 @@ chapters like [Chapter1](Chapter1/).
 1. Selection sort
 2. Insertion sort
 3. Shellsort
-4. Priority Queue, Heapsort ([heapsort.h](include/sort/heapsort.h))
+4. Priority Queue ([heapsort.hpp](include/sort/heapsort.hpp))
 
 ## Basic Algorithms and Data Structures List
 
@@ -33,7 +33,7 @@ chapters like [Chapter1](Chapter1/).
 5. Bottom-up mergesort (todo)
 6. Quicksort (todo)
 7. Quicksort with 3-way partitioning (todo)
-8. Heapsort
+8. Heapsort (todo)
     - MaxPQ class
 <!-- Chapter 2, search-->
 9. Sequential Search Tree Symbol Table class (todo)
