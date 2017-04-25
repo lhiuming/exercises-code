@@ -2,7 +2,7 @@
 #define ALGS_HEAPSORT_H
 
 #include <vector>
-
+#include <ostream>
 /*
  * Priority Queue, Binary Heap, and Heapsort.
  */
@@ -44,6 +44,27 @@ public:
   bool isEmpty() const { return N == 0; }
   std::size_t size() const { return N; }
 
+  // Heapsort static member
+  template<typename RandomIt>
+  static void sort(RandomIt beg, RandomIt end) {
+
+  }
+
+  // print
+  friend std::ostream& operator<<(std::ostream& os, const MaxPQ& pq) {
+    using std::endl;
+    os << "MaxPQ[";
+    int head = 1;
+    while (head <= pq.size() ) {
+      os << endl;
+      for (int i = head; (i <= pq.size()) && (i < 2 * head); ++i)
+        os << pq.heap[i] << " ";
+      head *= 2;
+    }
+    os << "]" << endl;
+    return os;
+  }
+
 private:
 
   Container heap{Comparable()}; // heap[0] is not used.
@@ -70,6 +91,9 @@ private:
   } // end sink
 
 };
+
+
+
 
 } // namespace algs
 

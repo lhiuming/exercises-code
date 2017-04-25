@@ -21,7 +21,7 @@ chapters like [Chapter1](Chapter1/).
 1. Selection sort
 2. Insertion sort
 3. Shellsort
-4. Heapsort ([heapsort.h](include/sort/heapsort.h))
+4. Priority Queue, Heapsort ([heapsort.h](include/sort/heapsort.h))
 
 ## Basic Algorithms and Data Structures List
 
@@ -84,6 +84,6 @@ chapters like [Chapter1](Chapter1/).
 41. Huffman compression (todo)
 42. LZW compression and expansion (todo)
 
-## Addition Algorithms
+## Addition Algorithms List
 
 - Quick-select (todo; page 346)
