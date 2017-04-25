@@ -17,11 +17,10 @@ int main ()
   vector<double> v({1.0, 2.0, 1.5, 9.4, -1, 55});
   MaxPQ<double> pq(v);
   cout << "created a MaxPQ:" << endl << pq << endl;
-  cout << "Pop all elements: ";
+  cout << "Pop all elements: " << endl;
   while (!pq.isEmpty()) {
-    cout << pq.delMax();
+    cout << pq.delMax() << endl;
   }
-  cout << endl;
 
   return 0;
 }
