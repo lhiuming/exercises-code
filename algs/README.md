@@ -1,12 +1,11 @@
 # Solutions to *Algorithms*
 
 C++ solutions to some exercises, and implementation of algorithms listed in the book *Algorithms*, 4th Edition, in C++. Implementation of algorithms are put in
-[include](include/) and [src](src/), and solutions are put in folder for each
+[include](include/), and solutions are put in folder for each
 chapters like [Chapter1](Chapter1/).
 
 ## Notes
 
-- Basic data type: This implementation use memory-reserved std::vector in C++ STL as the default data structure to store raw input data. The two alternatives, std::array and C array, are either too cumbersome or impossible to mimic the functionality of Java Array used in the book.
 - Programming model: The utility library (stdio.hpp, stdrandom.hpp, etc.) is subtly different from those provided by the book. Check the book author's packages here: https://github.com/kevin-wayne/algs4.
 
 ## Todos
