@@ -6,19 +6,23 @@
 
 namespace algs {
 
-class StdRandom {
+class Random {
 public:
+
   // uniform distributions
   static int uniform(int n) {
-    if (n < 0) std::cout << "n must be positive." << std::endl;
-    std::uniform_int_distribution<int> dist(0, n);
-    return dist(generator);
+    if (n < 0) {
+      std::cerr << "n must be positive." << std::endl;
+      exit(1); }
+    std::uniform_int_distribution<int> u_dist(0, n);
+    return u_dist(get_generator());
   }
   static double uniform() {
     std::uniform_real_distribution<double> dist(0.0, 1.0);
-    return dist(generator);
+    return dist(get_generator());
   }
-  // higher-order functions
+
+  // fill an vector with random values
   static void uniform(std::vector<double>& a) {
     for (std::vector<double>::size_type i = 0; i < a.size(); ++i)
       a[i] = uniform();
@@ -27,17 +31,19 @@ public:
     for (std::vector<int>::size_type i = 0; i < a.size(); ++i)
       a[i] = uniform(r);
   }
+
 private:
+
   // no instantiation
-  StdRandom() {}
-  // the random generator
-  // @todo: it this the correct waty to hold a static private?
-  static std::default_random_engine generator;
+  Random() = delete;
+
+  // the random generator; place in a function to let it be initialized once
+  static std::default_random_engine& get_generator() {
+    static std::default_random_engine generator;
+    return generator;
+  }
 
 };
-
-// initialization
-std::default_random_engine StdRandom::generator;
 
 } // namespace algs
 

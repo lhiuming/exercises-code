@@ -1,4 +1,13 @@
 # Test the libraries
 
 # sort.h
-add_executable(test_heapsort test_heapsort.cpp)
+set(sort_list "heapsort")
+foreach(name ${sort_list})
+  add_executable("test_${name}" "test_${name}.cpp")
+endforeach(name)
+
+# utils.h
+set(utils_list "random")
+foreach(name ${utils_list})
+  add_executable("test_${name}" "test_${name}.cpp")
+endforeach(name)
