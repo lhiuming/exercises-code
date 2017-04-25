@@ -14,3 +14,6 @@ set(CMAKE_CXX_FLAGS "-g -O3 -Wall -std=c++11")
 # Build the tests
 enable_testing ()
 add_subdirectory(test)
+
+# Build each Chapters
+add_subdirectory(Chapter6)
