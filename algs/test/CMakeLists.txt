@@ -7,7 +7,7 @@ foreach(name ${sort_list})
 endforeach(name)
 
 # utils.h
-set(utils_list "random")
+set(utils_list "random" "io")
 foreach(name ${utils_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
