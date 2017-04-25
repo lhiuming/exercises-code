@@ -4,7 +4,8 @@
 #include <vector>
 #include <ostream>
 /*
- * Priority Queue, Binary Heap, and Heapsort.
+ * Priority Queue, and Heapsort.
+ * TODO: implement Heapsort with MaxPQ.
  */
 
 
@@ -61,7 +62,7 @@ public:
         os << pq.heap[i] << " ";
       head *= 2;
     }
-    os << "]" << endl;
+    os << "]";
     return os;
   }
 
