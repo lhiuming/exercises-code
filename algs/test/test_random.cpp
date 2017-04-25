@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <utils/random.hpp>
+#include <utils/io.hpp>
 
 using namespace std;
 using namespace algs;
@@ -22,6 +23,14 @@ int main()
     cout << Random::uniform() << ", ";
   }
   cout << Random::uniform() << endl;
+
+  vector<int> v;
+  Random::uniform(v, 10, 5);
+  cout << "Make a vetor of random ints: " << v << endl;
+
+  vector<double> u;
+  Random::uniform(u, 5);
+  cout << "Make a vector of random doubles: " << u << endl;
 
   return 0;
 }

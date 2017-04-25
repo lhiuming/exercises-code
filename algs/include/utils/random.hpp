@@ -10,11 +10,11 @@ class Random {
 public:
 
   // uniform distributions
-  static int uniform(int n) {
-    if (n < 0) {
-      std::cerr << "n must be positive." << std::endl;
+  static int uniform(int max) {
+    if (max < 0) {
+      std::cerr << "max must be positive." << std::endl;
       exit(1); }
-    std::uniform_int_distribution<int> u_dist(0, n);
+    std::uniform_int_distribution<int> u_dist(0, max);
     return u_dist(get_generator());
   }
   static double uniform() {
@@ -22,14 +22,18 @@ public:
     return dist(get_generator());
   }
 
-  // fill an vector with random values
-  static void uniform(std::vector<double>& a) {
-    for (std::vector<double>::size_type i = 0; i < a.size(); ++i)
-      a[i] = uniform();
+  // append an vector with random values
+  static void uniform(std::vector<double>& a, std::vector<double>::size_type n)
+  {
+    a.reserve(a.size() + n);
+    for (std::vector<double>::size_type i = 0; i < n; ++i)
+      a.push_back(uniform());
   }
-  static void uniform(std::vector<int>& a, int r) {
-    for (std::vector<int>::size_type i = 0; i < a.size(); ++i)
-      a[i] = uniform(r);
+  static void uniform(std::vector<int>& a, int r, std::vector<int>::size_type n)
+  {
+    a.reserve(a.size() + n);
+    for (std::vector<int>::size_type i = 0; i < n; ++i)
+      a.push_back(uniform(r));
   }
 
 private:
