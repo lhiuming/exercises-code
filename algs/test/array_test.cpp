@@ -22,8 +22,13 @@ int main(int argc, char **argv)
   cout << "Try to print it: " << b << endl;
   cout << "Print successed" << endl;
 
+  cout << "Get size: " << b.size() << endl;
+
   cout << "b[1] = " << b[1] << ", b[2] = " << b[2] << endl;
   cout << "OK random access" << endl;
+
+  b[1] = 99;
+  cout << "set b[1] = 99, now b[1] = " << b[1] << endl;
 
   return 0;
 }
