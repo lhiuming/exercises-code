@@ -7,7 +7,7 @@
 
 /*
  * Priority Queue, and Heapsort.
- * TODO: implement Heapsort with MaxPQ.
+ * TODO: implement Heapsort.
  */
 
 
@@ -15,6 +15,7 @@ namespace algs {
 
 // Priority Queue /////////////////////////////////////////////////////////////
 // Currently using only std::vector as contatiner.
+// Comparable should supports operator> (for MaxPQ ) or operator< (for MinPQ)
 // TODO: support C++11 move
 
 // Bass PQ
@@ -39,13 +40,13 @@ public:
   // Operations
   void insert(Comparable& v) { heap.push_back(v); swim(++N); }
   void insert(Comparable&& v) { heap.push_back(v); swim(++N); }
-  const Comparable& max() const { return heap[1]; }
-  Comparable delMax() {
-    Comparable max = std::move(heap[1]);
+  const Comparable& head() const { return heap[1]; }
+  Comparable pop() {
+    Comparable head = std::move(heap[1]);
     exch(1, N--); // put the max at the end
     heap.erase(--(heap.end())); // delete the old max (shrink size)
     sink(1); // re-heapify
-    return max;
+    return head;
   }
   bool isEmpty() const { return N == 0; }
   std::size_t size() const { return N; }
@@ -71,12 +72,12 @@ protected:
   size_type N = 0; // index of last valid element = number of valid elements
 
   // implementation helpers
-  virtual bool less(size_type i, size_type j) const = 0;
+  virtual bool prior(size_type i, size_type j) const = 0;
   virtual std::string name() const = 0; // return "MaxPQ" or "MinPQ"
   void exch(size_type i, size_type j) {
     Comparable tmp = heap[i]; heap[i] = heap[j]; heap[j] = tmp; }
   void swim(size_type k) { // let heap[k] to swim up to right position
-    while (k > 1 && less(k/2, k)) {
+    while (k > 1 && prior(k, k/2)) {
       exch(k/2, k); // exchange with parent
       k = k/2;
     }
@@ -84,8 +85,8 @@ protected:
   void sink(size_type k) { // let heap[k] to sink down to right position
     while (2 * k <= N) {
       size_type j = 2 * k;  // index of left-child
-      if (j < N && less(j, j+1)) j++; // choose right-child if it is larger
-      if (!less(k, j)) break; // end of sink : both children are smaller
+      if (j < N && prior(j+1, j)) j++; // choose right-child if it is prior
+      if (!prior(j, k)) break; // end of sink : both children are not prior
       exch(k, j);
       k = j;
     }
@@ -102,8 +103,8 @@ class MaxPQ : public PQ<Comparable> {
   using typename PQ<Comparable>::Container;
 
   // Define pure virtual members
-  virtual bool less(size_type i, size_type j) const override {
-    return this->heap[i] < this->heap[j]; }
+  virtual bool prior(size_type i, size_type j) const override {
+    return this->heap[i] > this->heap[j]; }
   virtual std::string name() const override { return "MaxPQ"; }
 
 public:
@@ -129,8 +130,8 @@ class MinPQ : public PQ<Comparable> {
   using typename PQ<Comparable>::Container;
 
   // Define pure virtual members
-  virtual bool less(size_type i, size_type j) const override {
-    return this->heap[i] > this->heap[j]; }
+  virtual bool prior(size_type i, size_type j) const override {
+    return this->heap[i] < this->heap[j]; }
   virtual std::string name() const override { return "MinPQ"; }
 
 public:

@@ -19,7 +19,7 @@ int main ()
   cout << "created a MaxPQ:" << endl << pq << endl;
   cout << "Pop all elements: " << endl;
   while (!pq.isEmpty()) {
-    cout << pq.delMax() << ", ";
+    cout << pq.pop() << ", ";
   }
 
   MinPQ<double> mpq(v);
