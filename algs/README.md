@@ -33,8 +33,9 @@ chapters like [Chapter1](Chapter1/).
 5. Bottom-up mergesort (todo)
 6. Quicksort (todo)
 7. Quicksort with 3-way partitioning (todo)
-8. Heapsort (todo)
-    - MaxPQ class
+8. Priority Queue
+9. Heapsort (todo)
+
 <!-- Chapter 2, search-->
 9. Sequential Search Tree Symbol Table class (todo)
 11. Binary Search Tree Symbol Table class (todo)

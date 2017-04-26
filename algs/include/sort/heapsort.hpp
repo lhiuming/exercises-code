@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <ostream>
+#include <string>
+
 /*
  * Priority Queue, and Heapsort.
  * TODO: implement Heapsort with MaxPQ.
@@ -11,22 +13,22 @@
 
 namespace algs {
 
-// Max PQ /////////////////////////////////////////////////////////////////////
-// Currently using only std::vector as contatiner, using native compara
-// operator (<) of the Comparable type.
+// Base PQ ////////////////////////////////////////////////////////////////////
+// Currently using only std::vector as contatiner.
 // TODO: support C++11 move
 template<typename Comparable>
-class MaxPQ {
+class PQ {
+
 public:
 
   typedef typename std::vector<Comparable> Container;
   typedef typename Container::size_type size_type;
 
   // Constructor
-  MaxPQ() {};
-  MaxPQ(size_type cap) { // with initial capacity
+  PQ() {};
+  PQ(size_type cap) { // with initial capacity
     heap.reserve(cap+1); }
-  MaxPQ(Container& a) { // with a container of elements
+  PQ(Container& a) { // with a container of elements
     heap.reserve(a.size() + 1);
     for (Comparable& v : a)
       insert(v);
@@ -45,16 +47,10 @@ public:
   bool isEmpty() const { return N == 0; }
   std::size_t size() const { return N; }
 
-  // Heapsort static member
-  template<typename RandomIt>
-  static void sort(RandomIt beg, RandomIt end) {
-
-  }
-
   // print
-  friend std::ostream& operator<<(std::ostream& os, const MaxPQ& pq) {
+  friend std::ostream& operator<<(std::ostream& os, const PQ& pq) {
     using std::endl;
-    os << "MaxPQ[";
+    os << pq.name << "[";
     int head = 1;
     while (head <= pq.size() ) {
       os << endl;
@@ -66,13 +62,14 @@ public:
     return os;
   }
 
-private:
+protected:
 
   Container heap{Comparable()}; // heap[0] is not used.
   size_type N = 0; // index of last valid element = number of valid elements
+  std::string name; // "MaxPQ" or "MinPQ"
 
   // implementation helpers
-  bool less(size_type i, size_type j) const { return heap[i] < heap[j]; }
+  virtual bool less(size_type i, size_type j) const = 0;
   void exch(size_type i, size_type j) {
     Comparable tmp = heap[i]; heap[i] = heap[j]; heap[j] = tmp; }
   void swim(size_type k) { // let heap[k] to swim up to right position
@@ -94,7 +91,60 @@ private:
 };
 
 
+// Max Priority Queue
+template<typename Comparable>
+class MaxPQ : public PQ<Comparable> {
 
+  using typename PQ<Comparable>::size_type;
+  using typename PQ<Comparable>::Container;
+
+  // Define the pure virtual less member
+  virtual bool less(size_type i, size_type j) const override {
+    return this->heap[i] < this->heap[j]; }
+
+public:
+
+  // Constructors
+  MaxPQ() { this->name = "MaxPQ"; }
+  MaxPQ(size_type cap) { // with initial capacity
+    MaxPQ();
+    this->heap.reserve(cap+1); }
+  MaxPQ(Container& a) { // with a container of elements
+    MaxPQ();
+    this->heap.reserve(a.size() + 1);
+    for (Comparable& v : a)
+      this->insert(v);
+  }
+
+};
+
+
+// Min Priority Queue
+template<typename Comparable>
+class MinPQ : public PQ<Comparable> {
+
+  using typename PQ<Comparable>::size_type;
+  using typename PQ<Comparable>::Container;
+
+  // Define the pure virtual less member
+  virtual bool less(size_type i, size_type j) const override {
+    return this->heap[i] > this->heap[j]; }
+
+public:
+
+  // Constructors
+  MinPQ() { this->name = "MinPQ"; }
+  MinPQ(size_type cap) { // with initial capacity
+    MinPQ();
+    this->heap.reserve(cap+1); }
+  MinPQ(Container& a) { // with a container of elements
+    MinPQ();
+    this->heap.reserve(a.size() + 1);
+    for (Comparable& v : a)
+      this->insert(v);
+  }
+
+};
 
 } // namespace algs
 
