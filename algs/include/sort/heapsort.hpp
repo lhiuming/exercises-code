@@ -38,11 +38,12 @@ public:
 
   // Operations
   void insert(Comparable& v) { heap.push_back(v); swim(++N); }
+  void insert(Comparable&& v) { heap.push_back(v); swim(++N); }
   const Comparable& max() const { return heap[1]; }
   Comparable delMax() {
-    Comparable max = heap[1];
+    Comparable max = std::move(heap[1]);
     exch(1, N--); // put the max at the end
-    heap.erase(--(heap.end()));
+    heap.erase(--(heap.end())); // delete the old max (shrink size)
     sink(1); // re-heapify
     return max;
   }
