@@ -13,9 +13,11 @@
 
 namespace algs {
 
-// Base PQ ////////////////////////////////////////////////////////////////////
+// Priority Queue /////////////////////////////////////////////////////////////
 // Currently using only std::vector as contatiner.
 // TODO: support C++11 move
+
+// Bass PQ
 template<typename Comparable>
 class PQ {
 
@@ -50,7 +52,7 @@ public:
   // print
   friend std::ostream& operator<<(std::ostream& os, const PQ& pq) {
     using std::endl;
-    os << pq.name << "[";
+    os << pq.name() << "[";
     int head = 1;
     while (head <= pq.size() ) {
       os << endl;
@@ -66,10 +68,10 @@ protected:
 
   Container heap{Comparable()}; // heap[0] is not used.
   size_type N = 0; // index of last valid element = number of valid elements
-  std::string name; // "MaxPQ" or "MinPQ"
 
   // implementation helpers
   virtual bool less(size_type i, size_type j) const = 0;
+  virtual std::string name() const = 0; // return "MaxPQ" or "MinPQ"
   void exch(size_type i, size_type j) {
     Comparable tmp = heap[i]; heap[i] = heap[j]; heap[j] = tmp; }
   void swim(size_type k) { // let heap[k] to swim up to right position
@@ -98,19 +100,18 @@ class MaxPQ : public PQ<Comparable> {
   using typename PQ<Comparable>::size_type;
   using typename PQ<Comparable>::Container;
 
-  // Define the pure virtual less member
+  // Define pure virtual members
   virtual bool less(size_type i, size_type j) const override {
     return this->heap[i] < this->heap[j]; }
+  virtual std::string name() const override { return "MaxPQ"; }
 
 public:
 
   // Constructors
-  MaxPQ() { this->name = "MaxPQ"; }
+  MaxPQ() {};
   MaxPQ(size_type cap) { // with initial capacity
-    MaxPQ();
     this->heap.reserve(cap+1); }
   MaxPQ(Container& a) { // with a container of elements
-    MaxPQ();
     this->heap.reserve(a.size() + 1);
     for (Comparable& v : a)
       this->insert(v);
@@ -126,19 +127,18 @@ class MinPQ : public PQ<Comparable> {
   using typename PQ<Comparable>::size_type;
   using typename PQ<Comparable>::Container;
 
-  // Define the pure virtual less member
+  // Define pure virtual members
   virtual bool less(size_type i, size_type j) const override {
     return this->heap[i] > this->heap[j]; }
+  virtual std::string name() const override { return "MinPQ"; }
 
 public:
 
   // Constructors
-  MinPQ() { this->name = "MinPQ"; }
+  MinPQ() {};
   MinPQ(size_type cap) { // with initial capacity
-    MinPQ();
     this->heap.reserve(cap+1); }
   MinPQ(Container& a) { // with a container of elements
-    MinPQ();
     this->heap.reserve(a.size() + 1);
     for (Comparable& v : a)
       this->insert(v);
