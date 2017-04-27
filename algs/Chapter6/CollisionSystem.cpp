@@ -30,14 +30,21 @@ void Particle::draw() const
 }
 
 void Particle::move(double t) {
-  // TODO
-  cout << "I'm not moving!" << endl;
+  x += t * vx;
+  y += t * vy;
 };
 
 double Particle::timeToHit(Particle& b) const
 {
-  // TODO
-  return 0;
+  // return 0 if already overlap ?
+  double dx = a.x - b.x;
+  double dy = a.y - b.y;
+  double r2 = a.r + b.r;
+  if (dx*dx + dy*dy < r2*r2) return 0;
+
+  return D_MAX;
+
+
 }
 
 double Particle::timeToHitHorizontalWall() const
