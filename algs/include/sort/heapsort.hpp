@@ -18,7 +18,7 @@ namespace algs {
 // Comparable should supports operator> (for MaxPQ ) or operator< (for MinPQ)
 // TODO: support C++11 move
 
-// Bass PQ
+// Priority Queue base class
 template<typename Comparable>
 class PQ {
 
@@ -27,31 +27,32 @@ public:
   typedef typename std::vector<Comparable> Container;
   typedef typename Container::size_type size_type;
 
-  // Constructor
+  // Default constructor
   PQ() {};
-  PQ(size_type cap) { // with initial capacity
-    heap.reserve(cap+1); }
-  PQ(Container& a) { // with a container of elements
-    heap.reserve(a.size() + 1);
-    for (Comparable& v : a)
-      insert(v);
-  }
+  // Initialized with given capacity
+  PQ(size_type cap) { heap.reserve(cap + 1); }
 
-  // Operations
+  // Copy a element into the queue
   void insert(Comparable& v) { heap.push_back(v); swim(++N); }
+  // Move a element into the queue
   void insert(Comparable&& v) { heap.push_back(v); swim(++N); }
+
+  // Return a direct reference to the most prior element
   const Comparable& head() const { return heap[1]; }
+  // Return and delete the most prior element
   Comparable pop() {
-    Comparable head = std::move(heap[1]);
-    exch(1, N--); // put the max at the end
-    heap.erase(--(heap.end())); // delete the old max (shrink size)
+    Comparable head = std::move(heap[1]); // take the most prior element
+    exch(1, N--); // put the head at the end
     sink(1); // re-heapify
+    heap.pop_back(); // delete the old head
     return head;
   }
-  bool isEmpty() const { return N == 0; }
+
+  // Size of the queue
+  bool empty() const { return N == 0; }
   std::size_t size() const { return N; }
 
-  // print
+  // Print the queue
   friend std::ostream& operator<<(std::ostream& os, const PQ& pq) {
     using std::endl;
     os << pq.name() << "[";
@@ -68,16 +69,22 @@ public:
 
 protected:
 
+  // data member
   Container heap{Comparable()}; // heap[0] is not used.
   size_type N = 0; // index of last valid element = number of valid elements
 
-  // implementation helpers
+  // pure virtuals; used to make MaxPQ and MinPQ from PQ
   virtual bool prior(size_type i, size_type j) const = 0;
   virtual std::string name() const = 0; // return "MaxPQ" or "MinPQ"
+
+  // implementation helpers
   void exch(size_type i, size_type j) {
-    Comparable tmp = heap[i]; heap[i] = heap[j]; heap[j] = tmp; }
+    Comparable temp = heap[i];
+    heap[i] = heap[j];
+    heap[j] = temp;
+  }
   void swim(size_type k) { // let heap[k] to swim up to right position
-    while (k > 1 && prior(k, k/2)) {
+    while (k > 1 && this->prior(k, k/2)) { // dynamic binding ?
       exch(k/2, k); // exchange with parent
       k = k/2;
     }
@@ -109,15 +116,13 @@ class MaxPQ : public PQ<Comparable> {
 
 public:
 
-  // Constructors
-  MaxPQ() {};
-  MaxPQ(size_type cap) { // with initial capacity
-    this->heap.reserve(cap+1); }
-  MaxPQ(Container& a) { // with a container of elements
-    this->heap.reserve(a.size() + 1);
-    for (Comparable& v : a)
-      this->insert(v);
-  }
+  // Default constructor; delegated
+  MaxPQ() : PQ<Comparable>()  {};
+  // Initialized with given capacity; delegated
+  MaxPQ(size_type cap) : PQ<Comparable>(cap) {};
+  // Copy the given elements
+  MaxPQ(Container& a) : PQ<Comparable>(a.size() + 1) {
+    for (Comparable& v : a) this->insert(v); }
 
 };
 
@@ -136,15 +141,13 @@ class MinPQ : public PQ<Comparable> {
 
 public:
 
-  // Constructors
-  MinPQ() {};
-  MinPQ(size_type cap) { // with initial capacity
-    this->heap.reserve(cap+1); }
-  MinPQ(Container& a) { // with a container of elements
-    this->heap.reserve(a.size() + 1);
-    for (Comparable& v : a)
-      this->insert(v);
-  }
+  // Default constructor; delegated
+  MinPQ() : PQ<Comparable>() {};
+  // Initialized with given capacity; delegated
+  MinPQ(size_type cap) : PQ<Comparable>(cap) {}
+  // Copy the given elements
+  MinPQ(Container& a) : PQ<Comparable>(a.size() + 1) {
+    for (Comparable& v : a) this->insert(v); }
 
 };
 

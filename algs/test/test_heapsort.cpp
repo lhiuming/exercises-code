@@ -18,9 +18,10 @@ int main ()
   MaxPQ<double> pq(v);
   cout << "created a MaxPQ:" << endl << pq << endl;
   cout << "Pop all elements: " << endl;
-  while (!pq.isEmpty()) {
-    cout << pq.pop() << ", ";
+  while (!pq.empty()) {
+    cout << pq.pop() << " | ";
   }
+  cout << endl;
 
   MinPQ<double> mpq(v);
   cout << "Created a MinPQ with vector:" << endl;
