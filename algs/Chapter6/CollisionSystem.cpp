@@ -2,11 +2,14 @@
 #include "CollisionSystem.h"
 
 #include <iostream>
+#include <limits>
 
 #include <utils/random.hpp>
 
 using namespace std;
 using namespace algs;
+
+const double D_MAX = numeric_limits<double>::max();
 
 // Particle methods
 
@@ -23,12 +26,15 @@ Particle::Particle()
 void Particle::draw() const
 {
   // TODO: use algs::Draw
-  cout << "Im a particle" << endl;
+  cout << (*this) << endl;
 }
 
-void Particle::move(double t) {};
+void Particle::move(double t) {
+  // TODO
+  cout << "I'm not moving!" << endl;
+};
 
-double Particle::timeToHit(Particle b) const
+double Particle::timeToHit(Particle& b) const
 {
   // TODO
   return 0;
@@ -46,31 +52,48 @@ double Particle::timeToHitVerticalWall() const
   return 0;
 }
 
-void Particle::bounceOff(Particle b)
+void Particle::bounceOff(Particle& b)
 {
   // TODO
+  cout << " particle bounces particle" << endl;
 }
 
 void Particle::bounceOffHorizontalWall()
 {
   // TODO
+  cout << "particle bounces horizontal wall" << endl;
 }
 
 void Particle::bounceOffVerticalWall()
 {
   // TODO
+  cout << "particle bounce horizontal wall" << endl;
 }
+
+std::ostream& operator<<(std::ostream& os, const Particle& p)
+{
+  os << "Particle[";
+  os << "pos(" << p.x << "," << p.y << "), ";
+  os << "vel(" << p.vx << "," << p.vy << "), ";
+  os << "count: " << p.count();
+  os << "]";
+  return os;
+}
+
 
 // CollisionSystem methods
 
-void CollisionSystem::predict_collisions(Particle& a, double t_limit)
+void CollisionSystem::predict_collisions(Particle *ap, double t_limit)
 {
+  if (ap == nullptr) return;
+  Particle& a = *ap;
+
   // hit particles
   for (int i = 0; i < particles.size(); ++i) {
     double dt = a.timeToHit(particles[i]);
     if (t + dt <= t_limit)
       pq.insert(Event(t + dt, &a, &particles[i]));
-  } // end for
+  }
 
   // hit verical wall
   double dtX = a.timeToHitVerticalWall();
@@ -89,11 +112,38 @@ void CollisionSystem::redraw(double t_limit, double Hz)
   // TODO: implement algs::Draw singleton first
   for (const Particle& p : particles)
     p.draw();
-  if (t < t_limit) // for smooth display
+  if (t < t_limit) // add next redraw
     pq.insert(Event(t + 1.0 / Hz, nullptr, nullptr));
+  cout << "finished redraw" << endl;
 }
 
 void CollisionSystem::simulate(double t_limit, double Hz)
 {
-  // TODO
-}
+  // predict initial event
+  for (int i = 0; i < particles.size(); ++i)
+    predict_collisions(&particles[i], t_limit);
+  cout << "Predicted initial events" << endl;
+  pq.insert(Event(0, nullptr, nullptr)); // initial draw
+
+  // the simulation loop
+  while (!pq.empty())
+  {
+    cout << "get an event " << endl;
+    Event e = pq.pop();
+    if (!e.valid()) {
+      cout << "invalid event" << endl;
+      continue; }
+    for (Particle& p : particles)
+      p.move(e.time - t);
+    t = e.time;
+    // let the event happen
+    if ( (e.a != nullptr) && (e.b != nullptr) ) e.a->bounceOff(*(e.b));
+    if ( (e.a != nullptr) && (e.b == nullptr) ) e.a->bounceOffVerticalWall();
+    if ( (e.a == nullptr) && (e.b != nullptr) ) e.b->bounceOffHorizontalWall();
+    if ( (e.a == nullptr) && (e.b == nullptr) ) redraw(t_limit, Hz);
+    // make new event from here
+    predict_collisions(e.a, t_limit);
+    predict_collisions(e.b, t_limit);
+    cout << "finishe an evnet" << endl;
+  }
+} // end simulate

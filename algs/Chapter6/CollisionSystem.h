@@ -1,9 +1,12 @@
-// Some class declaration of CollisionSystem
-
 #include <vector>
+#include <ostream>
 
 #include <sort.h>
 #include <utils.h>
+
+/*
+ * Some class declaration of CollisionSystem
+ */
 
 // Particle class
 struct Particle {
@@ -21,10 +24,10 @@ struct Particle {
   void draw() const;
   void move(double t);
   int count() const { return collision_count; }  // number of collisions
-  double timeToHit(Particle b) const ; // predicted time to collide with b
+  double timeToHit(Particle& b) const ; // predicted time to collide with b
   double timeToHitHorizontalWall() const;
   double timeToHitVerticalWall() const;
-  void bounceOff(Particle b); // actuall collision with b
+  void bounceOff(Particle& b); // actuall collision with b
   void bounceOffHorizontalWall();
   void bounceOffVerticalWall();
 
@@ -33,21 +36,23 @@ private:
 
 };
 
+// print
+std::ostream& operator<<(std::ostream& os, const Particle& p);
+
+
 // CollisionSystem
 class CollisionSystem {
 
   // a private Event class
-  class Event {
+  struct Event {
     double time;
-    const Particle *a, *b;
+    Particle *a, *b;
     int countA, countB;
-  public:
-    Event() = default;
-    Event(double t, const Particle* a, const Particle* b)
-     : time(t), a(a), b(b) {
-      if (a != nullptr) countA = a->count(); else countA = -1;
-      if (b != nullptr) countB = b->count(); else countB = -1;
-    }
+
+    Event() {}; // must allow for PQ to work
+    Event(double t, Particle* a, Particle* b) : time(t), a(a), b(b)
+    { if (a != nullptr) countA = a->count();
+      if (b != nullptr) countB = b->count(); }
     bool valid() {
       if (a != nullptr && a->count() != countA) return false;
       if (b != nullptr && b->count() != countB) return false;
@@ -73,10 +78,10 @@ public:
 private:
 
   algs::MinPQ<Event> pq; // event priority queue
-  double t = 0.0; // current simulation time
+  double t = 0.0; // last simulation time
   std::vector<Particle> particles; // all particles
 
   // helpers
-  void predict_collisions(Particle& a, double t_limit);
+  void predict_collisions(Particle *a, double t_limit);
 
 };
