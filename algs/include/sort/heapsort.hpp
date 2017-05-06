@@ -16,7 +16,6 @@ namespace algs {
 // Priority Queue /////////////////////////////////////////////////////////////
 // Currently using only std::vector as contatiner.
 // Comparable should supports operator> (for MaxPQ ) or operator< (for MinPQ)
-// TODO: support C++11 move
 
 // Priority Queue base class
 template<typename Comparable>
@@ -24,8 +23,8 @@ class PQ {
 
 public:
 
-  typedef typename std::vector<Comparable> Container;
-  typedef typename Container::size_type size_type;
+  using Container = typename std::vector<Comparable>;
+  using size_type = typename Container::size_type;
 
   // Default constructor
   PQ() {};
@@ -33,7 +32,7 @@ public:
   PQ(size_type cap) { heap.reserve(cap + 1); }
 
   // Copy a element into the queue
-  void insert(Comparable& v) { heap.push_back(v); swim(++N); }
+  void insert(const Comparable& v) { heap.push_back(v); swim(++N); }
   // Move a element into the queue
   void insert(Comparable&& v) { heap.push_back(v); swim(++N); }
 
@@ -106,8 +105,8 @@ protected:
 template<typename Comparable>
 class MaxPQ : public PQ<Comparable> {
 
-  using typename PQ<Comparable>::size_type;
-  using typename PQ<Comparable>::Container;
+  using typename PQ<Comparable>::size_type;  // necessary: parent class
+  using typename PQ<Comparable>::Container;  // is not instantiated yet.
 
   // Define pure virtual members
   virtual bool prior(size_type i, size_type j) const override {
@@ -117,9 +116,10 @@ class MaxPQ : public PQ<Comparable> {
 public:
 
   // Default constructor; delegated
-  MaxPQ() : PQ<Comparable>()  {};
-  // Initialized with given capacity; delegated
-  MaxPQ(size_type cap) : PQ<Comparable>(cap) {};
+  MaxPQ() = default;
+
+  // Inheritate the base class constructors
+  using PQ<Comparable>::PQ;
   // Copy the given elements
   MaxPQ(Container& a) : PQ<Comparable>(a.size() + 1) {
     for (Comparable& v : a) this->insert(v); }
@@ -141,10 +141,11 @@ class MinPQ : public PQ<Comparable> {
 
 public:
 
-  // Default constructor; delegated
-  MinPQ() : PQ<Comparable>() {};
-  // Initialized with given capacity; delegated
-  MinPQ(size_type cap) : PQ<Comparable>(cap) {}
+  // Default constructor
+  MinPQ() = default;
+
+  // Inheritate the base class constructors
+  using PQ<Comparable>::PQ;
   // Copy the given elements
   MinPQ(Container& a) : PQ<Comparable>(a.size() + 1) {
     for (Comparable& v : a) this->insert(v); }
