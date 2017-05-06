@@ -37,6 +37,7 @@ void Particle::move(double t) {
 double Particle::timeToHit(Particle& b) const
 {
   // return 0 if already overlap ?
+  const Particle& a = *this;
   double dx = a.x - b.x;
   double dy = a.y - b.y;
   double r2 = a.r + b.r;
