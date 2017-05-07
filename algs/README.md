@@ -2,19 +2,19 @@
 
 C++ solutions to some exercises, and implementation of algorithms listed in the
 book *Algorithms*, 4th Edition, in C++. Implementation of algorithms are put in
-[include](include/), and solutions are put in folder for each
-chapters like [Chapter1](Chapter1/).
+[include](include/), and solutions are put in folders for each
+chapters like [Chapter1](Chapter1/), [Chapter6](Chapter6/).
 
 ## Notes
 
-- Programming model: The utility library (stdio.hpp, stdrandom.hpp, etc.) is
+The utility library (utils/io.hpp, utils/random.hpp, etc.) is
 subtly different from those provided by the book. Check the book author's
 packages here: https://github.com/kevin-wayne/algs4.
 
 ## Todos
 
 - Implement half of all algorithms and data structures
-  - at least the most important ones. 
+  - at least the most important ones.
 - work on the Chapter 6, and implement some algorithms in the mean time in need.
 - Review the skipped (and possibly interesting) exercises.
 
