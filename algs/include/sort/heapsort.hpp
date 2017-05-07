@@ -152,13 +152,13 @@ public:
 
 // Heapsort with a customized less-comparing object
 template<class ForwardIt, class Compare>
-void heapsort(ForwardIt b, ForwardIt e, Compare comp)
+void heapsort(ForwardIt b, ForwardIt e, Compare less)
 {
   using value_type = typename std::iterator_traits<ForwardIt>::value_type;
   // Move the elements in to a PQ
   using std::placeholders::_1;
   using std::placeholders::_2;
-  auto greater = std::bind(comp, _2, _1); // reverse PQ's direction
+  auto greater = std::bind(less, _2, _1); // reverse PQ's direction
   PQ<value_type, std::vector<value_type>, decltype(greater)> pq(b, e, greater);
   // Pop the PQ and fill by iterator
   for (; b != e; ++b) (*b) = pq.pop();
@@ -171,7 +171,6 @@ void heapsort(ForwardIt b, ForwardIt c)
   using value_type = typename std::iterator_traits<ForwardIt>::value_type;
   heapsort(b, c, std::less<value_type>());
 }
-
 
 } // namespace algs
 
