@@ -13,9 +13,20 @@ using std::cout; using std::endl;
 
 int main()
 {
-  vector<double> a{-1, 123, 12123123, 0, 23};
-  cout << "a = " << a << endl;
-  selection_sort(a.begin(), a.end());
-  cout << "sorted a = " << a << endl;
-  cout << "a sorted: " << is_sorted(a.begin(), a.end()) << endl;
+  vector<double> b, a{-1, -5, 0, 0, 123, 12123123, 0, 23};
+  cout << "data is: " << a << endl;
+
+  cout << "-- test selection sort --" << endl;
+  b = a;
+  selection_sort(b.begin(), b.end());
+  cout << "sorted: " << b << endl;
+  cout << "is sorted = " << is_sorted(b.begin(), b.end()) << endl;
+
+  cout << "-- test insertion sort --" << endl;
+  b = a;
+  insertion_sort(b.begin(), b.end());
+  cout << "sorted: " << b << endl;
+  cout << "is sorted = " << is_sorted(b.begin(), b.end()) << endl;
+
+  return 0;
 }
