@@ -28,7 +28,7 @@ void selection_sort(ForwardIt beg, ForwardIt end, Compare less)
 }
 
 template<class ForwardIt>
-inline void selection_sort(ForwardIt&& beg, ForwardIt&& end)
+inline void selection_sort(const ForwardIt& beg, const ForwardIt& end)
 {
   using value_type = typename std::iterator_traits<ForwardIt>::value_type;
   selection_sort(beg, end, std::less<value_type>());
@@ -49,12 +49,29 @@ void insertion_sort(BidirectIt beg, BidirectIt end, Compare less)
 }
 
 template<class BidirectIt>
-inline void insertion_sort(BidirectIt&& beg, BidirectIt&& end)
+inline void insertion_sort(const BidirectIt& beg, const BidirectIt& end)
 {
   using value_type = typename std::iterator_traits<BidirectIt>::value_type;
   insertion_sort(beg, end, std::less<value_type>());
+}
+
+
+// Shellsort //////////////////////////////////////////////////////////////////
+
+template<class RandomIt, class Compare>
+void shellsort(RandomIt beg, RandomIt end, Compare less)
+{
+  using index_t = typename std::iterator_traits<RandomIt>::difference_type;
 
 }
+
+template<class RandomIt>
+inline void shellsort(const RandomIt& beg, const RandomIt& end)
+{
+  using value_type = typename std::iterator_traits<RandomIt>::value_type;
+  shellsort(beg, end, std::less<value_type>());
+}
+
 
 } // namespace algs
 
