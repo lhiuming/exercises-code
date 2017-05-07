@@ -7,6 +7,7 @@
 #include <functional>
 
 #include <sort/simple_sort.hpp>
+#include <utils/random.hpp>
 #include <utils/io.hpp>
 
 using namespace algs;
@@ -16,17 +17,23 @@ using std::cout; using std::endl;
 
 int main()
 {
-  vector<double>  a{-1, -5, 0, 0, 123, 12123123, 0, 23};
-  cout << "data is: " << a << endl;
+  const int test_size = 100;
+  const int seq_size = 50;
 
   using Iter = std::vector<double>::iterator;
   using SortFunc = std::function<void (Iter, Iter)>;
-  auto test = [a](string name, SortFunc sort) { // copy and sort
-    vector<double> b = a;
-    cout << "-- test " << name << " --" << endl;
-    sort(b.begin(), b.end());
-    cout << "sorted: " << b << endl;
-    cout << "is sorted: " << std::is_sorted(b.begin(), b.end()) << endl;
+  auto test = [](string name, SortFunc sort) { // copy and sort
+    vector<double> b;
+    cout << "test " << name << ": ";
+    for (int i = 0; i < test_size; ++i) {
+      Random::uniform(b, seq_size);
+      sort(b.begin(), b.end());
+      if (!std::is_sorted(b.begin(), b.end())) {
+        cout << "failed at " << i << " of " << test_size << endl;
+        return;
+      }
+    } // end for
+    cout << "\t passed. " << endl;
   };
 
   test("selection_sort", [=](Iter b, Iter e) { selection_sort(b, e); });

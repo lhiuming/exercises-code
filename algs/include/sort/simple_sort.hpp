@@ -62,7 +62,18 @@ template<class RandomIt, class Compare>
 void shellsort(RandomIt beg, RandomIt end, Compare less)
 {
   using index_t = typename std::iterator_traits<RandomIt>::difference_type;
-
+  index_t n = end - beg;
+  index_t h = 1;
+  while (h < n / 3) h = 3 * h - 1; // an efficient sequence; see ALGS text
+  while (h >= 1) {
+    // using insertion-sorting to h-sort the sequence
+    for (RandomIt i = beg + h; i != end; ++i)
+      for (RandomIt j = i; (j - beg) >= h && less(*j, *(j - h)); j -= h) {
+        using namespace std;
+        swap(*j, *(j - h));
+      }
+    h = (h + 1) / 3; // update
+  } // end while 
 }
 
 template<class RandomIt>
