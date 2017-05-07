@@ -13,9 +13,9 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Todos
 
-- adapt the first 4 sorts into new model.
+- Implement half of all algorithms and data structures
+  - at least the most important ones. 
 - work on the Chapter 6, and implement some algorithms in the mean time in need.
-- Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.
 
 ## Implemented Algorithms and Data Structures
@@ -23,8 +23,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### Sort ([sort.h](include/sort.h))
 
 1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
-2. Insertion sort
-3. Shellsort
+2. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
+3. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 4. Priority Queue ([heapsort.hpp](include/sort/heapsort.hpp))
 
 ## Basic Algorithms and Data Structures List
