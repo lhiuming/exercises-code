@@ -1,10 +1,11 @@
 #ifndef ALGS_HEAPSORT_H
 #define ALGS_HEAPSORT_H
 
-#include <vector> // default container
-#include <ostream> // for print
-#include <string>  // for print
-#include <functional> // callable objects
+#include <vector> // default container in PQ
+#include <ostream> // for PQ print
+#include <string>  // for PQ print
+#include <functional>
+#include <iterator>
 
 /*
  * Priority Queue, two wrapper calss, and Heapsort.
@@ -155,18 +156,18 @@ template<class ForwardIt, class Compare>
 void heapsort(ForwardIt b, ForwardIt e, Compare less)
 {
   using value_type = typename std::iterator_traits<ForwardIt>::value_type;
-  // Move the elements in to a PQ
+  // Move out the elements in to a PQ
   using std::placeholders::_1;
   using std::placeholders::_2;
-  auto greater = std::bind(less, _2, _1); // reverse PQ's direction
+  auto greater = std::bind(less, _2, _1); // used to reverse PQ's direction
   PQ<value_type, std::vector<value_type>, decltype(greater)> pq(b, e, greater);
-  // Pop the PQ and fill by iterator
-  for (; b != e; ++b) (*b) = pq.pop();
+  // Move back from the PQ
+  for (; b != e; ++b) (*b) = pq.pop(); // thie should cause `move`
 }
 
 // Heapsort with default less-compare (usually is `operator<`)
 template<class ForwardIt>
-void heapsort(ForwardIt b, ForwardIt c)
+inline void heapsort(ForwardIt b, ForwardIt c)
 {
   using value_type = typename std::iterator_traits<ForwardIt>::value_type;
   heapsort(b, c, std::less<value_type>());
