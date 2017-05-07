@@ -1,7 +1,7 @@
 # Test the libraries
 
 # sort.h
-set(sort_list "heapsort")
+set(sort_list "simple_sort" "heapsort")
 foreach(name ${sort_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
