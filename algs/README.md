@@ -22,7 +22,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ### Sort ([sort.h](include/sort.h))
 
-1. Selection sort
+1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 2. Insertion sort
 3. Shellsort
 4. Priority Queue ([heapsort.hpp](include/sort/heapsort.hpp))
