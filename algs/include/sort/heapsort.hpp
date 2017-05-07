@@ -1,16 +1,14 @@
 #ifndef ALGS_HEAPSORT_H
 #define ALGS_HEAPSORT_H
 
-#include <vector>
-#include <ostream>
-#include <string>
-#include <functional>
+#include <vector> // default container
+#include <ostream> // for print
+#include <string>  // for print
+#include <functional> // callable objects
 
 /*
- * Priority Queue, and Heapsort.
- * TODO: implement Heapsort.
+ * Priority Queue, two wrapper calss, and Heapsort.
  */
-
 
 namespace algs {
 
@@ -148,10 +146,11 @@ public:
 };
 
 
-// Heapsor ////////////////////////////////////////////////////////////////////
-// Do a in-place heapsort using a MinPQ.
+// Heapsort ////////////////////////////////////////////////////////////////////
+// Do a in-place heapsort using a PQ.
 ////
 
+// Heapsort with a customized less-comparing object
 template<class ForwardIt, class Compare>
 void heapsort(ForwardIt b, ForwardIt e, Compare comp)
 {
@@ -165,6 +164,7 @@ void heapsort(ForwardIt b, ForwardIt e, Compare comp)
   for (; b != e; ++b) (*b) = pq.pop();
 }
 
+// Heapsort with default less-compare (usually is `operator<`)
 template<class ForwardIt>
 void heapsort(ForwardIt b, ForwardIt c)
 {

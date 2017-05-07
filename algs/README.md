@@ -14,7 +14,6 @@ packages here: https://github.com/kevin-wayne/algs4.
 ## Todos
 
 - adapt the first 4 sorts into new model.
-- implement heapsort 
 - work on the Chapter 6, and implement some algorithms in the mean time in need.
 - Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.
