@@ -4,6 +4,7 @@
 #include <vector>
 #include <ostream>
 #include <string>
+#include <functional>
 
 /*
  * Priority Queue, and Heapsort.
@@ -14,33 +15,48 @@
 namespace algs {
 
 // Priority Queue /////////////////////////////////////////////////////////////
-// Currently using only std::vector as contatiner.
-// Comparable should supports operator> (for MaxPQ ) or operator< (for MinPQ)
+// Comparable must be default-constructable.
+// Comparable should supports operator> (for MaxPQ ) or operator< (for MinPQ).
+////
 
 // Priority Queue base class
-template<typename Comparable>
-class PQ {
+template<
+  class T,
+  class Container = std::vector<T>,
+  class Compare = std::less<T>
+> class PQ {
 
 public:
 
-  using Container = typename std::vector<Comparable>;
   using size_type = typename Container::size_type;
 
   // Default constructor
-  PQ() {};
-  // Initialized with given capacity
-  PQ(size_type cap) { heap.reserve(cap + 1); }
+  explicit PQ(Compare comp = Compare()) : compare_less(comp) {};
+  // Initialized with reserved capacity
+  explicit PQ(size_type c, Compare comp = Compare()) : PQ(comp) {
+    heap.reserve(c + 1); }
+
+  // Initialized with given elements (moving)
+  template<class ForwardIt>
+  PQ(ForwardIt b, ForwardIt e, Compare comp = Compare()) : PQ(comp) {
+    for (; b != e; ++b) insert(std::move(*b)); }
+
+  // Copy or Move the elements in a given container
+  PQ(const Container& a, Compare comp = Compare()) : PQ(comp) {
+    for (auto&& v : a) insert(v); }
+  PQ(Container&& a, Compare comp = Compare()) : PQ(a.size(), comp) {
+    for (auto&& v : a) insert(v); }
 
   // Copy a element into the queue
-  void insert(const Comparable& v) { heap.push_back(v); swim(++N); }
+  void insert(const T& v) { heap.push_back(v); swim(++N); }
   // Move a element into the queue
-  void insert(Comparable&& v) { heap.push_back(v); swim(++N); }
+  void insert(T&& v) { heap.push_back(v); swim(++N); }
 
   // Return a direct reference to the most prior element
-  const Comparable& head() const { return heap[1]; }
+  const T& head() const { return heap[1]; }
   // Return and delete the most prior element
-  Comparable pop() {
-    Comparable head = std::move(heap[1]); // take the most prior element
+  T pop() {
+    T head = std::move(heap[1]); // take the most prior element
     exch(1, N--); // put the head at the end
     sink(1); // re-heapify
     heap.pop_back(); // delete the old head
@@ -68,17 +84,22 @@ public:
 
 protected:
 
+  // compare object
+  Compare compare_less;
+
   // data member
-  Container heap{Comparable()}; // heap[0] is not used.
+  Container heap{T()}; // heap[0] is not used.
   size_type N = 0; // index of last valid element = number of valid elements
 
   // pure virtuals; used to make MaxPQ and MinPQ from PQ
-  virtual bool prior(size_type i, size_type j) const = 0;
-  virtual std::string name() const = 0; // return "MaxPQ" or "MinPQ"
+  virtual std::string name() const { return "PQ"; };
 
   // implementation helpers
+  bool prior(size_type i, size_type j) const {
+    return compare_less(heap[j], heap[i]);
+  }
   void exch(size_type i, size_type j) {
-    Comparable temp = heap[i];
+    T temp = heap[i];
     heap[i] = heap[j];
     heap[j] = temp;
   }
@@ -101,56 +122,56 @@ protected:
 };
 
 
-// Max Priority Queue
-template<typename Comparable>
-class MaxPQ : public PQ<Comparable> {
-
-  using typename PQ<Comparable>::size_type;  // necessary: parent class
-  using typename PQ<Comparable>::Container;  // is not instantiated yet.
-
-  // Define pure virtual members
-  virtual bool prior(size_type i, size_type j) const override {
-    return this->heap[i] > this->heap[j]; }
+// Max Priority Queue; just a simple wrapper of PQ
+template<class Comparable, class Container = std::vector<Comparable>>
+class MaxPQ : public PQ<Comparable, Container, std::less<Comparable> > {
+  // Define the virtual member for name
   virtual std::string name() const override { return "MaxPQ"; }
-
 public:
-
-  // Default constructor; delegated
+  // Default constructor
   MaxPQ() = default;
-
-  // Inheritate the base class constructors
-  using PQ<Comparable>::PQ;
-  // Copy the given elements
-  MaxPQ(Container& a) : PQ<Comparable>(a.size() + 1) {
-    for (Comparable& v : a) this->insert(v); }
-
+  // Inheritate other base class constructors
+  using PQ<Comparable, Container, std::less<Comparable> >::PQ;
 };
 
 
-// Min Priority Queue
-template<typename Comparable>
-class MinPQ : public PQ<Comparable> {
-
-  using typename PQ<Comparable>::size_type;
-  using typename PQ<Comparable>::Container;
-
-  // Define pure virtual members
-  virtual bool prior(size_type i, size_type j) const override {
-    return this->heap[i] < this->heap[j]; }
+// Min Priority Queue; just a simple wrapper of PQ
+template<class Comparable, class Container = std::vector<Comparable>>
+class MinPQ : public PQ<Comparable, Container, std::greater<Comparable> > {
+  // Define the virtual member for name
   virtual std::string name() const override { return "MinPQ"; }
-
 public:
-
   // Default constructor
   MinPQ() = default;
-
-  // Inheritate the base class constructors
-  using PQ<Comparable>::PQ;
-  // Copy the given elements
-  MinPQ(Container& a) : PQ<Comparable>(a.size() + 1) {
-    for (Comparable& v : a) this->insert(v); }
-
+  // Inheritate other base class constructors
+  using PQ<Comparable, Container, std::greater<Comparable> >::PQ;
 };
+
+
+// Heapsor ////////////////////////////////////////////////////////////////////
+// Do a in-place heapsort using a MinPQ.
+////
+
+template<class ForwardIt, class Compare>
+void heapsort(ForwardIt b, ForwardIt e, Compare comp)
+{
+  using value_type = typename std::iterator_traits<ForwardIt>::value_type;
+  // Move the elements in to a PQ
+  using std::placeholders::_1;
+  using std::placeholders::_2;
+  auto greater = std::bind(comp, _2, _1); // reverse PQ's direction
+  PQ<value_type, std::vector<value_type>, decltype(greater)> pq(b, e, greater);
+  // Pop the PQ and fill by iterator
+  for (; b != e; ++b) (*b) = pq.pop();
+}
+
+template<class ForwardIt>
+void heapsort(ForwardIt b, ForwardIt c)
+{
+  using value_type = typename std::iterator_traits<ForwardIt>::value_type;
+  heapsort(b, c, std::less<value_type>());
+}
+
 
 } // namespace algs
 

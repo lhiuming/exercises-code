@@ -58,8 +58,9 @@ class CollisionSystem {
       if (b != nullptr && b->count() != countB) return false;
       return true;
     }
-    friend bool operator<(const Event& lhs, const Event& rhs) {
-      return lhs.time < rhs.time; }
+    // used in the MinPQ
+    friend bool operator>(const Event& lhs, const Event& rhs) {
+      return lhs.time > rhs.time; }
   }; // end Event
 
 public:

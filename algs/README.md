@@ -1,15 +1,20 @@
 # Solutions to *Algorithms*
 
-C++ solutions to some exercises, and implementation of algorithms listed in the book *Algorithms*, 4th Edition, in C++. Implementation of algorithms are put in
+C++ solutions to some exercises, and implementation of algorithms listed in the
+book *Algorithms*, 4th Edition, in C++. Implementation of algorithms are put in
 [include](include/), and solutions are put in folder for each
 chapters like [Chapter1](Chapter1/).
 
 ## Notes
 
-- Programming model: The utility library (stdio.hpp, stdrandom.hpp, etc.) is subtly different from those provided by the book. Check the book author's packages here: https://github.com/kevin-wayne/algs4.
+- Programming model: The utility library (stdio.hpp, stdrandom.hpp, etc.) is
+subtly different from those provided by the book. Check the book author's
+packages here: https://github.com/kevin-wayne/algs4.
 
 ## Todos
 
+- adapt the first 4 sorts into new model.
+- implement heapsort 
 - work on the Chapter 6, and implement some algorithms in the mean time in need.
 - Finish implementing all algorithms.
 - Review the skipped (and possibly interesting) exercises.
