@@ -25,7 +25,11 @@ packages here: https://github.com/kevin-wayne/algs4.
 1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 2. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 3. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
-4. Priority Queue ([heapsort.hpp](include/sort/heapsort.hpp))
+4. Priority Queue and Heapsort ([heapsort.hpp](include/sort/heapsort.hpp))
+
+### Search
+
+1. Binary search (Symbol Table) ([binary.hpp](include/search/binary.hpp))
 
 ## Basic Algorithms and Data Structures List
 
@@ -41,11 +45,11 @@ packages here: https://github.com/kevin-wayne/algs4.
 6. Quicksort (todo)
 7. Quicksort with 3-way partitioning (todo)
 8. Priority Queue
-9. Heapsort (todo)
+9. Heapsort
 
 <!-- Chapter 3, search-->
-9. Sequantial Search Symbol Table (dont do)
-9. Binary Serach Symbol Table (dont do)
+9. Sequential Search Symbol Table (won't do)
+9. Binary Search Symbol Table
 11. Binary Search Tree Symbol Table class (todo)
 12. Red-black Binary Search Tree Symbol Table class (todo)
     - @NOTE: Implement a complete RBBST if schedule allows.
