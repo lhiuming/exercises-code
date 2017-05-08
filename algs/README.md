@@ -47,6 +47,7 @@ packages here: https://github.com/kevin-wayne/algs4.
     - @NOTE: Implement a complete RBBST if schedule allows.
 13. Separate Chaining Hash Symbol Table (todo)
 14. Linear Probing Hash Symbol Table (todo)
+
 <!-- Chapter 3, graph -->
 15. Adjacency-list Graph class (todo)
   - Linked-list Bag class (todo)
