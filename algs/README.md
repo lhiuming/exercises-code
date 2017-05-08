@@ -44,7 +44,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 9. Heapsort (todo)
 
 <!-- Chapter 3, search-->
-9. Sequential Search Tree Symbol Table class (todo)
+9. Sequantial Search Symbol Table (dont do)
+9. Binary Serach Symbol Table (dont do)
 11. Binary Search Tree Symbol Table class (todo)
 12. Red-black Binary Search Tree Symbol Table class (todo)
     - @NOTE: Implement a complete RBBST if schedule allows.
