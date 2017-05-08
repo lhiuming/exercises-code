@@ -25,7 +25,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 2. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 3. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
-4. Priority Queue and Heapsort ([heapsort.hpp](include/sort/heapsort.hpp))
+4. Priority Queue (and Heapsort) ([heapsort.hpp](include/sort/heapsort.hpp))
 
 ### Search
 
