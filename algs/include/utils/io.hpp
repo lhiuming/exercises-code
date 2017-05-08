@@ -1,5 +1,5 @@
-#ifndef ALGS_UTILS_IO_H
-#define ALGS_UTILS_IO_H
+#ifndef ALGS_UTILS_IO_HPP
+#define ALGS_UTILS_IO_HPP
 
 /*
  * io.hpp

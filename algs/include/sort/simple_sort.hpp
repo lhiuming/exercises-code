@@ -1,5 +1,5 @@
-#ifndef ALGS_SORT_SIMPLE_SORT_H
-#define ALGS_SORT_SIMPLE_SORT_H
+#ifndef ALGS_SORT_SIMPLE_SORT_HPP
+#define ALGS_SORT_SIMPLE_SORT_HPP
 
 #include <functional>
 #include <iterator>
