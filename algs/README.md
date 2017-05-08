@@ -29,7 +29,10 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Basic Algorithms and Data Structures List
 
-<!-- Chapter 1, sort  -->
+<!-- Chapter 1, basics -->
+0. Linked List, Bag, FIFO queue, LIFO stack (todo)
+
+<!-- Chapter 2, sort  -->
 1. Selection sort
 2. Insertion sort
 3. Shellsort
@@ -40,7 +43,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 8. Priority Queue
 9. Heapsort (todo)
 
-<!-- Chapter 2, search-->
+<!-- Chapter 3, search-->
 9. Sequential Search Tree Symbol Table class (todo)
 11. Binary Search Tree Symbol Table class (todo)
 12. Red-black Binary Search Tree Symbol Table class (todo)
@@ -48,7 +51,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 13. Separate Chaining Hash Symbol Table (todo)
 14. Linear Probing Hash Symbol Table (todo)
 
-<!-- Chapter 3, graph -->
+<!-- Chapter 4, graph -->
 15. Adjacency-list Graph class (todo)
   - Linked-list Bag class (todo)
 16. Depth-first search for paths (todo)
@@ -73,6 +76,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 29. Dijkstra's shortest-path (todo)
 30. Shortest-path in edge-weighted DAG (todo)
 31. Bellman-ford shortest-path (todo)
+
 <!-- Chapter 5, strings -->
 32. Least-significant-digit-first string sort (todo)
 33. Most-significant-digit-first string sort (todo)
