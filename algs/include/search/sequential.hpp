@@ -3,7 +3,7 @@
 
 /*
  * sequantial.hpp
- * Sequantial Search Symbol Table,
+ * Sequantial Symbol Table, use a unorder linked-list. 
  */
 
 namespace algs {
