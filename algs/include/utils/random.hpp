@@ -1,5 +1,5 @@
-#ifndef ALGS_STDRANDOM_H
-#define ALGS_STDRANDOM_H
+#ifndef ALGS_UTILS_STDRANDOM_H
+#define ALGS_UTILS_STDRANDOM_H
 
 #include <random>
 #include <iostream>

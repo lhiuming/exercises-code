@@ -1,3 +1,6 @@
+#ifndef ALGS_UTILS_IO_H
+#define ALGS_UTILS_IO_H
+
 /*
  * io.hpp
  * Provides some common input/output functions.
@@ -32,4 +35,6 @@ std::ostream& operator<<(std::ostream& os, const std::vector<Arith>& v)
   return os;
 }
 
-}
+} // namespace algs
+
+#endif

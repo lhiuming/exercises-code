@@ -1,5 +1,5 @@
-#ifndef ALGS_SIMPLE_SORT_H
-#define ALGS_SIMPLE_SORT_H
+#ifndef ALGS_SORT_SIMPLE_SORT_H
+#define ALGS_SORT_SIMPLE_SORT_H
 
 #include <functional>
 #include <iterator>
@@ -73,7 +73,7 @@ void shellsort(RandomIt beg, RandomIt end, Compare less)
         swap(*j, *(j - h));
       }
     h = (h + 1) / 3; // update
-  } // end while 
+  } // end while
 }
 
 template<class RandomIt>

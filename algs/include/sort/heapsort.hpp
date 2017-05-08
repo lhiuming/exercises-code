@@ -1,5 +1,5 @@
-#ifndef ALGS_HEAPSORT_H
-#define ALGS_HEAPSORT_H
+#ifndef ALGS_SORT_HEAPSORT_H
+#define ALGS_SORT_HEAPSORT_H
 
 #include <vector> // default container in PQ
 #include <ostream> // for PQ print
