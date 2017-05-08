@@ -12,7 +12,7 @@ namespace algs {
 template<Item>
 class Node {
   Item item;
-  Node next;
+  Node* next;
 }
 
 } // namespace algs
