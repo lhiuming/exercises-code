@@ -43,11 +43,11 @@ public:
   virtual size_type size() const = 0;   // number of all kay-value pairs
 
   // lookup
-  virtual bool contains(Key k) const = 0; // existency query
+  virtual bool contains(const Key& k) const = 0; // existency query
   virtual const Key& min() const = 0; // smallest key
   virtual const Key& max() const = 0; // greatest key
-  virtual const Key& floor(const Key& k) const = 0;   // largest key that is >= k
-  virtual const Key& ceiling(const Key& k) const = 0; // smallest key that is < k
+  virtual const Key& floor(const Key& k) const = 0;   // largest key that is <= k
+  virtual const Key& ceiling(const Key& k) const = 0; // smallest key that is >= k
   virtual size_type rank(const Key& k) const = 0;    // number of keys < k
   virtual const Key& select(size_type r) const = 0; // key of rank r
   virtual size_type size(const Key& lo, const Key& hi) const = 0; // number of keys in [lo, hi]

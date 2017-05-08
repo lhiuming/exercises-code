@@ -19,5 +19,13 @@ int main()
   cout << "Put things in st: " << endl;
   cout << st << endl;
 
+  cout << "get(Miku) = " << st.get("Miku") << endl;
+  //cout << "get(nana) = " << st.get("nana") << endl;
+
+  cout << "pop(Rich) = " << st.pop("Rich") << endl;
+  cout << "now st = " << st << endl;
+
+  cout << "containt(Miku) : " << st.contains("Miku") << endl;
+
   return 0;
 }

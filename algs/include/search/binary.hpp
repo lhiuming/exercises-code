@@ -54,12 +54,13 @@ public:
     }
   }
   const Value& get(const Key& k) const override {
-    // TODO
-    return values.back();
-  }
+    return values.at(rank(k, 0, this->size())); }
   Value pop(const Key& k) override {
-    // TODO
-    return values.back();
+    size_type ind = rank(k, 0, this->size());
+    Value take = std::move(values.at(ind));
+    keys.erase(keys.begin() + ind);
+    values.erase(values.begin() + ind);
+    return std::move(take);
   }
 
   // capacity
@@ -67,33 +68,27 @@ public:
   size_type size() const override { return keys.size(); }
 
   // lookup
-  bool contains(Key k) const override {
-    // TODO
-    return false;
+  bool contains(const Key& k) const override {
+    size_type ind = rank(k);
+    return (ind < this->size()) && !less(k, keys[ind]);
   }
   const Key& min() const override { return keys.front(); }
   const Key& max() const override { return keys.back(); }
   const Key& floor(const Key& k) const override {
-    // TODO
-    return keys.front();
+    size_type ind = rank(k);
+    if (!less(k, keys[ind])) return k;
+    return keys.at(ind - 1);
   }
   const Key& ceiling(const Key& k) const override {
-    // TODO
-    return keys.front();
-  }
+    return keys.at(rank(k)); }
   size_type rank(const Key& k) const override {
-    // TODO
-    // Binary search
-
-    return keys.size();
-  }
+    return rank(k, 0, this->size()); }
   const Key& select(size_type r) const override {
-    // TODO
-    return keys.front();
-  }
+    return keys.at(r); }
   size_type size(const Key& lo, const Key& hi) const override {
-    // TODO
-    return keys.size();
+    if (less(hi, lo)) return 0;
+    if (contains(hi)) return rank(hi) - rank(lo) + 1;
+    return rank(hi) - rank(lo);
   }
 
   // Print like a dictionary
