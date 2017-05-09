@@ -23,14 +23,14 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### Fundamentals
 
 1. Linked List ([list.hpp](include/fundamentals/list.hpp))
-2. Stack (with linked-list) ([stack.hpp](include/fundamentals/stack.hpp))
+-. Stack (with linked-list) ([stack.hpp](include/fundamentals/stack.hpp))
 
 ### Sorting ([sort.h](include/sort.h))
 
 1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
-2. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
-3. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
-4. Priority Queue (and Heapsort) ([heapsort.hpp](include/sort/heapsort.hpp))
+-. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
+-. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
+-. Priority Queue (and Heapsort) ([heapsort.hpp](include/sort/heapsort.hpp))
 
 ### Symbol Tables
 
@@ -43,10 +43,10 @@ packages here: https://github.com/kevin-wayne/algs4.
 ## Basic Algorithms and Data Structures List
 
 <!-- Chapter 1, basics -->
-1. Stack (resizing array implementation) (won't do)
-2. Stack (linked-list implementation)
-3. FIFO queue (todo)
-4. Bag (todo)
+1. Stack (with resizing array) (todo)
+-. Stack (with linked-list)
+-. FIFO queue (todo)
+-. Bag (todo)
 
 <!-- Chapter 2, sort  -->
 1. Selection sort
@@ -60,7 +60,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 9. Heapsort
 
 <!-- Chapter 3, search-->
-9. Sequential Search Symbol Table (won't do)
+1. Sequential Search Symbol Table (won't do)
 9. Binary Search Symbol Table
 11. Binary Search Tree Symbol Table class (todo)
 12. Red-black Binary Search Tree Symbol Table class (todo)
@@ -69,7 +69,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 14. Linear Probing Hash Symbol Table (todo)
 
 <!-- Chapter 4, graph -->
-15. Adjacency-list Graph class (todo)
+1. Adjacency-list Graph class (todo)
   - Linked-list Bag class (todo)
 16. Depth-first search for paths (todo)
 17. Breadth-first search for paths (todo)
@@ -95,7 +95,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 31. Bellman-ford shortest-path (todo)
 
 <!-- Chapter 5, strings -->
-32. Least-significant-digit-first string sort (todo)
+1. Least-significant-digit-first string sort (todo)
 33. Most-significant-digit-first string sort (todo)
 34. Three-way string quicksort (todo)
 <!-- trie -->
