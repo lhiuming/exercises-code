@@ -6,6 +6,11 @@ foreach(name ${utils_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
 
+# collections.h
+set(collections_list "list")
+foreach(name ${collections_list})
+  add_executable("test_${name}" "test_${name}.cpp")
+endforeach(name)
 # sort.h
 set(sort_list "simple_sort" "heapsort")
 foreach(name ${sort_list})
