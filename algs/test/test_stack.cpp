@@ -12,9 +12,10 @@ int main()
 {
   // The following test use the client in ALGS book Section 1.3.
 
+  // Create
   Stack<string> stack;
-  cout << "Created an empty stack: " << endl;
 
+  // Read commands and print
   string s;
   while (cin >> s)
   {
