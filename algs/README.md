@@ -7,7 +7,7 @@ chapters like [Chapter1](Chapter1/), [Chapter6](Chapter6/).
 
 Yes, the book is written for **Java**, and this repository is written in
 **C++** (or, more precisely, C++11, with full respect for C++14 or C++17
-regarding to deprecating stuffs).
+regarding deprecated stuffs).
 
 ## Notes
 
