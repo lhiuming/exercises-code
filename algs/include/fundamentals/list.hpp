@@ -1,13 +1,16 @@
-#ifndef ALGS_COLLECTIONS_LIST_HPP
-#define ALGS_COLLECTIONS_LIST_HPP
+#ifndef ALGS_FUNDAMENTALS_LIST_HPP
+#define ALGS_FUNDAMENTALS_LIST_HPP
 
 #include <cstddef> // std::size_t
 #include <ostream> // for self-printing
 
 /*
  * list.hpp
- * (Linked-)List. Would be used for Bag, Queue, Stack and others (like
- * Symbol Table. )
+ * Linked-List. Would be used for Bag, Queue, Stack.
+ *
+ * List<Item>:
+ *   Implements Singly-linked list. The interface basically mimics
+ * std::forward_list (only partially implemented).
  *
  * TODO: test const_iterator
  * TODO: support STL iterator_traits template
@@ -15,11 +18,6 @@
  */
 
 namespace algs {
-
-// List ///////////////////////////////////////////////////////////////////////
-// Singly-linked list. The interface basically mimics std::forward_list
-// (only partially implemented)
-////
 
 template<class Item>
 class List {

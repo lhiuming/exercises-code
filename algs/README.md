@@ -20,26 +20,33 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Implemented Algorithms and Data Structures
 
-### Data Collections
+### Fundamentals
 
-1. Linked List (forward list) ([list.hpp](include/collections/list.hpp))
+1. Linked List ([list.hpp](include/fundamentals/list.hpp))
+2. Stack (with linked-list) ([stack.hpp](include/fundamentals/stack.hpp))
 
-### Sort ([sort.h](include/sort.h))
+### Sorting ([sort.h](include/sort.h))
 
 1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 2. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 3. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
 4. Priority Queue (and Heapsort) ([heapsort.hpp](include/sort/heapsort.hpp))
 
-### Search
+### Symbol Tables
 
 1. Binary search (Symbol Table) ([binary.hpp](include/search/binary.hpp))
+
+### Graphs
+
+### Strings
 
 ## Basic Algorithms and Data Structures List
 
 <!-- Chapter 1, basics -->
-0. Linked List
-1. Bag, FIFO queue, LIFO stack (todo)
+1. Stack (resizing array implementation) (won't do)
+2. Stack (linked-list implementation)
+3. FIFO queue (todo)
+4. Bag (todo)
 
 <!-- Chapter 2, sort  -->
 1. Selection sort
