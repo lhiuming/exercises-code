@@ -1,8 +1,8 @@
 #include <vector>
 #include <ostream>
 
-#include <sort.h>
-#include <utils.h>
+#include <sorting.hpp>
+#include <utils.hpp>
 
 /*
  * Some class declaration of CollisionSystem

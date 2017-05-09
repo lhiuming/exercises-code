@@ -1,9 +1,9 @@
-// Test symbol tables
+// Test symbol tables 
 
 #include <string>
 #include <iostream>
 
-#include <search/binary.hpp>
+#include <symbol_tables/binary.hpp>
 
 using namespace std;
 using namespace algs;

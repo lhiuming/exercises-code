@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <functional>
 
-#include <sort/simple_sort.hpp>
+#include <sorting/simple_sort.hpp>
 #include <utils/random.hpp>
 #include <utils/io.hpp>
 

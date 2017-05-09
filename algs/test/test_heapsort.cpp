@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include <sort/heapsort.hpp>
+#include <sorting/heapsort.hpp>
 
 using namespace algs;
 using std::vector;

@@ -31,14 +31,14 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ### Sorting ([sort.h](include/sort.h))
 
-1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
--. Insertion sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
--. Shellsort ([simple_sort.hpp](include/sort/simple_sort.hpp))
--. Priority Queue (and Heapsort) ([heapsort.hpp](include/sort/heapsort.hpp))
+1. Selection sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
+-. Insertion sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
+-. Shellsort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
+-. Heapsort (and Priority Queue) ([heapsort.hpp](include/sorting/heapsort.hpp))
 
 ### Symbol Tables
 
-1. Binary search (Symbol Table) ([binary.hpp](include/search/binary.hpp))
+1. Binary search (Symbol Table) ([binary.hpp](include/symbol_tables/binary.hpp))
 
 ### Graphs
 
