@@ -6,11 +6,7 @@
 
 /*
  * list.hpp
- * Linked-List. Would be used for Bag, Queue, Stack.
- *
- * List<Item>:
- *   Implements Singly-linked list. The interface basically mimics
- * std::forward_list (only partially implemented).
+ * Singly linked-list, with interface similar to std::forward_list.
  *
  * TODO: test const_iterator
  * TODO: support STL iterator_traits template
@@ -44,7 +40,7 @@ class List {
     Node* pNode = nullptr;
   };
 
-  // const iterator
+  // const iterator class
   class ConstForwardIt : public ForwardIt {
   public:
     friend List;
@@ -55,6 +51,7 @@ class List {
 
 public:
 
+  // type alias
   using size_type = std::size_t;
   using iterator = ForwardIt;
   using const_iterator = ConstForwardIt;
@@ -62,7 +59,7 @@ public:
   // Default constructor
   List() = default;
 
-  // Copy constrols : very limited
+  // Copy constrol (very limited)
   List(const List&) = delete; // not support
   List(List&&) = delete; // not support
   List& operator=(const List&) = delete; // not support
@@ -80,11 +77,11 @@ public:
   ForwardIt begin() const { return ForwardIt(front); }
   ForwardIt end() const { return ForwardIt(nullptr); }
 
-  // capacity
+  // Capacity
   bool empty() const { return N == 0; }
   size_type size() const { return N; }
 
-  // modifier
+  // Modifier : inserters
   void push_front(const Item& item) { push_front(Item(item)); }
   void push_front(Item&& item) { // push before the first element
     if (front == nullptr) make_first(std::move(item));
@@ -107,6 +104,8 @@ public:
     current->next = new_p;
     ++N;
   }
+
+  // Modifier : erasers
   Item pop_front() { // remove and return the first element
     // assume not empty
     Node* old_front = front;
@@ -125,7 +124,7 @@ public:
     delete tobe_delete;
   }
 
-  // self-priting
+  // Printing
   friend std::ostream& operator<<(std::ostream& os, const List& list) {
     os << "List(" << list.size() << ")[";
     Node* head = list.front;
