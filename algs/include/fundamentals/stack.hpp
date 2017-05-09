@@ -10,12 +10,12 @@
 
 namespace algs {
 
-template<Class Item>
+template<class Item>
 class Stack {
 
 public:
 
-  using size_type = List<Item>::size_type;
+  using size_type = typename List<Item>::size_type;
 
   // Default constructor
   Stack() {};
