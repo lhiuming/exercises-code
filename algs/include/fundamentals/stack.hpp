@@ -10,11 +10,30 @@
 
 namespace algs {
 
-template<Class Value>
+template<Class Item>
 class Stack {
 
-  // basic interface
+public:
 
+  using size_type = List<Item>::size_type;
+
+  // Default constructor
+  Stack() {};
+
+  // Copy Constrol : basically controlled by List<Item>
+  ~Stack() = default;
+  Stack(const Stack&) = default;
+  Stack& operator=(const Stack&) = default;
+
+  // basic interface
+  void push(Item&& item);
+  Item pop();
+  bool empty();
+  size_type size();
+
+private:
+
+  List<Item> data;
 
 };
 

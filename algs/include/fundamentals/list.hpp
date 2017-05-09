@@ -60,9 +60,13 @@ public:
   using const_iterator = ConstForwardIt;
 
   // Default constructor
-  List() {}
+  List() = default;
 
-  // Destructor
+  // Copy constrols : very limited
+  List(const List&) = delete; // not support
+  List(List&&) = delete; // not support
+  List& operator=(const List&) = delete; // not support
+  List& operator=(List&&) = delete; // not support
   ~List() { // destroy all nodes
     Node* head = front;
     while (head != nullptr) {
@@ -71,12 +75,6 @@ public:
       delete tobe_delete;
     }
   } // end ~List
-
-  // Copy constrols : forbidden
-  List(const List&) = delete; // not support
-  List(List&&) = delete; // not support
-  List& operator=(const List& rhs) = delete; // not support
-  List& operator=(List&& rhs) = delete; // not support
 
   // Iterator
   ForwardIt begin() const { return ForwardIt(front); }
