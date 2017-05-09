@@ -5,6 +5,10 @@ book *Algorithms*, 4th Edition, in C++. Implementation of algorithms are put in
 [include](include/), and solutions are put in folders for each
 chapters like [Chapter1](Chapter1/), [Chapter6](Chapter6/).
 
+Yes, the book is written for **Java**, and this repository is written in
+**C++** (or, more precisely, C++11, with full respect for C++14 or C++17
+regarding to deprecating stuffs).
+
 ## Notes
 
 The utility library (utils/io.hpp, utils/random.hpp, etc.) is
@@ -15,8 +19,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 - Implement half of all algorithms and data structures
   - at least the most important ones.
-- work on the Chapter 6, and implement some algorithms in the mean time in need.
-- Review the skipped (and possibly interesting) exercises.
+- Implement some of the most interesting algorithms from the exercise.
+- work on the Chapter 6.
 
 ## Implemented Algorithms and Data Structures
 
@@ -113,4 +117,4 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Addition Algorithms List
 
-- Quick-select (todo; page 346)
+1. Quick-select (todo; page 346)
