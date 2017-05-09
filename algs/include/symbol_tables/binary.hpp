@@ -1,5 +1,5 @@
-#ifndef ALGS_SEARCH_BINARY_HPP
-#define ALGS_SEARCH_BINARY_HPP
+#ifndef ALGS_SYMBOL_TABLES_BINARY_HPP
+#define ALGS_SYMBOL_TABLES_BINARY_HPP
 
 #include <functional> // for std::less (default less_compare)
 #include <vector> // container
@@ -21,7 +21,7 @@ template<
   class Compare = std::less<Key>
 > class BinarySearchST : public ST<Key, Value> {
 
-  using size_type = std::size_t; // base not instantiated yet
+  using size_type = ST<Key, Valye>::size_type; // base not instantiated yet
 
 public:
 
