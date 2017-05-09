@@ -1,5 +1,5 @@
-#ifndef ALGS_SEARCH_SYMBOL_TABLE_HPP
-#define ALGS_SEARCH_SYMBOL_TABLE_HPP
+#ifndef ALGS_SYMBOL_TABLES_SYMBOL_TABLE_HPP
+#define ALGS_SYMBOL_TABLES_SYMBOL_TABLE_HPP
 
 #include <cstddef> // for std::size_t
 
