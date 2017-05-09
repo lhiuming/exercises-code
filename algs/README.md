@@ -20,6 +20,10 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Implemented Algorithms and Data Structures
 
+### Data Collections
+
+1. Linked List (forward list) ([list.hpp](include/collections/list.hpp))
+
 ### Sort ([sort.h](include/sort.h))
 
 1. Selection sort ([simple_sort.hpp](include/sort/simple_sort.hpp))
@@ -34,7 +38,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 ## Basic Algorithms and Data Structures List
 
 <!-- Chapter 1, basics -->
-0. Linked List, Bag, FIFO queue, LIFO stack (todo)
+0. Linked List
+1. Bag, FIFO queue, LIFO stack (todo)
 
 <!-- Chapter 2, sort  -->
 1. Selection sort
