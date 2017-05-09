@@ -112,7 +112,8 @@ public:
     Node* old_front = front;
     Item ret = std::move(old_front->item);
     front = old_front->next;
-    delete front;
+    delete old_front;
+    --N;
     return ret;
   }
   void erase_after(const ForwardIt& pos) { //remove a element after pos
@@ -120,6 +121,7 @@ public:
     Node* const current = pos.pNode;
     Node* tobe_delete = current->next;
     current->next = tobe_delete->next;
+    --N;
     delete tobe_delete;
   }
 
