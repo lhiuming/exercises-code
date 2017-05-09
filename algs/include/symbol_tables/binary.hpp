@@ -21,7 +21,7 @@ template<
   class Compare = std::less<Key>
 > class BinarySearchST : public ST<Key, Value> {
 
-  using size_type = ST<Key, Valye>::size_type; // base not instantiated yet
+  using size_type = typename ST<Key, Value>::size_type;
 
 public:
 
