@@ -73,13 +73,13 @@ public:
   void insert(const Key& k, const Value& v) { // put
     insert(Key(k), Value(v)); }
   void insert(Key&& k, Value&& v) { // move put
-    put(root, std::move(k), std::move(v)); }
-  iterator find(const Key& k) const { // get a value by key
+    put(root, k, v); }
+  iterator find(const Key& k) { // get a value by key
     Node* parent = nullptr; // initial value
     Node* hit = get(root, k, parent);
     if( hit )
       return iterator(hit, parent);
-    return this->cend();
+    return this->end();
   }
   Value pop(const Key& k) { // erase a key-value pair
     // TODO
@@ -128,7 +128,7 @@ public:
   // Printing
   friend std::ostream& operator<<(std::ostream& os, const BST& bst) {
     // TODO : use an iterator ?
-    os << "{" << std::endl;
+    os << "BST(" << bst.size() << "){" << std::endl;
     os << bst.root;
     os << "}";
     return os;
@@ -146,15 +146,16 @@ private:
   size_type node_size(Node* x) const { return (x == nullptr) ? 0 : x->count; }
 
   // Put a pair into a (sub-)tree, return the new (subtree-)root
-  void put(Node* &x, Key&& key, Value&& val) {
+  void put(Node* &x, Key& key, Value& val) {
     // Make a new node if it's the first one
     if (x == nullptr) {
       x = new Node(std::move(key), std::move(val));
       return;
     }
-    if (less(key, root->key)) put(x->left, std::move(key), std::move(val));
-    else if (less(root->key, key)) put(x->right, std::move(key), std::move(val));
+    if (less(key, root->key)) put(x->left, key, val);
+    else if (less(root->key, key)) put(x->right, key, val);
     else x->val = std::move(val);
+    x->count = node_size(x->left) + node_size(x->right) + 1;
   }
 
   // Get a node* by key from a (sub-)tree; return nullptr if not found.

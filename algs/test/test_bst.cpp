@@ -15,6 +15,7 @@ int main()
 
   string heroin = "Miku";
 
+  cout << "Trying to insert: " << endl;
   st.insert(0, heroin);
   st.insert(1, "Steve");
   st.insert(-9, "Jason");
