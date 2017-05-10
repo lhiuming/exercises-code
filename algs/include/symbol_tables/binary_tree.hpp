@@ -132,15 +132,6 @@ public:
   bool contains(const Key& k) const { // existency query
     return get(root, k) != nullptr;
   }
-  const Key& min() const { // smallest key
-    if (root == nullptr) return;
-    // TODO
-    return Key();
-  }
-  const Key& max() const { // greatest key
-    // TODO
-    return Key();
-  }
   const Key& floor(const Key& k) const { // largest key <= k
     // TODO
     return Key();
