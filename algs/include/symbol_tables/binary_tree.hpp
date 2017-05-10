@@ -44,7 +44,7 @@ template<
     Node* pNode = nullptr;
     Node* pParent = nullptr;
   };
-  class ConstBidirectIT : public BidirectIt {
+  class ConstBidirectIt : public BidirectIt {
 
   };
 
@@ -55,7 +55,7 @@ public:
   using value_type = Value;
   using size_type = std::size_t;
   using iterator = BidirectIt;
-  using const_iterator = ConstBidirectIT;
+  using const_iterator = ConstBidirectIt;
 
   // Default constructor
   BST(Compare comp = Compare()) : root(nullptr), less(comp) {};
@@ -63,7 +63,13 @@ public:
   // Copy controls
   ~BST() = default;
 
-  // element access and modifiers
+  // Iterators
+  BidirectIt begin(); // TODO
+  BidirectIt end() { return BidirectIt(); } // TODO
+  ConstBidirectIt cbegin() const; // TODO
+  ConstBidirectIt cend() const { return ConstBidirectIt(); }  // TODO
+
+  // Element access and modifiers
   void insert(const Key& k, const Value& v) { // put
     insert(Key(k), Value(v)); }
   void insert(Key&& k, Value&& v) { // move put
@@ -71,7 +77,9 @@ public:
   iterator find(const Key& k) const { // get a value by key
     Node* parent = nullptr; // initial value
     Node* hit = get(root, k, parent);
-    return iterator(hit, parent);
+    if( hit )
+      return iterator(hit, parent);
+    return this->cend();
   }
   Value pop(const Key& k) { // erase a key-value pair
     // TODO
@@ -128,6 +136,7 @@ public:
 
 
 private:
+
   Node* root = nullptr;
   Compare less;
 
