@@ -36,6 +36,10 @@ int main()
   cout << "-- Test look-ups -- " << endl;
   cout << "Is 99 inside?: " << st.contains(99) << endl;
   cout << "Is -9 inside?: " << st.contains(-9) << endl;
+  cout << "floor of -8: " << st.floor(-8)->first << endl;
+  cout << "floor of -9: " << st.floor(-8)->first << endl;
+  cout << "ceili of  0: " << st.ceiling(0)->first << endl;
+  cout << "ceili of -1: " << st.ceiling(-1)->first << endl;
 
   //cout << "pop(Rich) = " << st.pop("Rich") << endl;
   //cout << "now st = " << st << endl;

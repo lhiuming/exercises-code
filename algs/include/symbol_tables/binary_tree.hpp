@@ -11,8 +11,8 @@
  * Binary Search Tree (BST) Symbol Table Implementation.
  * Interface naming is mimicing std::map.
  *
- * TODO: implement basic interface
- * TODO: add iterators
+ * TODO: implement deletion (erase, pop_front, pop_back)
+ * TODO: implement the rest interface
  */
 
 namespace algs {
@@ -49,6 +49,7 @@ private:
   public:
     BidirectIt(Node* pn = nullptr) : pNode(pn) {}
     value_type& operator*() const { return pNode->val; }
+    value_type* operator->() const { return &(pNode->val); }
     BidirectIt& operator++() {
       if (pNode->right != nullptr) // go the min of right sub-tree, if exists
         pNode = min(pNode->right);
@@ -82,8 +83,9 @@ private:
   public:
     ConstBidirectIt(Node* pn = nullptr) : BidirectIt(pn) {}
     ConstBidirectIt(BidirectIt&& rhs) : BidirectIt(rhs) {}
-    // block the non-const operator*
+    // block the non-const operator* and operator->
     const value_type& operator*() const { return BidirectIt::pNode->val; }
+    value_type* const operator->() const { return &(BidirectIt::pNode->val); }
   };
 
 public:
@@ -99,18 +101,18 @@ public:
   ~BST() = default;
 
   // Iterators
-  BidirectIt begin() { // the role of min in ALGS book
+  iterator begin() { // the role of min in ALGS book
     if (root == nullptr) return this->end();
     return iterator(min(root));
   }
-  ConstBidirectIt begin() const { return cbegin(); }
-  ConstBidirectIt cbegin() const { return const_cast<BST*>(this)->begin(); }
-  BidirectIt end() { // the role of max in ALGS book
+  const_iterator begin() const { return cbegin(); }
+  const_iterator cbegin() const { return const_cast<BST*>(this)->begin(); }
+  iterator end() { // the role of max in ALGS book
     if (root == nullptr) return BidirectIt();
     return BidirectIt();
   }
-  ConstBidirectIt end() const { return cend(); }
-  ConstBidirectIt cend() const { return const_cast<BST*>(this)->end(); }
+  const_iterator end() const { return cend(); }
+  const_iterator cend() const { return const_cast<BST*>(this)->end(); }
 
   // Element access and modifiers
   void insert(const Key& k, const T& t) { // put
@@ -132,14 +134,10 @@ public:
   bool contains(const Key& k) const { // existency query
     return get(root, k) != nullptr;
   }
-  const Key& floor(const Key& k) const { // largest key <= k
-    // TODO
-    return Key();
-  }
-  const Key& ceiling(const Key& k) const { // smallest key >= k
-    // TODO
-    return Key();
-  }
+  const_iterator floor(const Key& k) const { // largest key <= k (floor)
+    return const_iterator(floor(root, k)); }
+  const_iterator ceiling(const Key& k) const { // smallest key >= k (ceiling)
+    return const_iterator(ceiling(root, k)); }
   size_type rank(const Key& k) const { // number of keys < k
     // TODO
     return 0;
@@ -205,6 +203,30 @@ private:
   static Node* max(Node* x) {
     if (x->right == nullptr) return x;
     return max(x->right);
+  }
+
+  // Get the largest node <= the given key
+  Node* floor(Node* x, const Key& key) const {
+    if (x == nullptr) return nullptr;
+    if (less(key, x->val.first)) return floor(x->left, key);
+    if (less(x->val.first, key)) {
+      Node* hit = floor(x->right, key);
+      if (hit == nullptr) return x;
+      else return hit;
+    }
+    return x;
+  }
+
+  // Get the smallest node >= the given key
+  Node* ceiling(Node* x, const Key& key) const {
+    if (x == nullptr) return nullptr;
+    if (less(x->val.first, key)) return ceiling(x->right, key);
+    if (less(key, x->val.first)) {
+      Node* hit = ceiling(x->left, key);
+      if (hit == nullptr) return x;
+      else return hit;
+    }
+    return x;
   }
 
   // recursive printing of nodes
