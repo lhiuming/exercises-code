@@ -13,11 +13,11 @@ int main()
   BST<string, int> st;
   cout << "Created a BSST<String, int>." << endl;
 
-  //st.put("Jason", 0);
+  st.put("Jason", 0);
   //st.put("Rich", 9);
   //st.put("Miku", -3);
-  //cout << "Put things in st: " << endl;
-  //cout << st << endl;
+  cout << "Put things in st: " << endl;
+  cout << st << endl;
 
   //cout << "get(Miku) = " << st.get("Miku") << endl;
   //cout << "get(nana) = " << st.get("nana") << endl;
