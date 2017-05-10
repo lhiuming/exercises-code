@@ -34,7 +34,15 @@ template<
 
   // iterator class
   class BidirectIt {
-
+  public:
+    BidirectIt() {}
+    BidirectIt(Node* pn, Node* pp = nullptr) : pNode(pn), pParent(pp) {}
+    Value& operator*() const { return pNode->val; }
+    BidirectIt& operator++() { return *this; } // TODO
+    BidirectIt& operator--() { return *this; } // TODO
+  private:
+    Node* pNode = nullptr;
+    Node* pParent = nullptr;
   };
   class ConstBidirectIT : public BidirectIt {
 
@@ -42,7 +50,7 @@ template<
 
 public:
 
-  // Type alias
+  // More type alias
   using key_type = Key;
   using value_type = Value;
   using size_type = std::size_t;
@@ -60,9 +68,10 @@ public:
     insert(Key(k), Value(v)); }
   void insert(Key&& k, Value&& v) { // move put
     put(root, std::move(k), std::move(v)); }
-  iterator get(const Key& k) const { // get a value by key
-    // TODO
-    return iterator();
+  iterator find(const Key& k) const { // get a value by key
+    Node* parent = nullptr; // initial value
+    Node* hit = get(root, k, parent);
+    return iterator(hit, parent);
   }
   Value pop(const Key& k) { // erase a key-value pair
     // TODO
@@ -71,10 +80,7 @@ public:
 
   // capacity
   bool empty() const { return root == nullptr; }
-  size_type size() const { // number of all kay-value pairs
-    if (this->empty()) return 0;
-    return root->count;
-  }
+  size_type size() const { return node_size(root); }
 
   // lookup
   bool contains(const Key& k) const { // existency query
@@ -127,6 +133,9 @@ private:
 
   // Implementation Helpers //
 
+  // Take the node size
+  size_type node_size(Node* x) const { return (x == nullptr) ? 0 : x->count; }
+
   // Put a pair into a (sub-)tree, return the new (subtree-)root
   void put(Node* &x, Key&& key, Value&& val) {
     // Make a new node if it's the first one
@@ -140,10 +149,10 @@ private:
   }
 
   // Get a node* by key from a (sub-)tree; return nullptr if not found.
-  Node* get(Node* x, const Key& key) {
+  Node* get(Node* x, const Key& key, Node* &parent_ret) const {
     if (x == nullptr) return nullptr;
-    if (less(key, x->key)) return get(x->left, key);
-    if (less(x->key, key)) return get(x->right, key);
+    if (less(key, x->key)) return get(x->left, key, parent_ret = x);
+    if (less(x->key, key)) return get(x->right, key, parent_ret = x);
     return x;
   }
 

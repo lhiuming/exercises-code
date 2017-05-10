@@ -16,13 +16,13 @@ int main()
   string heroin = "Miku";
 
   st.insert(0, heroin);
-  //st.put(1, "Steve");
-  //st.put(-9, "Jason");
-  //st.put(-2, "Mye");
+  st.insert(1, "Steve");
+  st.insert(-9, "Jason");
+  st.insert(-2, "Mye");
   cout << "Put things in bst: " << endl;
   cout << st << endl;
 
-  //cout << "get(Miku) = " << st.get("Miku") << endl;
+  cout << "get(0 : Miku) = " << *(st.find(0)) << endl;
   //cout << "get(nana) = " << st.get("nana") << endl;
 
   //cout << "pop(Rich) = " << st.pop("Rich") << endl;
