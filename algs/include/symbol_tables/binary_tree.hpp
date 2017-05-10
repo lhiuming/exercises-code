@@ -22,21 +22,32 @@ template<
   class Compare = std::less<Key>
 > class BST {
 
-  using key_type = Key;
-  using value_type = Value;
-  using size_type = std::size_t;
-
   // a private two-children node
   struct Node {
     Key key;
     Value val;
-    size_type count;
+    std::size_t count;
     Node* left = nullptr;
     Node* right = nullptr;
     Node(Key&& k, Value&& v) : key(k), val(v), count(1) {};
   };
 
+  // iterator class
+  class BidirectIt {
+
+  };
+  class ConstBidirectIT : public BidirectIt {
+
+  };
+
 public:
+
+  // Type alias
+  using key_type = Key;
+  using value_type = Value;
+  using size_type = std::size_t;
+  using iterator = BidirectIt;
+  using const_iterator = ConstBidirectIT;
 
   // Default constructor
   BST(Compare comp = Compare()) : root(nullptr), less(comp) {};
@@ -45,13 +56,13 @@ public:
   ~BST() = default;
 
   // element access and modifiers
-  void put(const Key& k, const Value& v) { // put a key-value pair
-    put(Key(k), Value(v)); }
-  void put(Key&& k, Value&& v) { // move a key-value pair
+  void insert(const Key& k, const Value& v) { // put
+    insert(Key(k), Value(v)); }
+  void insert(Key&& k, Value&& v) { // move put
     put(root, std::move(k), std::move(v)); }
-  void get(const Key& k) const { // get a value by key
+  iterator get(const Key& k) const { // get a value by key
     // TODO
-    return ;
+    return iterator();
   }
   Value pop(const Key& k) { // erase a key-value pair
     // TODO
@@ -128,10 +139,12 @@ private:
     else x->val = std::move(val);
   }
 
-  // Get a value by key from a (sub-)tree
-  Value& get(Node* x, const Key& key) {
-    if (x == nullptr) return Value(); // undefine behaviour
-    if (less(key, x->key)) return Value();
+  // Get a node* by key from a (sub-)tree; return nullptr if not found.
+  Node* get(Node* x, const Key& key) {
+    if (x == nullptr) return nullptr;
+    if (less(key, x->key)) return get(x->left, key);
+    if (less(x->key, key)) return get(x->right, key);
+    return x;
   }
 
   // recursive printing of nodes
