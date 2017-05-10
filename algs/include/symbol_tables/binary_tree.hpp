@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <functional> // for std::less
+#include <utility> // for std::pair
 #include <ostream> // self printing
 
 /*
@@ -18,18 +19,27 @@ namespace algs {
 
 template<
   class Key,
-  class Value,
+  class T,
   class Compare = std::less<Key>
 > class BST {
 
+public:
+
+  // Type alias
+  using key_type = Key;
+  using mapped_type = T;
+  using value_type = std::pair<const Key, T>;
+  using size_type = std::size_t;
+
+private:
+
   // a private two-children node
   struct Node {
-    Key key;
-    Value val;
+    value_type val;
     std::size_t count;
     Node* left = nullptr;
     Node* right = nullptr;
-    Node(Key&& k, Value&& v) : key(k), val(v), count(1) {};
+    Node(Key&& k, T&& t) : val(k, t), count(1) {};
   };
 
   // iterator class
@@ -37,7 +47,7 @@ template<
   public:
     BidirectIt() {}
     BidirectIt(Node* pn, Node* pp = nullptr) : pNode(pn), pParent(pp) {}
-    Value& operator*() const { return pNode->val; }
+    value_type& operator*() const { return pNode->val; }
     BidirectIt& operator++() { return *this; } // TODO
     BidirectIt& operator--() { return *this; } // TODO
   private:
@@ -51,9 +61,6 @@ template<
 public:
 
   // More type alias
-  using key_type = Key;
-  using value_type = Value;
-  using size_type = std::size_t;
   using iterator = BidirectIt;
   using const_iterator = ConstBidirectIt;
 
@@ -70,20 +77,20 @@ public:
   ConstBidirectIt cend() const { return ConstBidirectIt(); }  // TODO
 
   // Element access and modifiers
-  void insert(const Key& k, const Value& v) { // put
-    insert(Key(k), Value(v)); }
-  void insert(Key&& k, Value&& v) { // move put
-    put(root, k, v); }
-  iterator find(const Key& k) { // get a value by key
+  void insert(const Key& k, const T& t) { // put
+    insert(Key(k), T(t)); }
+  void insert(Key&& k, T&& t) { // move put
+    put(root, k, t); }
+  iterator find(const Key& k) { // get a iterator by key
     Node* parent = nullptr; // initial value
     Node* hit = get(root, k, parent);
     if( hit )
       return iterator(hit, parent);
     return this->end();
   }
-  Value pop(const Key& k) { // erase a key-value pair
+  T pop(const Key& k) { // erase a key-value pair
     // TODO
-    return Value();
+    return T();
   }
 
   // capacity
@@ -96,6 +103,7 @@ public:
     return true;
   }
   const Key& min() const { // smallest key
+    if (root == nullptr) return;
     // TODO
     return Key();
   }
@@ -146,31 +154,37 @@ private:
   size_type node_size(Node* x) const { return (x == nullptr) ? 0 : x->count; }
 
   // Put a pair into a (sub-)tree, return the new (subtree-)root
-  void put(Node* &x, Key& key, Value& val) {
+  void put(Node* &x, Key& key, T& t) {
     // Make a new node if it's the first one
     if (x == nullptr) {
-      x = new Node(std::move(key), std::move(val));
+      x = new Node(std::move(key), std::move(t));
       return;
     }
-    if (less(key, root->key)) put(x->left, key, val);
-    else if (less(root->key, key)) put(x->right, key, val);
-    else x->val = std::move(val);
+    if (less(key, root->val.first)) put(x->left, key, t);
+    else if (less(root->val.first, key)) put(x->right, key, t);
+    else x->val.second = std::move(t);
     x->count = node_size(x->left) + node_size(x->right) + 1;
   }
 
   // Get a node* by key from a (sub-)tree; return nullptr if not found.
   Node* get(Node* x, const Key& key, Node* &parent_ret) const {
     if (x == nullptr) return nullptr;
-    if (less(key, x->key)) return get(x->left, key, parent_ret = x);
-    if (less(x->key, key)) return get(x->right, key, parent_ret = x);
+    if (less(key, x->val.first)) return get(x->left, key, parent_ret = x);
+    if (less(x->val.first, key)) return get(x->right, key, parent_ret = x);
     return x;
+  }
+
+  // Get the right-most node; assume x != nullptr
+  Node* min(Node* x) const {
+    if (x->left == nullptr) return x;
+    else return min(x->left);
   }
 
   // recursive printing of nodes
   friend std::ostream& operator<<(std::ostream& os, Node* x) {
     if (x == nullptr) return os;
     os << x->left;
-    os << "  " << x->key << " : " << x->val << "," << std::endl;
+    os << "  " << x->val.first << " : " << x->val.second << "," << std::endl;
     os << x->right;
     return os;
   }

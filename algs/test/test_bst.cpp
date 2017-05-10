@@ -23,7 +23,7 @@ int main()
   cout << "Put things in bst: " << endl;
   cout << st << endl;
 
-  cout << "get(0 : Miku) = " << *(st.find(0)) << endl;
+  cout << "get(0 : Miku) = " << (*(st.find(0))).second << endl;
   //cout << "get(nana) = " << st.get("nana") << endl;
 
   //cout << "pop(Rich) = " << st.pop("Rich") << endl;
