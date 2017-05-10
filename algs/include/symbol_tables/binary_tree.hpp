@@ -33,7 +33,7 @@ public:
 
 private:
 
-  // a private two-children node
+  // A private triple-link node
   struct Node {
     value_type val;
     std::size_t count;
@@ -44,27 +44,46 @@ private:
      : val(std::move(k), std::move(t)), count(1), parent(p) {};
   };
 
-  // iterator class
+  // Iterator class
   class BidirectIt {
   public:
     BidirectIt(Node* pn = nullptr) : pNode(pn) {}
     value_type& operator*() const { return pNode->val; }
     BidirectIt& operator++() {
-      // go to the min of right sub-tree, if exists
-      if (pNode->right != nullptr) {
+      if (pNode->right != nullptr) // go the min of right sub-tree, if exists
         pNode = min(pNode->right);
-        return *this;
-      }
-      // TODO
-      // no right sub-tree, then go up
-      return BidirectIt();
+      else // no right sub-tree, then climp up to left
+        do {
+          Node* old = pNode;
+          pNode = pNode->parent; // update
+          if (pNode->right != old) break;
+        } while (pNode != nullptr);
+      return *this;
     }
-    BidirectIt& operator--() { return *this; } // TODO
-  private:
+    BidirectIt& operator--() {
+      if (pNode->left != nullptr) // go to the max of left sub-tree if exists
+        pNode = max(pNode->left);
+      else // no left sub-tree, then climp up to the right
+        do {
+          Node* old = pNode;
+          pNode = pNode->parent; // update
+          if (pNode->right != old) break;
+        } while (pNode != nullptr);
+      return *this;
+    }
+    bool operator==(const BidirectIt& rhs) const { return pNode == rhs.pNode; }
+    bool operator!=(const BidirectIt& rhs) const { return pNode != rhs.pNode; }
+  protected:
     Node* pNode = nullptr;
   };
-  class ConstBidirectIt : public BidirectIt {
 
+  // Const iterator class
+  class ConstBidirectIt : public BidirectIt {
+  public:
+    ConstBidirectIt(Node* pn = nullptr) : BidirectIt(pn) {}
+    ConstBidirectIt(BidirectIt&& rhs) : BidirectIt(rhs) {}
+    // block the non-const operator*
+    const value_type& operator*() const { return BidirectIt::pNode->val; }
   };
 
 public:
@@ -82,16 +101,16 @@ public:
   // Iterators
   BidirectIt begin() { // the role of min in ALGS book
     if (root == nullptr) return this->end();
-    Node* parent = nullptr;
-    Node* leftmost = min(root);
-    return iterator(leftmost);
+    return iterator(min(root));
   }
+  ConstBidirectIt begin() const { return cbegin(); }
+  ConstBidirectIt cbegin() const { return const_cast<BST*>(this)->begin(); }
   BidirectIt end() { // the role of max in ALGS book
     if (root == nullptr) return BidirectIt();
-    return BidirectIt(nullptr, max(root));
+    return BidirectIt();
   }
-  ConstBidirectIt cbegin() const; // TODO
-  ConstBidirectIt cend() const { return ConstBidirectIt(); }  // TODO
+  ConstBidirectIt end() const { return cend(); }
+  ConstBidirectIt cend() const { return const_cast<BST*>(this)->end(); }
 
   // Element access and modifiers
   void insert(const Key& k, const T& t) { // put
@@ -111,8 +130,7 @@ public:
 
   // lookup
   bool contains(const Key& k) const { // existency query
-    // TODO
-    return true;
+    return get(root, k) != nullptr;
   }
   const Key& min() const { // smallest key
     if (root == nullptr) return;

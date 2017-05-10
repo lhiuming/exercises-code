@@ -24,7 +24,17 @@ int main()
   cout << st << endl;
 
   cout << "get(0 : Miku) = " << (*(st.find(0))).second << endl;
-  //cout << "get(nana) = " << st.get("nana") << endl;
+
+  cout << "try iterating: " << endl;
+  int count = 0;
+  for (auto& kvp : static_cast<const decltype(st)>(st)) {
+    ++count;
+    cout << count << " : (" << kvp.first << ", " << kvp.second << ")" << endl;
+    //kvp.second = "Smith"; // change is forbidden
+  }
+
+  //cout << "Is Rich inside?: " << st.contains("Rich") << endl;
+  //cout << "Is Jason inside?: " << st.contains("Jason") << endl;
 
   //cout << "pop(Rich) = " << st.pop("Rich") << endl;
   //cout << "now st = " << st << endl;
