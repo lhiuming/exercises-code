@@ -39,20 +39,29 @@ private:
     std::size_t count;
     Node* left = nullptr;
     Node* right = nullptr;
-    Node(Key&& k, T&& t) : val(k, t), count(1) {};
+    Node* parent = nullptr;
+    Node(Key&& k, T&& t, Node* p)
+     : val(std::move(k), std::move(t)), count(1), parent(p) {};
   };
 
   // iterator class
   class BidirectIt {
   public:
-    BidirectIt() {}
-    BidirectIt(Node* pn, Node* pp = nullptr) : pNode(pn), pParent(pp) {}
+    BidirectIt(Node* pn = nullptr) : pNode(pn) {}
     value_type& operator*() const { return pNode->val; }
-    BidirectIt& operator++() { return *this; } // TODO
+    BidirectIt& operator++() {
+      // go to the min of right sub-tree, if exists
+      if (pNode->right != nullptr) {
+        pNode = min(pNode->right);
+        return *this;
+      }
+      // TODO
+      // no right sub-tree, then go up
+      return BidirectIt();
+    }
     BidirectIt& operator--() { return *this; } // TODO
   private:
     Node* pNode = nullptr;
-    Node* pParent = nullptr;
   };
   class ConstBidirectIt : public BidirectIt {
 
@@ -71,8 +80,16 @@ public:
   ~BST() = default;
 
   // Iterators
-  BidirectIt begin(); // TODO
-  BidirectIt end() { return BidirectIt(); } // TODO
+  BidirectIt begin() { // the role of min in ALGS book
+    if (root == nullptr) return this->end();
+    Node* parent = nullptr;
+    Node* leftmost = min(root);
+    return iterator(leftmost);
+  }
+  BidirectIt end() { // the role of max in ALGS book
+    if (root == nullptr) return BidirectIt();
+    return BidirectIt(nullptr, max(root));
+  }
   ConstBidirectIt cbegin() const; // TODO
   ConstBidirectIt cend() const { return ConstBidirectIt(); }  // TODO
 
@@ -80,14 +97,9 @@ public:
   void insert(const Key& k, const T& t) { // put
     insert(Key(k), T(t)); }
   void insert(Key&& k, T&& t) { // move put
-    put(root, k, t); }
+    put(root, k, t, nullptr); }
   iterator find(const Key& k) { // get a iterator by key
-    Node* parent = nullptr; // initial value
-    Node* hit = get(root, k, parent);
-    if( hit )
-      return iterator(hit, parent);
-    return this->end();
-  }
+    return iterator(get(root, k)); }
   T pop(const Key& k) { // erase a key-value pair
     // TODO
     return T();
@@ -154,30 +166,36 @@ private:
   size_type node_size(Node* x) const { return (x == nullptr) ? 0 : x->count; }
 
   // Put a pair into a (sub-)tree, return the new (subtree-)root
-  void put(Node* &x, Key& key, T& t) {
+  void put(Node* &x, Key& key, T& mapped, Node* parent = nullptr) {
     // Make a new node if it's the first one
     if (x == nullptr) {
-      x = new Node(std::move(key), std::move(t));
+      x = new Node(std::move(key), std::move(mapped), parent);
       return;
     }
-    if (less(key, root->val.first)) put(x->left, key, t);
-    else if (less(root->val.first, key)) put(x->right, key, t);
-    else x->val.second = std::move(t);
+    if (less(key, root->val.first)) put(x->left, key, mapped, x);
+    else if (less(root->val.first, key)) put(x->right, key, mapped, x);
+    else x->val.second = std::move(mapped);
     x->count = node_size(x->left) + node_size(x->right) + 1;
   }
 
   // Get a node* by key from a (sub-)tree; return nullptr if not found.
-  Node* get(Node* x, const Key& key, Node* &parent_ret) const {
+  Node* get(Node* x, const Key& key) const {
     if (x == nullptr) return nullptr;
-    if (less(key, x->val.first)) return get(x->left, key, parent_ret = x);
-    if (less(x->val.first, key)) return get(x->right, key, parent_ret = x);
+    if (less(key, x->val.first)) return get(x->left, key);
+    if (less(x->val.first, key)) return get(x->right, key);
     return x;
   }
 
-  // Get the right-most node; assume x != nullptr
-  Node* min(Node* x) const {
+  // Get the left-most node; assume x != nullptr
+  static Node* min(Node* x) {
     if (x->left == nullptr) return x;
-    else return min(x->left);
+    return min(x->left);
+  }
+
+  // Get the right-most node; assuem x != nullptr
+  static Node* max(Node* x) {
+    if (x->right == nullptr) return x;
+    return max(x->right);
   }
 
   // recursive printing of nodes
