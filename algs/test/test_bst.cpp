@@ -10,13 +10,14 @@ using namespace algs;
 
 int main()
 {
-  BST<string, int> st;
+  BST<int, string> st;
   cout << "Created a BSST<String, int>." << endl;
 
-  st.put("Jason", 0);
-  //st.put("Rich", 9);
-  //st.put("Miku", -3);
-  cout << "Put things in st: " << endl;
+  st.put(0, "Miku");
+  st.put(1, "Steve");
+  st.put(-9, "Jason");
+  st.put(-2, "Mye");
+  cout << "Put things in bst: " << endl;
   cout << st << endl;
 
   //cout << "get(Miku) = " << st.get("Miku") << endl;
