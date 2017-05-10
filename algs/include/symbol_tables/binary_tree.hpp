@@ -100,7 +100,10 @@ public:
 
   // Printing
   friend std::ostream& operator<<(std::ostream& os, const BST& bst) {
-    // TODO
+    // TODO : use an iterator ?
+    os << "{" << std::endl;
+    os << bst.root;
+    os << "}";
     return os;
   }
 
@@ -112,15 +115,24 @@ private:
   // Implementation Helpers //
 
   // Put a pair into a (sub-)tree, return the new (subtree-)root
-  Node* put(Node* x, Key&& key, Value&& val) {
+  void put(Node* &x, Key&& key, Value&& val) {
     // Make a new node if it's the first one
-    if (x == nullptr) return new Node(std::move(key), std::move(val));
-    if (less(key, root->key))
-      x->left = put(x->left, std::move(key), std::move(val));
-    else if (less(root->key, key))
-      x->right = put(x->right, std::move(key), std::move(val));
+    if (x == nullptr) {
+      x = new Node(std::move(key), std::move(val));
+      return;
+    }
+    if (less(key, root->key)) put(x->left, std::move(key), std::move(val));
+    else if (less(root->key, key)) put(x->right, std::move(key), std::move(val));
     else x->val = std::move(val);
-    return x;
+  }
+
+  // recursive printing of nodes
+  friend std::ostream& operator<<(std::ostream& os, Node* x) {
+    if (x == nullptr) return os;
+    os << x->left;
+    os << "  " << x->key << " : " << x->val << "," << std::endl;
+    os << x->right;
+    return os;
   }
 
 };
