@@ -5,8 +5,6 @@
 #include <vector> // container
 #include <ostream> // for self-print
 
-#include "symbol_table.hpp" // base class
-
 /*
  * binary.hpp
  * Binary Search Symbol Table, using a ordered container. Just a basic ST.
@@ -19,9 +17,11 @@ template<
   class Key,
   class Value,
   class Compare = std::less<Key>
-> class BinarySearchST : public ST<Key, Value> {
+> class BinarySearchST {
 
-  using size_type = typename ST<Key, Value>::size_type;
+  using key_type = Key;
+  using value_type = Value;
+  using size_type = std::size_t;
 
 public:
 
@@ -37,9 +37,9 @@ public:
   ~BinarySearchST() = default;
 
   // element access and modifiers
-  void put(const Key& k, const Value& v) override { // delegated
+  void put(const Key& k, const Value& v) { // delegated
     this->put( std::move(Key(k)), std::move(Value(v)) ); }
-  void put(Key&& k, Value&& v) override {
+  void put(Key&& k, Value&& v) {
     // binary search (rank k) to find proper postion of k
     size_type ind = rank(k, 0, this->size());
     // put at the position
@@ -53,9 +53,9 @@ public:
       values.insert(values.begin() + ind, v);
     }
   }
-  const Value& get(const Key& k) const override {
+  const Value& get(const Key& k) const {
     return values.at(rank(k, 0, this->size())); }
-  Value pop(const Key& k) override {
+  Value pop(const Key& k) {
     size_type ind = rank(k, 0, this->size());
     Value take = std::move(values.at(ind));
     keys.erase(keys.begin() + ind);
@@ -64,28 +64,28 @@ public:
   }
 
   // capacity
-  bool empty() const override { return keys.empty(); }
-  size_type size() const override { return keys.size(); }
+  bool empty() const { return keys.empty(); }
+  size_type size() const { return keys.size(); }
 
   // lookup
-  bool contains(const Key& k) const override {
+  bool contains(const Key& k) const {
     size_type ind = rank(k);
     return (ind < this->size()) && !less(k, keys[ind]);
   }
-  const Key& min() const override { return keys.front(); }
-  const Key& max() const override { return keys.back(); }
-  const Key& floor(const Key& k) const override {
+  const Key& min() const { return keys.front(); }
+  const Key& max() const { return keys.back(); }
+  const Key& floor(const Key& k) const {
     size_type ind = rank(k);
     if (!less(k, keys[ind])) return k;
     return keys.at(ind - 1);
   }
-  const Key& ceiling(const Key& k) const override {
+  const Key& ceiling(const Key& k) const {
     return keys.at(rank(k)); }
-  size_type rank(const Key& k) const override {
+  size_type rank(const Key& k) const {
     return rank(k, 0, this->size()); }
-  const Key& select(size_type r) const override {
+  const Key& select(size_type r) const {
     return keys.at(r); }
-  size_type size(const Key& lo, const Key& hi) const override {
+  size_type size(const Key& lo, const Key& hi) const {
     if (less(hi, lo)) return 0;
     if (contains(hi)) return rank(hi) - rank(lo) + 1;
     return rank(hi) - rank(lo);
