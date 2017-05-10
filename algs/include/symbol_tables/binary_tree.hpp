@@ -1,14 +1,14 @@
 #ifndef ALGS_SYMBOL_TABLES_BINARY_TREE_HPP
 #define ALGS_SYMBOL_TABLES_BINARY_TREE_HPP
 
+#include <cstddef>
 #include <functional> // for std::less
 #include <ostream> // self printing
-
-#include "symbol_table.hpp" // base class
 
 /*
  * binary_tree.hpp
  * Binary Search Tree (BST) Symbol Table Implementation.
+ * Interface naming is mimicing std::map.
  *
  * TODO: implement basic interface
  * TODO: add iterators
@@ -20,9 +20,11 @@ template<
   class Key,
   class Value,
   class Compare = std::less<Key>
-> class BST : public ST<Key, Value> {
+> class BST {
 
-  using size_type = typename ST<Key, Value>::size_type;
+  using key_type = Key;
+  using value_type = Value;
+  using size_type = std::size_t;
 
   // a private two-children node
   struct Node {
@@ -43,56 +45,56 @@ public:
   ~BST() = default;
 
   // element access and modifiers
-  void put(const Key& k, const Value& v) override { // put a key-value pair
+  void put(const Key& k, const Value& v) { // put a key-value pair
     put(Key(k), Value(v)); }
-  void put(Key&& k, Value&& v) override { // move a key-value pair
+  void put(Key&& k, Value&& v) { // move a key-value pair
     put(root, std::move(k), std::move(v)); }
-  const Value& get(const Key& k) const override { // get a value by key
+  void get(const Key& k) const { // get a value by key
     // TODO
-    return Value();
+    return ;
   }
-  Value pop(const Key& k) override { // erase a key-value pair
+  Value pop(const Key& k) { // erase a key-value pair
     // TODO
     return Value();
   }
 
   // capacity
-  bool empty() const override { return root == nullptr; }
-  size_type size() const override { // number of all kay-value pairs
+  bool empty() const { return root == nullptr; }
+  size_type size() const { // number of all kay-value pairs
     if (this->empty()) return 0;
     return root->count;
   }
 
   // lookup
-  bool contains(const Key& k) const override { // existency query
+  bool contains(const Key& k) const { // existency query
     // TODO
     return true;
   }
-  const Key& min() const override { // smallest key
+  const Key& min() const { // smallest key
     // TODO
     return Key();
   }
-  const Key& max() const override { // greatest key
+  const Key& max() const { // greatest key
     // TODO
     return Key();
   }
-  const Key& floor(const Key& k) const override { // largest key <= k
+  const Key& floor(const Key& k) const { // largest key <= k
     // TODO
     return Key();
   }
-  const Key& ceiling(const Key& k) const override { // smallest key >= k
+  const Key& ceiling(const Key& k) const { // smallest key >= k
     // TODO
     return Key();
   }
-  size_type rank(const Key& k) const override { // number of keys < k
+  size_type rank(const Key& k) const { // number of keys < k
     // TODO
     return 0;
   }
-  const Key& select(size_type r) const override { // key of rank r
+  const Key& select(size_type r) const { // key of rank r
     // TODO
     return Key();
   }
-  size_type size(const Key& lo, const Key& hi) const override {
+  size_type size(const Key& lo, const Key& hi) const {
     // number of keys in [lo, hi]
     // TODO
     return 0;
@@ -124,6 +126,12 @@ private:
     if (less(key, root->key)) put(x->left, std::move(key), std::move(val));
     else if (less(root->key, key)) put(x->right, std::move(key), std::move(val));
     else x->val = std::move(val);
+  }
+
+  // Get a value by key from a (sub-)tree
+  Value& get(Node* x, const Key& key) {
+    if (x == nullptr) return Value(); // undefine behaviour
+    if (less(key, x->key)) return Value();
   }
 
   // recursive printing of nodes
