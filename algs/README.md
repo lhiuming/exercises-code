@@ -24,17 +24,17 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Implemented Algorithms and Data Structures
 
-### ([Fundamentals](include/fundamentals/))
+### [Fundamentals](include/fundamentals/)
 
 1. Linked List ([list.hpp](include/fundamentals/list.hpp))
--. Stack (with linked-list) ([stack.hpp](include/fundamentals/stack.hpp))
+- Stack (with linked-list) ([stack.hpp](include/fundamentals/stack.hpp))
 
 ### [Sorting](include/sorting/)
 
 1. Selection sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
--. Insertion sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
--. Shellsort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
--. Heapsort (and Priority Queue) ([heapsort.hpp](include/sorting/heapsort.hpp))
+- Insertion sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
+- Shellsort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
+- Heapsort (and Priority Queue) ([heapsort.hpp](include/sorting/heapsort.hpp))
 
 ### [Symbol Tables](include/symbol_tables/)
 
@@ -49,9 +49,9 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 <!-- Chapter 1, basics -->
 1. Stack (with resizing array) (todo)
--. Stack (with linked-list)
--. FIFO queue (todo)
--. Bag (todo)
+- Stack (with linked-list)
+- FIFO queue (todo)
+- Bag (todo)
 
 <!-- Chapter 2, sort  -->
 1. Selection sort
@@ -76,26 +76,26 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 <!-- Chapter 4, graph -->
 1. Adjacency-list Graph class (todo)
-  - Linked-list Bag class (todo)
+    - Linked-list Bag class (todo)
 16. Depth-first search for paths (todo)
 17. Breadth-first search for paths (todo)
 18. Depth-first search for connected components (todo)
 19. Adjacency-list Directed Digraph class (todo)
 20. Reachability / Directed Depth-first search (todo)
-  - Depth-first directed paths (todo)
-  - Breadth-first directed paths (todo)
+    - Depth-first directed paths (todo)
+    - Breadth-first directed paths (todo)
 21. Directed cycle (todo)
 22. Depth-first Order (todo)
 23. Topological sort (todo)
 24. Kosaraju strong connected components (todo)
 <!-- weighted graph -->
 25. Edge Weighted Graph class (todo)
-  - Edge class (todo)
+    - Edge class (todo)
 26. Lazy version of Prim's MST (todo)
 27. Eager version of Prim's MST (todo)
 <!-- weighted directed graph -->
 28. Edge-weighted Directed Graph class (todo)
-  - Directed Weighted Edge class (todo)
+    - Directed Weighted Edge class (todo)
 29. Dijkstra's shortest-path (todo)
 30. Shortest-path in edge-weighted DAG (todo)
 31. Bellman-ford shortest-path (todo)
@@ -109,7 +109,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 36. Ternary Search Trie Symbol Table (todo)
 <!-- substring search -->
 37. Knuth-Morris-Pratt substring search (todo)
-  - @NOTE: very hard to understand; worthwhile to implement.
+    - @NOTE: very hard to understand; worthwhile to implement.
 38. Boyer-Moore substring search (todo)
 39. Rabin-Karp fingerprint search (todo)
 40. Regular expression pattern matching (todo)
