@@ -49,9 +49,9 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 <!-- Chapter 1, basics -->
 1. Stack (with resizing array) (todo)
-- Stack (with linked-list)
-- FIFO queue (todo)
-- Bag (todo)
+0. Stack (with linked-list)
+0. FIFO queue (todo)
+0. Bag (todo)
 
 <!-- Chapter 2, sort  -->
 1. Selection sort
