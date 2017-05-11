@@ -1,19 +1,17 @@
 #ifndef ALGS_SYMBOL_TABLES_BINARY_TREE_HPP
 #define ALGS_SYMBOL_TABLES_BINARY_TREE_HPP
 
-#include <cstddef>
+#include <cstddef>    // for size_type
 #include <functional> // for std::less
-#include <utility> // for std::pair
+#include <utility>    // for std::pair
 #include <ostream> // self printing
-#include <iostream>
 
 /*
  * binary_tree.hpp
  * Binary Search Tree (BST) Symbol Table Implementation.
  * Interface naming is mimicing std::map.
  *
- * TODO: implement deletion (erase, pop_front, pop_back)
- * TODO: implement the rest interface
+ * TODO: thre rest interface (rank-based query) (probably never do it)
  */
 
 namespace algs {
@@ -166,13 +164,11 @@ public:
 
   // Printing
   friend std::ostream& operator<<(std::ostream& os, const BST& bst) {
-    // TODO : use an iterator ?
     os << "BST(" << bst.size() << "){" << std::endl;
     os << bst.root;
     os << "}";
     return os;
   }
-
 
 private:
 

@@ -39,6 +39,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### Symbol Tables
 
 1. Binary search (Symbol Table) ([binary.hpp](include/symbol_tables/binary.hpp))
+2. Binary Search Tree ([binary_tree](include/symbol_tables/binary_tree.hpp))
 
 ### Graphs
 
@@ -64,11 +65,12 @@ packages here: https://github.com/kevin-wayne/algs4.
 9. Heapsort
 
 <!-- Chapter 3, search-->
-1. Sequential Search Symbol Table (won't do)
+1. Sequential Search Symbol Table (todo)
 9. Binary Search Symbol Table
-11. Binary Search Tree Symbol Table class (todo)
+11. Binary Search Tree Symbol Table class
 12. Red-black Binary Search Tree Symbol Table class (todo)
     - @NOTE: Implement a complete RBBST if schedule allows.
+    - @NOTE: Try to refer to the STL implementation.
 13. Separate Chaining Hash Symbol Table (todo)
 14. Linear Probing Hash Symbol Table (todo)
 
