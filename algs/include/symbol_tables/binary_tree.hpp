@@ -5,7 +5,7 @@
 #include <functional> // for std::less
 #include <utility> // for std::pair
 #include <ostream> // self printing
-#include <cassert> // debug
+#include <iostream>
 
 /*
  * binary_tree.hpp
@@ -47,6 +47,7 @@ private:
 
   // Iterator class
   class BidirectIt {
+    friend BST;
   public:
     BidirectIt(Node* pn = nullptr) : pNode(pn) {}
     value_type& operator*() const { return pNode->val; }
@@ -81,6 +82,7 @@ private:
 
   // Const iterator class
   class ConstBidirectIt : public BidirectIt {
+    friend BST;
   public:
     ConstBidirectIt(Node* pn = nullptr) : BidirectIt(pn) {}
     ConstBidirectIt(BidirectIt&& rhs) : BidirectIt(rhs) {}
@@ -115,24 +117,25 @@ public:
   const_iterator cend() const { return const_cast<BST*>(this)->end(); }
 
   // Element access and modifiers
-  void insert(const Key& k, const T& t) { // put
-    insert(Key(k), T(t)); }
-  void insert(Key&& k, T&& t) { // move put
-    put(root, k, t, nullptr); }
+  void insert(const Key& k, const T& t) { insert(Key(k), T(t)); }
+  void insert(Key&& k, T&& t) { put(root, k, t); }
   iterator find(const Key& k) { // get a iterator by key
     return iterator(get(root, k)); }
   size_type erase(const Key& k) { // erase a key-value pair
-    iterator pos = find(k);
-    if (pos == end()) return 0;
-    erase(pos);
+    Node* x = get(root, k);
+    if (x == nullptr) return 0;
+    Node* succ = erase(x);
+    if (root == x) root = succ;
+    delete x; // release the erased node
     return 1;
   }
   iterator erase(iterator pos) {
-    iterator succ = pos;
-    // TODO
+    Node* succ = erase(pos.pNode);
+    delete pos.pNode;
+    return iterator(succ);
   }
 
-  // capacity
+  // Capacity
   bool empty() const { return root == nullptr; }
   size_type size() const { return node_size(root); }
 
@@ -179,7 +182,7 @@ private:
   // Implementation Helpers //
 
   // Take the node size
-  size_type node_size(Node* x) const { return (x == nullptr) ? 0 : x->count; }
+  static size_type node_size(Node* x) { return (x == nullptr) ? 0 : x->count; }
 
   // Put a pair into a (sub-)tree, return the new (subtree-)root
   void put(Node* &x, Key& key, T& mapped, Node* parent = nullptr) {
@@ -188,8 +191,8 @@ private:
       x = new Node(std::move(key), std::move(mapped), parent);
       return;
     }
-    if (less(key, root->val.first)) put(x->left, key, mapped, x);
-    else if (less(root->val.first, key)) put(x->right, key, mapped, x);
+    if (less(key, x->val.first)) put(x->left, key, mapped, x);
+    else if (less(x->val.first, key)) put(x->right, key, mapped, x);
     else x->val.second = std::move(mapped);
     x->count = node_size(x->left) + node_size(x->right) + 1;
   }
@@ -248,23 +251,53 @@ private:
     return upper_bound(x->right, key);
   }
 
-  // Remove the min node from a sub-tree and return the node pointer
-  // handling parent link make this tedious
-  Node* remove_min(Node* x) {
-    if (x == nullptr) return nullptr;
-    // if x has no left, just replace x by x->right
-    if (x->left == nullptr) { // relink parent and right
-      if (x->right != nullptr) x->right->parent = x->parent;
-      if (x->parent != nullptr) {
-        if (x->parent->left == x) x->parent->left = x->right;
-        else x->parent->right = x->right;
-      }
-      return x;
+  // Helper for removes
+  static void relink(Node* up, Node* down, Node* hint) {
+    if (down != nullptr) down->parent = up;
+    if (up != nullptr) {
+      if (up->left == hint) up->left = down;
+      else up->right = down;
     }
-    // otherwise, remove_min on the left-subtree
-    Node* ret = remove_min(x->left);
-    x->count = node_size(x->left) + node_size(x->right) + 1;
-    return ret;
+  }
+
+  // Remove the min node from a sub-tree while maitaining the counts;
+  // return pointer to the removed node
+  static Node* remove_min(Node* x) {
+    if (x == nullptr) return nullptr;
+    if (x->left == nullptr) { // if x has no left, just replace x by x->right
+      relink(x->parent, x->right, x);
+      return x;
+    } else { // otherwise, remove_min on the left-subtree
+      Node* ret = remove_min(x->left);
+      x->count = node_size(x->left) + node_size(x->right) + 1;
+      return ret;
+    }
+  }
+
+  // Pop-out the given node while maitaining the counts
+  // return a pointer to the succesor node (may be nullptr)
+  Node* erase(Node* x) {
+    if (x == nullptr) return nullptr;
+    Node* succ;
+    if (x->left == nullptr) { // Trivial case 1: no left child
+      succ = x->right;
+      relink(x->parent, x->right, x);
+    } else if (x->right == nullptr) { // Trivial case 2: no right child
+      succ = x->left;
+      relink(x->parent, x->left, x);
+    } else { // Non-Trivial case: both children exist
+      succ = remove_min(x->right);
+      // replace x by succ relinking the neighbours of x
+      relink(x->parent, succ, x);
+      relink(succ, x->left, nullptr); // NOTE: succ->left must be nullptr
+      relink(succ, x->right, succ->right);
+      // update succ's count
+      succ->count = node_size(succ->left) + node_size(succ->right) + 1;
+    }
+    // Update the count of all ancesters (use x, because succ can be nullptr)
+    for (Node* anc = x->parent; anc != nullptr; anc = anc->parent)
+      anc->count = node_size(anc->left) + node_size(anc->right) + 1;
+    return succ;
   }
 
   // recursive printing of nodes
