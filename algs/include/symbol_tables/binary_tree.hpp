@@ -5,6 +5,7 @@
 #include <functional> // for std::less
 #include <utility> // for std::pair
 #include <ostream> // self printing
+#include <cassert> // debug
 
 /*
  * binary_tree.hpp
@@ -108,8 +109,7 @@ public:
   const_iterator begin() const { return cbegin(); }
   const_iterator cbegin() const { return const_cast<BST*>(this)->begin(); }
   iterator end() { // the role of max in ALGS book
-    if (root == nullptr) return BidirectIt();
-    return BidirectIt();
+    return iterator();
   }
   const_iterator end() const { return cend(); }
   const_iterator cend() const { return const_cast<BST*>(this)->end(); }
@@ -121,9 +121,15 @@ public:
     put(root, k, t, nullptr); }
   iterator find(const Key& k) { // get a iterator by key
     return iterator(get(root, k)); }
-  T pop(const Key& k) { // erase a key-value pair
+  size_type erase(const Key& k) { // erase a key-value pair
+    iterator pos = find(k);
+    if (pos == end()) return 0;
+    erase(pos);
+    return 1;
+  }
+  iterator erase(iterator pos) {
+    iterator succ = pos;
     // TODO
-    return T();
   }
 
   // capacity
@@ -132,12 +138,15 @@ public:
 
   // lookup
   bool contains(const Key& k) const { // existency query
-    return get(root, k) != nullptr;
-  }
+    return get(root, k) != nullptr; }
   const_iterator floor(const Key& k) const { // largest key <= k (floor)
     return const_iterator(floor(root, k)); }
   const_iterator ceiling(const Key& k) const { // smallest key >= k (ceiling)
     return const_iterator(ceiling(root, k)); }
+  const_iterator lower_bound(const Key& k) const { // first key >= k
+    return ceiling(k); }
+  const_iterator upper_bound(const Key& k) const { // first key > k
+    return const_iterator(upper_bound(root, k)); }
   size_type rank(const Key& k) const { // number of keys < k
     // TODO
     return 0;
@@ -227,6 +236,35 @@ private:
       else return hit;
     }
     return x;
+  }
+
+  // Get the smallest node > the given key
+  Node* upper_bound(Node* x, const Key& key) const {
+    if (x == nullptr) return nullptr;
+    if (less(key, x->val.first)) {
+      Node* hit = upper_bound(x->left, key);
+      if (hit == nullptr) return x;
+    }
+    return upper_bound(x->right, key);
+  }
+
+  // Remove the min node from a sub-tree and return the node pointer
+  // handling parent link make this tedious
+  Node* remove_min(Node* x) {
+    if (x == nullptr) return nullptr;
+    // if x has no left, just replace x by x->right
+    if (x->left == nullptr) { // relink parent and right
+      if (x->right != nullptr) x->right->parent = x->parent;
+      if (x->parent != nullptr) {
+        if (x->parent->left == x) x->parent->left = x->right;
+        else x->parent->right = x->right;
+      }
+      return x;
+    }
+    // otherwise, remove_min on the left-subtree
+    Node* ret = remove_min(x->left);
+    x->count = node_size(x->left) + node_size(x->right) + 1;
+    return ret;
   }
 
   // recursive printing of nodes
