@@ -39,7 +39,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### Symbol Tables
 
 1. Binary search (Symbol Table) ([binary.hpp](include/symbol_tables/binary.hpp))
-2. Binary Search Tree ([binary_tree](include/symbol_tables/binary_tree.hpp))
+2. Binary Search Tree ([binary_tree.hpp](include/symbol_tables/binary_tree.hpp))
 
 ### Graphs
 
