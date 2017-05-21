@@ -1,5 +1,5 @@
-#ifndef ALGS_SORT_HEAPSORT_HPP
-#define ALGS_SORT_HEAPSORT_HPP
+#ifndef ALGS_SORTING_HEAPSORT_HPP
+#define ALGS_SORTING_HEAPSORT_HPP
 
 #include <vector> // default container in PQ
 #include <ostream> // for PQ print
@@ -9,6 +9,12 @@
 
 /*
  * Priority Queue, two wrapper calss, and Heapsort.
+ *
+ *   - heapsort use the same interface as std::sort.
+ *   - PQs use the same interface as std::priority_queue.
+ *
+ * TODO: check STL compatibility for PQ.
+ * TODO: add some Heap operations, like in std::algorithms.
  */
 
 namespace algs {

@@ -4,3 +4,4 @@
 
 #include "sorting/simple_sort.hpp"
 #include "sorting/heapsort.hpp"
+#include "sorting/mergesort.hpp"
