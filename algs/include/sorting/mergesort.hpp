@@ -69,7 +69,9 @@ void inplace_merge(BidirIt beg, BidirIt mid, BidirIt end)
   algs::inplace_merge(beg, mid, end, std::less<value_type>());
 }
 
+
 // Mergesort //////////////////////////////////////////////////////////////////
+// Top-down mergesort and Bottom-up Mergesort.
 ////
 
 // Top-down Mergesort
