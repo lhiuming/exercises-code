@@ -46,15 +46,15 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ### Strings
 
-## Basic Algorithms and Data Structures List
+<!-- Algorithms and Data Structures : Complete List
 
-<!-- Chapter 1, basics -->
+-- Chapter 1, basics --
 1. Stack (with resizing array) (todo)
 0. Stack (with linked-list)
 0. FIFO queue (todo)
 0. Bag (todo)
 
-<!-- Chapter 2, sort  -->
+-- Chapter 2, sort  --
 1. Selection sort
 2. Insertion sort
 3. Shellsort
@@ -65,7 +65,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 8. Priority Queue
 9. Heapsort
 
-<!-- Chapter 3, search-->
+-- Chapter 3, search--
 1. Sequential Search Symbol Table (todo)
 9. Binary Search Symbol Table
 11. Binary Search Tree Symbol Table class
@@ -75,7 +75,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 13. Separate Chaining Hash Symbol Table (todo)
 14. Linear Probing Hash Symbol Table (todo)
 
-<!-- Chapter 4, graph -->
+-- Chapter 4, graph --
 1. Adjacency-list Graph class (todo)
     - Linked-list Bag class (todo)
 16. Depth-first search for paths (todo)
@@ -89,35 +89,37 @@ packages here: https://github.com/kevin-wayne/algs4.
 22. Depth-first Order (todo)
 23. Topological sort (todo)
 24. Kosaraju strong connected components (todo)
-<!-- weighted graph -->
+-- weighted graph --
 25. Edge Weighted Graph class (todo)
     - Edge class (todo)
 26. Lazy version of Prim's MST (todo)
 27. Eager version of Prim's MST (todo)
-<!-- weighted directed graph -->
+-- weighted directed graph --
 28. Edge-weighted Directed Graph class (todo)
     - Directed Weighted Edge class (todo)
 29. Dijkstra's shortest-path (todo)
 30. Shortest-path in edge-weighted DAG (todo)
 31. Bellman-ford shortest-path (todo)
 
-<!-- Chapter 5, strings -->
+-- Chapter 5, strings --
 1. Least-significant-digit-first string sort (todo)
 33. Most-significant-digit-first string sort (todo)
 34. Three-way string quicksort (todo)
-<!-- trie -->
+-- trie --
 35. Trie Symbol Table class (todo)
 36. Ternary Search Trie Symbol Table (todo)
-<!-- substring search -->
+-- substring search --
 37. Knuth-Morris-Pratt substring search (todo)
     - @NOTE: very hard to understand; worthwhile to implement.
 38. Boyer-Moore substring search (todo)
 39. Rabin-Karp fingerprint search (todo)
 40. Regular expression pattern matching (todo)
-<!-- data compression -->
+-- data compression --
 41. Huffman compression (todo)
 42. LZW compression and expansion (todo)
 
 ## Addition Algorithms List
 
 1. Quick-select (todo; page 346)
+
+-->
