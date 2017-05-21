@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include <sorting/heapsort.hpp>
+#include <utils.hpp>
 
 using namespace algs;
 using std::vector;
@@ -32,6 +33,7 @@ int main ()
 
   v = vector<double>{0, 2, 1, 3, -4, 9};
   heapsort(v.begin(), v.end());
+  cout << "v : " << v << endl;
   cout << "v is sorted: " << is_sorted(v.begin(), v.end()) << endl;
 
   return 0;

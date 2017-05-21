@@ -148,28 +148,53 @@ public:
 
 
 // Heapsort ////////////////////////////////////////////////////////////////////
-// Do a in-place heapsort using a PQ.
+// In-place heapsort by swapping and sinking.
 ////
 
+// sink
+template<class RandomIt, class DiffType, class Compare>
+void heapsort_sink(RandomIt k, DiffType k_pos, DiffType N, const Compare& less)
+{ // let [k] sink down to right position; assumming (k, e) is heaplified
+  // NOTE: we start from 0, not 1 (like in the PQ)
+  DiffType j;
+  while ((j = 2 * k_pos + 1) < N) { // left_child exist
+    RandomIt lc = k + (k_pos + 2), rc = lc--;
+    if ( (j + 1) < N && less(*lc, *rc) ) {// choose right-child if it is larger
+      ++j; lc = rc; }
+    if (!less(*k, *lc)) break; // end of sink : both children are not larger
+    using std::swap;
+    swap(*k, *lc);
+    k = lc;
+    k_pos = j;
+  }
+} // end sink
+
+
 // Heapsort with a customized less-comparing object
-template<class ForwardIt, class Compare>
-void heapsort(ForwardIt b, ForwardIt e, Compare less)
+template<class RandomIt, class Compare>
+void heapsort(RandomIt b, RandomIt e, Compare less)
 {
-  using value_type = typename std::iterator_traits<ForwardIt>::value_type;
-  // Move out the elements in to a PQ
-  using std::placeholders::_1;
-  using std::placeholders::_2;
-  auto greater = std::bind(less, _2, _1); // used to reverse PQ's direction
-  PQ<value_type, std::vector<value_type>, decltype(greater)> pq(b, e, greater);
-  // Move back from the PQ
-  for (; b != e; ++b) (*b) = pq.pop(); // thie should cause `move`
+  // check the input
+  if (b == e) return;
+  using diff_type = typename std::iterator_traits<RandomIt>::difference_type;
+  // heaplify the range
+  diff_type N = e - b, k_pos = (N + 1) / 2;
+  RandomIt k = b + k_pos;
+  do { heapsort_sink(--k, --k_pos, N, less); } while (k_pos > 0);
+  // pop the head to the end of heap
+  while (--e != b) {
+    using std::swap;
+    swap(*b, *e);
+    --N;
+    heapsort_sink(b, static_cast<diff_type>(0), N, less);
+  }
 }
 
 // Heapsort with default less-compare (usually is `operator<`)
-template<class ForwardIt>
-inline void heapsort(ForwardIt b, ForwardIt c)
+template<class RandomIt>
+inline void heapsort(RandomIt b, RandomIt c)
 {
-  using value_type = typename std::iterator_traits<ForwardIt>::value_type;
+  using value_type = typename std::iterator_traits<RandomIt>::value_type;
   heapsort(b, c, std::less<value_type>());
 }
 
