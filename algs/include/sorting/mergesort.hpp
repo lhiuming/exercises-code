@@ -9,7 +9,7 @@
  * Top-down Mergesort and Bottom-up Mergesort, as well as some merging
  * functions.
  *
- * TODO: a mystrous bug below (search for `TODO`)
+ * TODO: a mystrous bug below (search for `TODO` and `algs`)
  */
 
 namespace algs {
@@ -72,15 +72,60 @@ void inplace_merge(BidirIt beg, BidirIt mid, BidirIt end)
 // Mergesort //////////////////////////////////////////////////////////////////
 ////
 
-// Top_down Mergesort
+// Top-down Mergesort
 template<class RandomIt, class Compare>
-void topdown_mergesort(RandomIt b, RandomIt e, Compare less)
+void topdown_mergesort(RandomIt beg, RandomIt end, Compare less)
 {
   // check the input
-  if ( b == e) return;
-  RandomIt mid = b + (e - b) / 2;
+  if (end - beg <= 1) return;
+  // using inplace_merge
+  RandomIt mid = beg + (end - beg) / 2;
+  topdown_mergesort(beg, mid, less);
+  topdown_mergesort(mid, end, less);
+  // TODO: why ambiguous?
+  algs::inplace_merge(beg, mid, end, less);
 }
 
+template<class RandomIt>
+void topdown_mergesort(RandomIt beg, RandomIt end)
+{
+  using value_type = typename std::iterator_traits<RandomIt>::value_type;
+  topdown_mergesort(beg, end, std::less<value_type>());
+}
+
+// Bottom-up Mergesort
+template<class RandomIt, class Compare>
+void bottomup_mergesort(RandomIt beg, RandomIt end, Compare less)
+{
+  using diff_type = typename std::iterator_traits<RandomIt>::difference_type;
+  diff_type N = end - beg;
+  for (diff_type sz = 1; sz < N; sz += sz) {  // do nothing if N <= 1
+    diff_type lo = 0;
+    for (RandomIt k = beg; lo < N - sz; lo += sz + sz, k += (sz + sz))
+      algs::inplace_merge(
+        k, k + sz, (lo + sz + sz < N) ? k + sz + sz : end, less);
+  }
+}
+
+template<class RandomIt>
+void bottomup_mergesort(RandomIt beg, RandomIt end)
+{
+  using value_type = typename std::iterator_traits<RandomIt>::value_type;
+  bottomup_mergesort(beg, end, std::less<value_type>());
+}
+
+// Default mergesort : use topdown_mergesort
+template<class RandomIt, class Compare>
+inline void mergesort(RandomIt beg, RandomIt end, Compare less)
+{
+  topdown_mergesort(beg, end, less);
+}
+
+template<class RandomIt>
+inline void mergesort(RandomIt beg, RandomIt end)
+{
+  topdown_mergesort(beg, end);
+}
 
 } // namespace algs
 

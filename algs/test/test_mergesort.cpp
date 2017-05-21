@@ -29,5 +29,17 @@ int main()
   algs::inplace_merge(im.begin(), im.begin() + a.size(), im.end());
   cout << "inplace merged : " << im << endl;
 
+  cout << "-- mergesort --" << endl;
+  vector<double> v;
+  Random::uniform(v, 100);
+  mergesort(v.begin(), v.end());
+  cout << "v is_sorted: " << is_sorted(v.begin(), v.end()) << endl;
+
+  cout << "-- BU mergesort --" << endl;
+  vector<double> u;
+  Random::uniform(u, 100);
+  bottomup_mergesort(u.begin(), u.end());
+  cout << "v is_sorted: " << is_sorted(u.begin(), u.end()) << endl;
+
   return 0;
 }
