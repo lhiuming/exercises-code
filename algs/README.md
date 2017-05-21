@@ -34,6 +34,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 1. Selection sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
 0. Insertion sort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
 0. Shellsort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
+0. Mergesort ([mergesort.hpp](include/sorting/mergesort.hpp))
 0. Heapsort (and Priority Queue) ([heapsort.hpp](include/sorting/heapsort.hpp))
 
 ### [Symbol Tables](include/symbol_tables/)
@@ -57,8 +58,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 1. Selection sort
 2. Insertion sort
 3. Shellsort
-4. Top-down mergesort (todo)
-5. Bottom-up mergesort (todo)
+4. Top-down mergesort
+5. Bottom-up mergesort
 6. Quicksort (todo)
 7. Quicksort with 3-way partitioning (todo)
 8. Priority Queue
