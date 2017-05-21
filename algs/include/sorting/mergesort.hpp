@@ -8,6 +8,8 @@
 /*
  * Top-down Mergesort and Bottom-up Mergesort, as well as some merging
  * functions.
+ *
+ * TODO: a mystrous bug below (search for `TODO`)
  */
 
 namespace algs {
@@ -63,7 +65,8 @@ template<class BidirIt>
 void inplace_merge(BidirIt beg, BidirIt mid, BidirIt end)
 {
   using value_type = typename std::iterator_traits<BidirIt>::value_type;
-  inplace_merge(beg, mid, end, std::less<value_type>());
+  // TODO why ambiguous???
+  algs::inplace_merge(beg, mid, end, std::less<value_type>());
 }
 
 // Mergesort //////////////////////////////////////////////////////////////////
