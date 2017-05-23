@@ -8,9 +8,9 @@
  * list.hpp
  * Singly linked-list, with interface similar to std::forward_list.
  *
- * TODO: test const_iterator
  * TODO: support STL iterator_traits template
  * TODO: try to make the collection class meeting STL Container requirement.
+ * TODO: add noexcept support
  */
 
 namespace algs {
@@ -18,26 +18,33 @@ namespace algs {
 template<class Item>
 class List {
 
-  // node class
+  // private node class
   struct Node {
     Item item;
     Node* next;
   };
 
+public:
+
   // iterator class
   class ForwardIt {
   public:
     friend List;
+
     ForwardIt() {};
     ForwardIt(Node* pn) : pNode(pn) {};
+
     void operator++() { pNode = pNode->next; }
     Item& operator*() const { return pNode->item; }
+
     bool operator==(const ForwardIt& rhs) const {
       return this->pNode == rhs.pNode; }
     bool operator!=(const ForwardIt& rhs) const {
       return !(*this == rhs); }
+
   protected:
     Node* pNode = nullptr;
+
   };
 
   // const iterator class
@@ -45,11 +52,10 @@ class List {
   public:
     friend List;
     ConstForwardIt() {};
-    using ForwardIt::ForwardIt;
-    const Node& operator*() const { return *(this->pNode); }
+    ConstForwardIt(Node* pn) : ForwardIt(pn) {};
+    // replace the base dereference operator by a const one
+    const Item& operator*() const { return ForwardIt::operator*(); }
   };
-
-public:
 
   // type alias
   using size_type = std::size_t;
@@ -74,8 +80,12 @@ public:
   } // end ~List
 
   // Iterator
-  ForwardIt begin() const { return ForwardIt(front); }
-  ForwardIt end() const { return ForwardIt(nullptr); }
+  iterator begin() { return ForwardIt(front); }
+  const_iterator begin() const { return cbegin(); }
+  const_iterator cbegin() const { return ConstForwardIt(front); }
+  iterator end() { return ForwardIt(nullptr); }
+  const_iterator end() const { return cend(); }
+  const_iterator cend() const { return ConstForwardIt(nullptr); }
 
   // Capacity
   bool empty() const { return N == 0; }

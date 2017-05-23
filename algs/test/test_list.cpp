@@ -26,7 +26,8 @@ int main()
 
   cout << "try to iterate: " << endl;
   int count = 0;
-  for(const string& s : list) {
+  const List<string>& rlist = list;
+  for(const string& s : rlist) {
     ++count;
     cout << count << " : " << s << endl;
   }
