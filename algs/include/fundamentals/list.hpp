@@ -80,12 +80,12 @@ public:
   } // end ~List
 
   // Iterator
-  iterator begin() { return ForwardIt(front); }
-  const_iterator begin() const { return cbegin(); }
-  const_iterator cbegin() const { return ConstForwardIt(front); }
-  iterator end() { return ForwardIt(nullptr); }
-  const_iterator end() const { return cend(); }
-  const_iterator cend() const { return ConstForwardIt(nullptr); }
+  iterator begin() noexcept { return ForwardIt(front); }
+  const_iterator begin() const noexcept { return cbegin(); }
+  const_iterator cbegin() const noexcept { return ConstForwardIt(front); }
+  iterator end() noexcept { return ForwardIt(nullptr); }
+  const_iterator end() const noexcept { return cend(); }
+  const_iterator cend() const noexcept { return ConstForwardIt(nullptr); }
 
   // Capacity
   bool empty() const { return N == 0; }
