@@ -10,7 +10,6 @@
  * list.hpp
  * Singly linked-list, with interface similar to std::forward_list.
  *
- * TODO: support STL iterator_traits template
  * TODO: add allocator support
  * TODO: try to make the collection class meeting STL Container requirement.
  * TODO: add complete noexcept support
@@ -41,21 +40,29 @@ public:
     using reference	        = value_type&;
     using iterator_category = std::forward_iterator_tag;
 
-    // Constructors
-    ForwardIt() {}
+    // Constructors (using default copy controls)
+    ForwardIt() : pNode(nullptr) {} // singular iterator requirement
     ForwardIt(Node* pn) : pNode(pn) {}
 
-    // equality compare //
+    // Forward iterator operations //
+
+    // equality comparable
+    bool operator!=(const ForwardIt& rhs) const {
+      return this->pNode != rhs.pNode; }
     bool operator==(const ForwardIt& rhs) const {
       return this->pNode == rhs.pNode; }
-    bool operator!=(const ForwardIt& rhs) const {
-      return !(*this == rhs); }
 
-    void operator++() { pNode = pNode->next; }
-    value_type& operator*() const { return pNode->item; }
+    // deferenceable
+    reference operator*() const { return pNode->item; }
+    pointer operator->() const { return &(pNode->item); }
+
+    // increaseable
+    ForwardIt& operator++() { pNode = pNode->next; return *this; }
+    ForwardIt operator++(int) { ForwardIt ret(*this);
+      this->operator++(); return ret; }
 
   protected:
-    Node* pNode = nullptr;
+    Node* pNode;
 
   };
 
@@ -63,10 +70,17 @@ public:
   class ConstForwardIt : public ForwardIt {
   public:
     friend List;
+
+    // new alias
+    using reference = const typename ForwardIt::value_type&;
+    using pointer = typename ForwardIt::value_type* const;
+
     ConstForwardIt() {};
     ConstForwardIt(Node* pn) : ForwardIt(pn) {};
-    // replace the base dereference operator by a const one
-    const Item& operator*() const { return ForwardIt::operator*(); }
+
+    // replace the dereferencing operator by a const one
+    reference operator*() const { return ForwardIt::operator*(); }
+    pointer operator->() const { return ForwardIt::operator->(); }
   };
 
   // type alias
