@@ -3,14 +3,17 @@
 
 #include <cstddef> // std::size_t
 #include <ostream> // for self-printing
+#include <iterator> // std::iterator_traits
+#include <cstddef> // std::ptrdiff_t
 
 /*
  * list.hpp
  * Singly linked-list, with interface similar to std::forward_list.
  *
  * TODO: support STL iterator_traits template
+ * TODO: add allocator support
  * TODO: try to make the collection class meeting STL Container requirement.
- * TODO: add noexcept support
+ * TODO: add complete noexcept support
  */
 
 namespace algs {
@@ -31,16 +34,25 @@ public:
   public:
     friend List;
 
-    ForwardIt() {};
-    ForwardIt(Node* pn) : pNode(pn) {};
+    // type alias (traits support)
+    using difference_type	  = std::ptrdiff_t;
+    using value_type        = Item;
+    using pointer           = value_type*;
+    using reference	        = value_type&;
+    using iterator_category = std::forward_iterator_tag;
 
-    void operator++() { pNode = pNode->next; }
-    Item& operator*() const { return pNode->item; }
+    // Constructors
+    ForwardIt() {}
+    ForwardIt(Node* pn) : pNode(pn) {}
 
+    // equality compare //
     bool operator==(const ForwardIt& rhs) const {
       return this->pNode == rhs.pNode; }
     bool operator!=(const ForwardIt& rhs) const {
       return !(*this == rhs); }
+
+    void operator++() { pNode = pNode->next; }
+    value_type& operator*() const { return pNode->item; }
 
   protected:
     Node* pNode = nullptr;
@@ -65,11 +77,14 @@ public:
   // Default constructor
   List() = default;
 
-  // Copy constrol (very limited)
+  // Copy constrols (very limited) //
+
   List(const List&) = delete; // not support
   List(List&&) = delete; // not support
+
   List& operator=(const List&) = delete; // not support
   List& operator=(List&&) = delete; // not support
+
   ~List() { // destroy all nodes
     Node* head = front;
     while (head != nullptr) {
@@ -79,10 +94,28 @@ public:
     }
   } // end ~List
 
-  // Iterator
+  // Assign //
+  // TODO
+  void assign() {}
+
+  // Get allocator //
+  // TODO
+  void get_allocator() {}
+
+  // Element access //
+
+
+
+  // Iterator //
+
+  // TODO
+  void before_begin() {}
+  void cbefore_begin() {}
+
   iterator begin() noexcept { return ForwardIt(front); }
   const_iterator begin() const noexcept { return cbegin(); }
   const_iterator cbegin() const noexcept { return ConstForwardIt(front); }
+
   iterator end() noexcept { return ForwardIt(nullptr); }
   const_iterator end() const noexcept { return cend(); }
   const_iterator cend() const noexcept { return ConstForwardIt(nullptr); }
