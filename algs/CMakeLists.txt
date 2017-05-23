@@ -16,4 +16,5 @@ enable_testing ()
 add_subdirectory(test)
 
 # Build each Chapters
+add_subdirectory(Chapter2)
 add_subdirectory(Chapter6)
