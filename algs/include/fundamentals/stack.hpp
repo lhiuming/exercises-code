@@ -7,6 +7,8 @@
  * stack.hpp
  * LIFO Stack implemented with linked list.
  * (Very simple, because List<> has done everything.)
+ *
+ * TODO: add full STL compatibility
  */
 
 namespace algs {
@@ -27,15 +29,16 @@ public:
   Stack& operator=(const Stack&) = default;
 
   // basic interface
-  void push(const Item& item) { data.push_front(item); }
-  void push(Item&& item) { data.push_front(item); }
-  Item pop() { return data.pop_front(); }
+  void push(const Item& item) { data.push_front(item); ++N; }
+  void push(Item&& item) { data.push_front(item); ++N; }
+  Item pop() { return data.pop_front(); --N; }
   bool empty() { return data.empty(); }
-  size_type size() { return data.size(); }
+  size_type size() { return N; }
 
 private:
 
   List<Item> data;
+  size_type N = 0;
 
 };
 

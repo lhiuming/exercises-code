@@ -115,8 +115,20 @@ public:
 
   // Copy constrols (very limited) //
 
-  List(const List&) = delete; // not support
-  List(List&&) = delete; // not support
+  // Copy (deep)
+  List(const List& other) {
+    if (other.empty()) return;
+    // make the first node
+    const_iterator other_head = other.begin();
+    this->pfront = new Node{*other_head++, nullptr};
+    // insert other nodes by iteration
+    iterator my_head = this->begin();
+    while (other_head != other.end())
+      my_head = insert_after(my_head, *other_head++);
+  }
+
+  // Move (take pointer)
+  List(List&& other) { this->pfront = other.pfront; other.pfront = nullptr; }
 
   List& operator=(const List&) = delete; // not support
   List& operator=(List&&) = delete; // not support
@@ -155,15 +167,11 @@ public:
   // Capacity //
 
   // Empty check
-  bool empty() const noexcept { return N == 0; }
+  bool empty() const noexcept { return pfront == nullptr; }
 
   // Max possible list length
   size_type max_size() const noexcept { // kind of useless ...
     return std::numeric_limits<size_type>::max(); }
-
-  // NOTE: size() is not in std::forwad_list, to surpress non-necessary
-  // overhead, but is in std::list
-  size_type size() const noexcept { return N; }
 
   // Modifier //
 
@@ -185,7 +193,6 @@ public:
     Node * const current = pos.pNode;
     Node* new_p = new Node{item, current->next};
     current->next = new_p;
-    ++N;
     return iterator(new_p);
   }
   // TODO : other inserters
@@ -202,7 +209,6 @@ public:
     Node* const current = pos.pNode;
     Node* tobe_delete = current->next;
     current->next = tobe_delete->next;
-    --N;
     delete tobe_delete;
     return iterator(current->next); // would be end() if next is nullptr
   }
@@ -216,9 +222,8 @@ public:
   // Push at the front
   void push_front(const Item& item) { push_front(Item(item)); }
   void push_front(Item&& item) { // push before the first element
-    if (pfront == nullptr) make_first(std::move(item));
+    if (pfront == nullptr) pfront = new Node{std::move(item), nullptr};
     else pfront = new Node{item, pfront};
-    ++N;
   }
 
   // Emplace at the front (NOTE: using C++17 version)
@@ -232,7 +237,6 @@ public:
     Item ret = std::move(old_front->item);
     pfront = old_front->next;
     delete old_front;
-    --N;
     return ret;
   }
 
@@ -243,23 +247,52 @@ public:
 
   // Swap content ( NOTE: using C++17 version)
   void swap(List& other) noexcept {
-    using std::swap;
-    swap(this->pfront, other.pfront);
-    swap(this->N, other.N);
-  }
+    std::swap(this->pfront, other.pfront); }
 
   // Other operations //
 
-  // Merge two lists
+  // Merge two lists (assuem both *this and other are sorted)
   // TODO
-  void merge( List& other );
-  void merge( List&& other );
-  template <class Compare>
-  void merge( List& other, Compare comp );
-  template <class Compare>
-  void merge( List&& other, Compare comp );
+  void merge(List& other) {
+    this->merge(List(other)); }
+  void merge(List&& other) {
+    this->merge(other, std::less<value_type>()); }
+  template <class Compare> void merge(List& other, Compare less) {
+    this->merge(List(other), less); }
+  template <class Compare> void merge(List&& other, Compare less) {
+    // no copy or move; just reconnect nodes
+    // Trivial cases
+    if (other.empty()) return;
+    if (this->empty()) { this->swap(other); return; }
+    // Both non-empty : make a empth head, then alternating insert
+    Node* in1 = this->pfront;
+    Node* in2 = other.pfront;
+    // choose the new pfront (the first node)
+    if (less(in2->item, in1->item)) {
+      this->pfront = in2;
+      in2 = in2->next;
+    } else {
+      this->pfront = in1;
+      in1 = in1->next;
+    }
+    // insert the rest
+    Node* out = this->pfront;
+    while ( (in1 != nullptr) && (in2 != nullptr) ) {
+      if (less(in2->item, in1->item)) {
+        out->next = in2;
+        in2 = in2->next;
+      } else {
+        out->next = in1;
+        in1 = in1->next;
+      }
+      out = out->next;
+    } // end while
+    if (in1 != nullptr) { out->next = in1; }
+    if (in2 != nullptr) { out->next = in2; }
+    other.pfront = nullptr; // prevent node destruction
+  }
 
-  // Splice another list
+  // Splice with another list
   // TODO
   void splice_after( const_iterator pos, List& other );
   void splice_after( const_iterator pos, List&& other );
@@ -285,24 +318,21 @@ public:
   // Sort the list (mergesort: stable and O(NlogN))
   void sort() { this->sort(std::less<value_type>()); }
   template<class Compare> void sort(Compare less) {
-    
+    // TODO: implement by split and merg
+    if ( (pfront == nullptr) || (pfront->next == nullptr) ) return;
+    // split into two List
+    List that = this->split();
+    this->sort();
+    that.sort();
+    this->merge(std::move(that));
   }
 
 
   // Non-standard interfaces //////////////////////////////////////////////////
 
-  // Back inserters
-  void push_back(const Item& item) { push_back(Item(item)); }
-  void push_back(Item&& item) { // push after the last element
-    if (pfront == nullptr) make_first(std::move(item));
-    else { pback->next = new Node{item, nullptr};
-           pback = pback->next; }
-    ++N;
-  }
-
   // Printing
   friend std::ostream& operator<<(std::ostream& os, const List& list) {
-    os << "List(" << list.size() << ")[";
+    os << "List[";
     Node* head = list.pfront;
     while(head != nullptr) {
       os << head->item;
@@ -315,13 +345,24 @@ public:
 private:
 
   Node* pfront = nullptr;
-  Node* pback = nullptr;
-  size_type N = 0;
 
-  // Implementation Helpers
-  void make_first(Item&& item) {
-    pfront = new Node{item, nullptr};
-    pback = pfront;
+  // Implementation Helpers //
+
+  // Private constructor : from a pointer
+  List(Node* np) : pfront(np) {}
+
+  // split this list into two half; return the second half
+  // assume list has at least 2 nodes;
+  List split() {
+    Node* slow = pfront;
+    Node* fast = pfront->next->next;
+    while (fast != nullptr) {
+      slow = slow->next;
+      if ( (fast = fast->next) ) fast = fast->next;  // double move
+    }
+    List ret(slow->next);
+    slow->next = nullptr; // cut the connection
+    return ret;
   }
 
 };

@@ -1,6 +1,8 @@
 // Test list.hpp
 
 #include <fundamentals/list.hpp>
+#include <sorting.hpp>
+#include <utils.hpp>
 
 #include <string>
 #include <iostream>
@@ -15,10 +17,10 @@ int main()
 
   cout << "-- try putting things --" << endl;
   string smith("AgentSmith");
-  list.push_back("Miku");
-  cout << "pushed Miku back: " << list << endl;
-  list.push_back("John");
-  cout << "pushed John back: " << list << endl;
+  list.push_front("Miku");
+  cout << "pushed Miku front: " << list << endl;
+  list.push_front("John");
+  cout << "pushed John front: " << list << endl;
   list.push_front("Lily");
   cout << "pushed Lily front: " << list << endl;
   list.push_front("Magna");
@@ -50,13 +52,26 @@ int main()
   cout << list << endl;
 
   cout << "Get smiths around: ";
-  list.push_back(smith); list.push_front(smith);
+  list.push_front(smith);
   cout << list << endl;
 
   cout << "Kill the smith after LilyLover: ";
   for(auto i = list.begin(); i != list.end(); ++i)
     if (*i == "LilyLover") list.erase_after(i);
   cout << list << endl;
+
+  cout << "-- try to merge and sort --" << endl;
+  List<int> l1, l2;
+  vector<int> ran;
+  Random::uniform(ran, 20, 5);
+  for (int i : ran) l1.push_front(i);
+  ran.clear();
+  Random::uniform(ran, 20, 8);
+  for (int i : ran) l2.push_front(i);
+  cout << "l2: " << l2 << endl;
+  cout << "l1: " << l1 << endl;
+  l1.sort();
+  cout << "sorted l1: " << l1 << endl;
 
   return 0;
 }
