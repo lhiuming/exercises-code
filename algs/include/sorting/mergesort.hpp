@@ -49,22 +49,22 @@ void merge(
 }
 
 // Inplace merge, using a std::vector as auxilary memory
-template<class BidirIt, class Compare>
-void inplace_merge(BidirIt beg, BidirIt mid, BidirIt end, Compare less)
+template<class ForwardIt, class Compare>
+void inplace_merge(ForwardIt beg, ForwardIt mid, ForwardIt end, Compare less)
 {
   // use vector as auxilary array
-  using value_type = typename std::iterator_traits<BidirIt>::value_type;
+  using value_type = typename std::iterator_traits<ForwardIt>::value_type;
   std::vector<value_type> aux;
-  for(BidirIt i = beg; i != mid; ++i)
+  for(ForwardIt i = beg; i != mid; ++i)
     aux.push_back(std::move(*i));
   // merge aux and the second sequence, using beg as output
   merge(aux.begin(), aux.end(), mid, end, beg, less);
 }
 
-template<class BidirIt>
-void inplace_merge(BidirIt beg, BidirIt mid, BidirIt end)
+template<class ForwardIt>
+void inplace_merge(ForwardIt beg, ForwardIt mid, ForwardIt end)
 {
-  using value_type = typename std::iterator_traits<BidirIt>::value_type;
+  using value_type = typename std::iterator_traits<ForwardIt>::value_type;
   // TODO why ambiguous???
   algs::inplace_merge(beg, mid, end, std::less<value_type>());
 }
