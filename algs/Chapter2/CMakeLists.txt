@@ -1,4 +1,4 @@
-# Build Chapter 2 solutions
+# Build all Chapter 2 solutions
 
 set(solution_list
   "2.2.17.LinkedListMergeSort"
