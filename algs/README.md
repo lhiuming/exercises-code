@@ -18,9 +18,11 @@ packages here: https://github.com/kevin-wayne/algs4.
 ## Todos
 
 - Implement half of all algorithms and data structures
-  - at least the most important ones.
+  - RedBlack BST
+  - KD tree
+  - quick-select
+  - A* algorithm
 - Implement some of the most interesting algorithms from the exercise.
-- work on the Chapter 6.
 
 ## Implemented Algorithms and Data Structures
 
