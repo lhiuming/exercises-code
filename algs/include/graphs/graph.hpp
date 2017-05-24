@@ -61,6 +61,19 @@ public:
     std::swap(_E, other._E);
   }
 
+  // Addional functionality //
+
+  // self-printing
+  friend std::ostream& operator<<(std::ostream& os, const Graph& g) {
+    os << "Graph(V = " << g._V << ", E = " << g._E << ") {";
+    for (index_type v = 0; v < g._V; ++v) {
+      os << std::endl;
+      os << v << " : ";
+      for (index_type w : g.adjacency(v)) os << w << " ";
+    }
+    return os << std::endl << "}";
+  }
+
 private:
 
   index_type _V = 0; // vertices number; fixed after construction
