@@ -9,7 +9,8 @@
  * as std::stack, except that it doesn't support customized container (it is
  * not a container adapter)
  *
- * TODO: add full STL compatibility
+ * TODO : implement full construtors
+ * TODO : implement non-member stuffs
  */
 
 namespace algs {
@@ -58,6 +59,12 @@ public:
     swap(data, other.data);
   }
 
+  // Non-standard functions //
+
+  // TODO: self-printing
+  friend std::ostream& operator<<(std::ostream& os, const Stack& stack) {
+    return os;
+  }
 
 private:
 
