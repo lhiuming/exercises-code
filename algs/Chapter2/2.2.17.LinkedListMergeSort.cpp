@@ -1,9 +1,10 @@
 // Implement a natural mergesort for linked list.
 
 // Solution:
-//    See include/fudamentals/list.hpp.
-//    Linked list mergesort is Implemented by List::sort() and a private helper
-// member List::split().
+// Linked-list mergesort is implemented in List::sort(), with helpers
+// List::merge() and List::split().
+//
+// (See include/fundamentals/list.hpp)
 
 #include <iostream>
 

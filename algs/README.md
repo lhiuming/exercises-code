@@ -27,6 +27,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### [Fundamentals](include/fundamentals/)
 
 1. Linked List ([list.hpp](include/fundamentals/list.hpp))
+    - with linked-list mergesort
+0. Bag (with linked-list) ([bag.hpp](include/fundamentals/bag.hpp))
 0. Stack (with linked-list) ([stack.hpp](include/fundamentals/stack.hpp))
 
 ### [Sorting](include/sorting/)
@@ -49,10 +51,10 @@ packages here: https://github.com/kevin-wayne/algs4.
 <!-- Algorithms and Data Structures : Complete List
 
 -- Chapter 1, basics --
-1. Stack (with resizing array) (todo)
+1. Stack (with resizing array)  (todo)
 2. Stack (with linked-list)
-3. FIFO queue (todo)
-4. Bag (todo)
+3. FIFO queue                   (todo)
+4. Bag
 
 -- Chapter 2, sort  --
 1. Selection sort
