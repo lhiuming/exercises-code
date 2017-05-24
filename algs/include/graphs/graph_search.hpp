@@ -12,12 +12,12 @@
 
 namespace algs {
 
-// DepthFirstPaths ////////////////////////////////////////////////////////////
-// Construct a dfs result, which can return a DF path in linear time.
-////
+// GraphSearchPaths //
+// Just a base class.
+///
 
 template<class Graph>
-class DepthFirstPaths {
+class GraphSearchPaths {
 public:
 
   // Member types
@@ -25,10 +25,8 @@ public:
   using path_type = Stack<index_type>;
 
   // Constructor
-  DepthFirstPaths(const Graph& G, index_type s)
-  : source(s), visited(G.V(), false), edge_to(G.V(), G.V()) {
-    dfs(G, s);
-  }
+  GraphSearchPaths(const Graph& G, index_type s)
+  : source(s), visited(G.V(), false), edge_to(G.V(), G.V()) {}
 
   // Path queries //
 
@@ -45,15 +43,37 @@ public:
     return path;
   }
 
-private:
+protected:
 
   const index_type source;
   std::vector<bool> visited;
   std::vector<index_type> edge_to;
 
+};
+
+// DepthFirstPaths ////////////////////////////////////////////////////////////
+// Construct a dfs result, which can return a DF path in linear time.
+////
+
+template<class Graph>
+class DepthFirstPaths : public GraphSearchPaths<Graph> {
+public:
+
+  // Member types
+  using typename GraphSearchPaths<Graph>::index_type;
+  using typename GraphSearchPaths<Graph>::path_type;
+
+  // Constructor
+  DepthFirstPaths(const Graph& G, index_type s)
+  : GraphSearchPaths<Graph>(G, s) { dfs(G, s); }
+
+private:
+
   // Implementation helper //
 
   // Recursive search
+  using GraphSearchPaths<Graph>::visited;
+  using GraphSearchPaths<Graph>::edge_to;
   void dfs(const Graph& G, index_type v) {
     visited[v] = true;
     for (index_type w : G.adjacency(v))
@@ -70,36 +90,6 @@ private:
 template<class Graph>
 DepthFirstPaths<Graph>
 depth_first_search(const Graph& G, typename Graph::index_type src) {
-  return DepthFirstPaths<Graph>(G, src); }
-
-
-// BreadthFirstPaths //////////////////////////////////////////////////////////
-// Construct a bfs result, which can return a BF path in linear time.
-////
-
-template<class Graph>
-class BreadthFirstPaths {
-public:
-
-  // Member types
-  using index_type = typename Graph::index_type;
-  using path_type = Stack<index_type>;
-
-  // Constructor
-  BreadthFirstPaths(const Graph& G, index_type s)
-  : source(s), visited(G.V(), false), edge_to(G.V(), G.V()) {
-    dfs(G, s);
-  }
-
-private:
-
-};
-
-
-// Make a BFS result
-template<class Graph>
-BreadthFirstPaths<Graph>
-breadth_first_search(const Graph& G, typename Graph::index_type src) {
   return DepthFirstPaths<Graph>(G, src); }
 
 } // namespace algs
