@@ -3,3 +3,4 @@
  */
 
 #include "graphs/graph.hpp"
+#include "graphs/graph_search.hpp"

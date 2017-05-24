@@ -28,6 +28,7 @@ class Graph {
 public:
 
   // Member types
+  using index_type = Index;
   using vertex_type = Index;
   using adj_type = Bag<vertex_type>;
   using adj_list_type = std::vector<adj_type>;
@@ -102,6 +103,7 @@ template<
 public:
 
   // Member types
+  using index_type = Index;
   using vertex_type = Index;
   using adj_type = Container;
 

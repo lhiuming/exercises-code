@@ -25,6 +25,8 @@ public:
   using size_type       = typename container_type::size_type;
   using reference	      = typename container_type::reference;
   using const_reference	= typename container_type::const_reference;
+  using iterator        = typename container_type::iterator;
+  using const_iterator  = typename container_type::const_iterator;
 
   // Default constructor
   // TODO: support complete construtor family
@@ -52,7 +54,7 @@ public:
 
   // NOTE: std::stack version return void
   Item pop() { --N; return data.pop_front(); }
-  
+
   void swap(Stack& other) noexcept {
     using std::swap;
     swap(data, other.data);
@@ -61,11 +63,21 @@ public:
   // Non-standard functions //
 
   // Iterators. This is required in the ALGS book
-  // TODO
+  iterator begin() noexcept { return data.begin(); }
+  const_iterator begin() const noexcept { return data.begin(); }
+  const_iterator cbegin() const noexcept { return data.cbegin(); }
+  iterator end() noexcept { return data.end(); }
+  const_iterator end() const noexcept { return data.end(); }
+  const_iterator cend() const noexcept { return data.cend(); }
 
   // TODO: self-printing
   friend std::ostream& operator<<(std::ostream& os, const Stack& stack) {
-    return os;
+    os << "Stack(" << stack.N << "){";
+    if (stack.empty()) return os << "}";
+    os << stack.data.front();
+    for (auto i = ++(stack.begin()); i != stack.end(); ++i)
+      os << ", " << *i;
+    return os << "}";
   }
 
 private:
