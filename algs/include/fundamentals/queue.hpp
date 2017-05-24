@@ -47,7 +47,7 @@ public:
 
   // Modifiers (push&emplace - back, pop - front) //
 
-  void push(const value_type& value) { data.push_back(); }
+  void push(const value_type& value) { data.push_back(value); }
   void push(value_type&& value) { data.push_back(std::move(value)); }
 
   template<class... Args>
