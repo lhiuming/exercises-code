@@ -8,6 +8,7 @@
  * Bag implemented with linked-list (List<>). This class use an interface
  * named in STL fashion (basically a simplified Stack)
  *
+ * TODO: complete construtors 
  * TODO: non-member functions and helper class.
  */
 
