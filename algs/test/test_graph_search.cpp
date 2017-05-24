@@ -16,7 +16,12 @@ int main()
   // DFS
   cout << "-- do dfs --" << endl;
   auto dfs = depth_first_search(g, 0);
-  cout << "path(0 -> 3): " <<  dfs.path_to(3) << endl;
+  cout << "df path(0 -> 3): " <<  dfs.path_to(3) << endl;
+
+  // bfs
+  cout << "-- do bfs --" << endl;
+  auto bfs = breadth_first_search(g, 0);
+  cout << "bf path(0->3): " << bfs.path_to(3) << endl;
 
   return 0;
 }

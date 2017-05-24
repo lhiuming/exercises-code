@@ -5,3 +5,4 @@
 #include "fundamentals/list.hpp"
 #include "fundamentals/stack.hpp"
 #include "fundamentals/bag.hpp"
+#include "fundamentals/queue.hpp"
