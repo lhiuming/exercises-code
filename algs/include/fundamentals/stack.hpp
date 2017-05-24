@@ -32,8 +32,6 @@ public:
 
   // Copy Constrol : basically controlled by List<Item>
   ~Stack() = default;
-  Stack(const Stack&) = default;
-  Stack& operator=(const Stack&) = default;
 
   // Element access
   reference top() { return data.pop_front(); }
@@ -48,18 +46,22 @@ public:
   void push(const Item& item) { data.push_front(item); ++N; }
   void push(Item&& item) { data.push_front(std::move(item)); ++N; }
 
-  template< class... Args > // using c++ 17 version
-  reference emplace( Args&&... args ) {
-    return data.emplace_front(std::forward<Args>(args)...); }
+  // NOTE: using c++ 17 version
+  template<class... Args> reference emplace( Args&&... args ) {
+    ++N; return data.emplace_front(std::forward<Args>(args)...); }
 
   // NOTE: std::stack version return void
   Item pop() { --N; return data.pop_front(); }
+  
   void swap(Stack& other) noexcept {
     using std::swap;
     swap(data, other.data);
   }
 
   // Non-standard functions //
+
+  // Iterators. This is required in the ALGS book
+  // TODO
 
   // TODO: self-printing
   friend std::ostream& operator<<(std::ostream& os, const Stack& stack) {
