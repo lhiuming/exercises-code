@@ -47,6 +47,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### Graphs
 
 1. Graph ([graph.hpp](include/graphs/graph.hpp))
+0. Depth- and Breadth-first search ([graph_search.hpp](include/graphs/graph_search.hpp))
 
 ### Strings
 
@@ -81,8 +82,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 -- Chapter 4, graph --
 1. Adjacency-list Graph class
-2. Depth-first search for paths             (todo)
-3. Breadth-first search for paths           (todo)
+2. Depth-first search for paths
+3. Breadth-first search for paths
 4. Depth-first search for connected components    (todo)
 5. Adjacency-list Directed Digraph class          (todo)
 6. Reachability / Directed Depth-first search     (todo)
@@ -124,5 +125,9 @@ packages here: https://github.com/kevin-wayne/algs4.
 ## Addition Algorithms List
 
 1. Quick-select (todo; page 346)
+0. AVL tree (page 452)
+0. kd-tree (http://algs4.cs.princeton.edu/92search/ and http://algs4.cs.princeton.edu/lectures/99GeometricSearch-2x2.pdf)
+0. B-tree (page 872)
+0. B*-tree (page 924)
 
 end of the list -->
