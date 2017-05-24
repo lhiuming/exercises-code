@@ -23,3 +23,9 @@ set(st_list "binary" "bst")
 foreach(name ${st_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
+
+# graphs.hpp
+set(graph_list "graph")
+foreach(name ${graph_list})
+  add_executable("test_${name}" "test_${name}.cpp")
+endforeach(name)

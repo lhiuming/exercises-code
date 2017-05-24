@@ -46,6 +46,8 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ### Graphs
 
+1. Graph ([graph.hpp](include/graphs/graph.hpp))
+
 ### Strings
 
 <!-- Algorithms and Data Structures : Complete List
@@ -78,8 +80,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 6. Linear Probing Hash Symbol Table (todo)
 
 -- Chapter 4, graph --
-1. Adjacency-list Graph class (todo)
-    - Linked-list Bag class (todo)
+1. Adjacency-list Graph class
 2. Depth-first search for paths (todo)
 3. Breadth-first search for paths (todo)
 4. Depth-first search for connected components (todo)
