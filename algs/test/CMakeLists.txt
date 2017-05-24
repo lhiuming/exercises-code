@@ -7,7 +7,7 @@ foreach(name ${utils_list})
 endforeach(name)
 
 # fundamentals.hpp
-set(fundamentals_list "list" "stack" "bag")
+set(fundamentals_list "list" "stack" "bag" "queue")
 foreach(name ${fundamentals_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
