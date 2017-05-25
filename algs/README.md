@@ -127,6 +127,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 ## Addition Algorithms List
 
 1. Quick-select (todo; page 346)
+0. A* algorithm (page 358)
 0. AVL tree (page 452)
 0. kd-tree (http://algs4.cs.princeton.edu/92search/ and http://algs4.cs.princeton.edu/lectures/99GeometricSearch-2x2.pdf)
 0. B-tree (page 872)
