@@ -62,7 +62,6 @@ p188, 5.15, 5.16, 5.17
 p190, 5.18
 p191, 5.20
 p192, 5.21
-p198, 5.23, 5.24
 
 ## Chapter 6
 
@@ -179,4 +178,4 @@ p681, 16.32 ~ 16.36
 p683, 16.37, 16.38
 p686, 16.40 ~16.67 <!-- skipped advanced sessions -->
 
-## Chapter 17 ? <!-- Part IV starts --> 
+## Chapter 17 ? <!-- Part IV starts -->
