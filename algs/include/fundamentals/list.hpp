@@ -219,16 +219,15 @@ public:
     return first; // == last
   }
 
-  // Push at the front
+  // Push at the front (before the first node)
   void push_front(const Item& item) { push_front(Item(item)); }
-  void push_front(Item&& item) { // push before the first element
-    if (pfront == nullptr) pfront = new Node{std::move(item), nullptr};
-    else pfront = new Node{item, pfront};
-  }
+  void push_front(Item&& item) { pfront = new Node{std::move(item), pfront}; }
 
   // Emplace at the front (NOTE: using C++17 version)
-  // TODO
-  template< class... Args > reference emplace_front( Args&&... args );
+  template<class... Args> reference emplace_front(Args&&... args) {
+    pfront = new Node{std::move(Item(args...)), pfront};
+    return pfront->item;
+  }
 
   // Pop front ( NOTE: std::forwad_list version returns void )
   Item pop_front() {
