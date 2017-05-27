@@ -2,8 +2,6 @@
 #define ALGS_GRAPHS_GRAPH_HPP
 
 #include <vector> // for fixed graph
-#include <set> // for dynamic graph
-#include <unordered_map> // default symbol table
 #include <istream> // input construction
 #include <ostream> // self-printing
 
@@ -13,8 +11,6 @@
  * graph.hpp
  * Graph and DynamicGraph template class. Using adjacency-list implementation
  * described in the ALGS book.
- *
- * TODO: add a SymbolGraph implementaion (adapt a graph)
  */
 
 namespace algs {
