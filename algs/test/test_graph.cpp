@@ -8,7 +8,7 @@ using namespace algs;
 
 int main() {
 
-  DynamicGraph<int> g(cin);
+  Graph g(cin);
   cout << "Created a graph from cin." << endl;
   cout << g << endl;
 

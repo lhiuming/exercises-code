@@ -10,7 +10,7 @@ using namespace algs;
 int main()
 {
   cout << "-- read the graph --" << endl;
-  Graph<> g(cin);
+  Graph g(cin);
   cout << g << endl;
 
   // DFS
