@@ -13,5 +13,7 @@ int main()
   cout << "Create a digrap" << endl;
   cout << dig << endl;
 
+  cout << "Reverse it: " << dig.reverse() << endl;
+
   return 0;
 }

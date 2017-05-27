@@ -34,7 +34,7 @@ public:
   using adj_list_type = std::vector<adj_type>;
 
   // Constructors
-  IndexGraph() {}
+  IndexGraph() = delete; // fixed size graph shouldn't be empty
   IndexGraph(vertex_type V) : _V(V), adj(V) {}
   IndexGraph(std::istream& in) {
     in >> _V >> _E; // read size

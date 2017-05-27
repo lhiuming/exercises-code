@@ -18,7 +18,7 @@ public:
   using adj_list_type = std::vector<adj_type>;
 
   // Constructors
-  IndexDigraph() {}
+  IndexDigraph() = delete;
   IndexDigraph(vertex_type V) : _V(V), adj(V) {}
   IndexDigraph(std::istream& in) {
     in >> _V >> _E; // read size
@@ -45,8 +45,11 @@ public:
 
   // Reversion
   IndexDigraph reverse() const {
-    // TODO
-    return IndexDigraph();
+    IndexDigraph ret(V());
+    for (index_type v = 0; v < V(); ++v)
+      for (index_type w : adjacency(v))
+        ret.add_edge(w, v);
+    return ret;
   }
 
   // Swap
