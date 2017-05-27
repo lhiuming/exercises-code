@@ -49,7 +49,10 @@ packages here: https://github.com/kevin-wayne/algs4.
 ### Graphs
 
 1. Graph ([graph.hpp](include/graphs/graph.hpp))
+0. Digraph ([digraph.hpp](include/graphs/digraph.hpp))
+0. Edge-weighted Graph ([weighted_graph.hpp](include/graphs/weighted_graph.hpp))
 0. Depth- and Breadth-first search ([graph_search.hpp](include/graphs/graph_search.hpp))
+0. Topological sort ([dag.hpp](include/graphs/dag.hpp))
 
 ### Strings
 
@@ -92,12 +95,12 @@ packages here: https://github.com/kevin-wayne/algs4.
     - Depth-first directed paths                  (todo)
     - Breadth-first directed paths                (todo)
 7. Directed cycle       (todo)
-8. Depth-first Order    (todo)
-9. Topological sort     (todo)
+8. Depth-first Order    
+9. Topological sort     
 10. Kosaraju strong connected components   (todo)
 -- weighted graph --
-11. Edge Weighted Graph class     (todo)
-    - Edge class                  (todo)
+11. Edge Weighted Graph class
+    - Edge class                 
 12. Lazy version of Prim's MST    (todo)
 13. Eager version of Prim's MST   (todo)
 -- weighted directed graph --
