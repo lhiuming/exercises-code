@@ -25,7 +25,7 @@ foreach(name ${st_list})
 endforeach(name)
 
 # graphs.hpp
-set(graph_list "graph" "graph_search" "digraph" "dag")
+set(graph_list "graph" "graph_search" "digraph" "dag" "weighted_graph")
 foreach(name ${graph_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
