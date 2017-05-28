@@ -11,6 +11,8 @@
 /*
  * weighted_graph.hpp
  * Implement Edge-weighted (undirected) Graph class.
+ *
+ * TODO: use a more space efficient alternative for adj_type 
  */
 
 namespace algs {
@@ -25,7 +27,7 @@ public:
   Index w;
   double weight;
 
-  // Constructor
+  // Constructor and copy control
   Edge() : v(0), w(0), weight(0.0) {} // must allow for algs::PQ implementation
   Edge(Index v, Index w, double weight) : v(v), w(w), weight(weight) {}
 
@@ -42,7 +44,7 @@ public:
 
   // Self printing
   friend std::ostream& operator<<(std::ostream& os, const Edge& e) {
-    return os << e.v << " " << e.w << " " << e.weight;
+    return os << e.v << "-" << e.w << " " << e.weight;
   }
 
 };
@@ -71,6 +73,7 @@ public:
       double weight;
       in >> v >> w >> weight;
       adj[v].emplace(v, w, weight);
+      adj[w].emplace(v, w, weight); // TODO: improve space
     }
   }
 
@@ -115,7 +118,7 @@ public:
   // self-printing
   friend std::ostream&
   operator<<(std::ostream& os, const EdgeWeightedIndexGraph& g) {
-    os << "EWGraph(V = " << g._V << ", E = " << g._E << ") {";
+    os << "EWGraph(V = " << g._V << ", E = " << g._E << "){";
     for (edge_type e : g.edges())
       os << std::endl << e;
     return os << std::endl << "}";
