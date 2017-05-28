@@ -10,7 +10,7 @@
 
 /*
  * weighted_graph.hpp
- * Implement Edge-weighted Graph class.
+ * Implement Edge-weighted (undirected) Graph class.
  */
 
 namespace algs {
@@ -21,11 +21,12 @@ class Edge {
 public:
 
   // Public data member
-  const Index v;
-  const Index w;
-  const double weight;
+  Index v;
+  Index w;
+  double weight;
 
   // Constructor
+  Edge() : v(0), w(0), weight(0.0) {} // must allow for algs::PQ implementation
   Edge(Index v, Index w, double weight) : v(v), w(w), weight(weight) {}
 
   // Access
@@ -37,6 +38,7 @@ public:
 
   // Compare
   bool operator<(const Edge& rhs) const { return this->weight < rhs.weight; }
+  bool operator>(const Edge& rhs) const { return this->weight > rhs.weight; }
 
   // Self printing
   friend std::ostream& operator<<(std::ostream& os, const Edge& e) {
