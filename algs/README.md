@@ -53,6 +53,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 0. Edge-weighted Graph ([weighted_graph.hpp](include/graphs/weighted_graph.hpp))
 0. Depth- and Breadth-first search ([graph_search.hpp](include/graphs/graph_search.hpp))
 0. Topological sort ([dag.hpp](include/graphs/dag.hpp))
+0. Prim's MST algorithm (lazy ver.) ([mst.hpp](include/graphs/mst.hpp))
 
 ### Strings
 
@@ -101,8 +102,9 @@ packages here: https://github.com/kevin-wayne/algs4.
 -- weighted graph --
 11. Edge Weighted Graph class
     - Edge class                 
-12. Lazy version of Prim's MST    (todo)
+12. Lazy version of Prim's MST
 13. Eager version of Prim's MST   (todo)
+  - needs IndexPQ (no implemented)
 -- weighted directed graph --
 14. Edge-weighted Directed Graph class  (todo)
     - Directed Weighted Edge class      (todo)
