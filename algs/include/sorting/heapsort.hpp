@@ -19,6 +19,14 @@
 
 namespace algs {
 
+// Some usefull definition //
+
+// Pair printing
+template<class T1, class T2>
+std::ostream& operator<<(std::ostream& os, const std::pair<T1, T2>& pair) {
+    return os << "<" << pair.first << ", " << pair.second << ">";
+  }
+
 // Priority Queue /////////////////////////////////////////////////////////////
 // Comparable must be default-constructable.
 // Comparable should supports operator> (for MaxPQ ) or operator< (for MinPQ).
@@ -33,7 +41,15 @@ template<
 
 public:
 
+  // Member types
+  using container_type = Container;
+  using value_compare = Compare;
+  using value_type = typename Container::value_type;
   using size_type = typename Container::size_type;
+  using reference = typename Container::reference;
+  using const_reference	= typename Container::const_reference;
+
+  // Constructors and Copy controls //
 
   // Default constructor
   explicit PQ(Compare comp = Compare()) : compare_less(comp) {};
@@ -42,8 +58,8 @@ public:
     heap.reserve(c + 1); }
 
   // Initialized with given elements (moving)
-  template<class ForwardIt>
-  PQ(ForwardIt b, ForwardIt e, Compare comp = Compare()) : PQ(comp) {
+  template<class InputIt>
+  PQ(InputIt b, InputIt e, Compare comp = Compare()) : PQ(comp) {
     for (; b != e; ++b) insert(std::move(*b)); }
 
   // Copy or Move the elements in a given container
@@ -52,15 +68,23 @@ public:
   PQ(Container&& a, Compare comp = Compare()) : PQ(a.size(), comp) {
     for (auto&& v : a) insert(v); }
 
-  // Copy a element into the queue
+  // Operations //
+
+  // Copy&Move an element into the queue
   void insert(const T& v) { heap.push_back(v); swim(++N); }
   // Move a element into the queue
   void insert(T&& v) { heap.push_back(v); swim(++N); }
 
+  // Emplace an element in the queue
+  // TODO
+  void emplace();
+
   // Return a direct reference to the most prior element
+  const_reference top() const { return heap[1]; }
+  // TODO: remove this
   const T& head() const { return heap[1]; }
   // Return and delete the most prior element
-  T pop() {
+  value_type pop() {
     T head = std::move(heap[1]); // take the most prior element
     exch(1, N--); // put the head at the end
     sink(1); // re-heapify
@@ -70,7 +94,11 @@ public:
 
   // Size of the queue
   bool empty() const { return N == 0; }
-  std::size_t size() const { return N; }
+  size_type size() const { return N; }
+
+  // Swap
+  // TODO
+  void swap();
 
   // Print the queue
   friend std::ostream& operator<<(std::ostream& os, const PQ& pq) {
@@ -105,13 +133,14 @@ protected:
   }
   void exch(size_type i, size_type j) {
     using std::swap; swap(heap[i], heap[j]); }
-  void swim(size_type k) { // let heap[k] to swim up to right position
-    while (k > 1 && this->prior(k, k/2)) { // dynamic binding ?
+  size_type swim(size_type k) { // let heap[k] to swim up to right position
+    while (k > 1 && prior(k, k/2)) {
       exch(k/2, k); // exchange with parent
       k = k/2;
     }
+    return k; // return final position
   } // end swim
-  void sink(size_type k) { // let heap[k] to sink down to right position
+  size_type sink(size_type k) { // let heap[k] to sink down to right position
     while (2 * k <= N) {
       size_type j = 2 * k;  // index of left-child
       if (j < N && prior(j+1, j)) j++; // choose right-child if it is prior
@@ -119,6 +148,7 @@ protected:
       exch(k, j);
       k = j;
     }
+    return k; // return final position
   } // end sink
 
 };
@@ -150,7 +180,7 @@ public:
 };
 
 
-// Heapsort ////////////////////////////////////////////////////////////////////
+// Heapsort ///////////////////////////////////////////////////////////////////
 // In-place heapsort by swapping and sinking.
 ////
 
