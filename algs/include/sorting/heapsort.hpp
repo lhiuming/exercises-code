@@ -104,10 +104,7 @@ protected:
     return compare_less(heap[j], heap[i]);
   }
   void exch(size_type i, size_type j) {
-    T temp = heap[i];
-    heap[i] = heap[j];
-    heap[j] = temp;
-  }
+    using std::swap; swap(heap[i], heap[j]); }
   void swim(size_type k) { // let heap[k] to swim up to right position
     while (k > 1 && this->prior(k, k/2)) { // dynamic binding ?
       exch(k/2, k); // exchange with parent
