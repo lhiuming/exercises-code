@@ -35,7 +35,7 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const MST& mst) {
     os << "MST(w=" << mst.weights() << "){" << std::endl;
     for (const edge_type& e : mst.edges())
-      os << e.v << "-" << e.w << " " << e.weight << std::endl;
+      os << e << std::endl;
     return os << "}";
   }
 
@@ -57,15 +57,15 @@ private:
 // Lazy Prim's MST algorithm //
 
 // helper
-template<class EWGraph, class Index, class Marker, class PQType>
-void __lazy_prims_mst_visit(const EWGraph& G, Index v,
-  Marker& visited, PQType& pq) {
+template<class EWGraph, class Index, class Marker, class PQ>
+inline void __lazy_prims_mst_visit(const EWGraph& G, Index v,
+  Marker& visited, PQ& pq) {
   visited[v] = true;
   for (const auto& e : G.adjacency(v))
     if (!visited[e.other(v)]) pq.insert(e);
 }
 
-// Main procedure of LazyPrim
+// Main procedure of Lazy Prim
 template<class EWGraph>
 MST<EWGraph> lazy_prims_mst(const EWGraph& G) {
 
@@ -79,7 +79,7 @@ MST<EWGraph> lazy_prims_mst(const EWGraph& G) {
   adj_type mst;
 
   // Start lazy prim
-  __lazy_prims_mst_visit(G, 0, visited, edge_queue); // push nbhr of 0
+  __lazy_prims_mst_visit(G, 0, visited, edge_queue); // start from vertex 0
   while (!edge_queue.empty())  {
     edge_type e = edge_queue.pop();
     bool ineligible = ( visited[e.v] && visited[e.w] );

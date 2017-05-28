@@ -10,6 +10,7 @@ using namespace algs;
 int main()
 {
   EdgeWeightedGraph g(cin);
+  cout << "Input ewg: " << g << endl;
   auto mst = lazy_prims_mst(g);
   cout << mst << endl;
 
