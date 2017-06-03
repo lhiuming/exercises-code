@@ -12,14 +12,14 @@ public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         // Each nums is split into two clear halves:
         //       [0, left_end)  and  [right_begin, end),
-        // where left_end - right_begin == 0 or 1.
+        // where left_end == right_begin (== split, the name used below)
 
-        // Handle emtpy array
+        // Handle emtpy case
         int size1 = nums1.size(), size2 = nums2.size();
         if (size1 == 0) return median(nums2);
         if (size2 == 0) return median(nums1);
 
-        // For simplicity, remove a max element if sum of sizes is odd
+        // Remove a max element to make sure sum-of-sizes are even (Trick :P)
         bool bias = false;
         if ( (size1 + size2) % 2 == 1 )
         {
@@ -27,11 +27,11 @@ public:
           bias = true;
         }
 
-        // Make an initialze clear split
+        // Make an initial splitting
         int size_of_halves = (size1 + size2) / 2;
         int split1 = size1 / 2, split2 = size_of_halves - split1;
 
-        // search for a split at the median-position
+        // Search for a pair of split-sites at the median position
         // loop invariant: size_of (left halves) == size_of (right halves)
         while (true)
         {
@@ -53,13 +53,10 @@ public:
 
           // Check if reaches the final goal
           if (left_max <= right_min)
-          {
-            if (bias) return right_min;
-            return (left_max + right_min) / 2.0;
-          }
+            return bias ? right_min : (left_max + right_min) / 2.0;
 
-          // Otherwise, adjust the splitting by binarily skipping
-          if (left_max1 > right_min2)  // nums1 leans too right
+          // Otherwise, adjust the split-sites by binary-search-like moving
+          if (left_max1 > right_min2)  // split1 leans too right
           {
             int moveable = min(split1, size2 - split2);
             // prine the range before next move
@@ -68,7 +65,7 @@ public:
             // split1 should move left, split2 right;
             split1 -= amount; split2 += amount;
           }
-          else // nums2 leans too right
+          else // split2 leans too right
           {
             int moveable = min(size1 - split1, split2);
             int amount = (moveable + 1) / 2;
@@ -78,6 +75,7 @@ public:
             split1 += amount; split2 -= amount;
           }
         } // end while
+        
         throw runtime_error("Array not sorted!");
         return 0.0;
     }
