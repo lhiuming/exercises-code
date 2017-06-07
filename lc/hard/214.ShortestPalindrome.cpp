@@ -15,25 +15,27 @@ public:
 
     // Make a KMP DFA for the first half of s
     int len = (s.size() + 1) / 2;
-    char base = numeric_limits<char>::min();
-    const int char_num = numeric_limits<char>::max() + 1 - numeric_limits<char>::min();
-    vector<array<int, char_num>> DFA(len);
-    // the first state
-    for (int j = 0; j < char_num; ++j) DFA[0][j] = 0;
-    DFA[0][s[0] - base] = 1;
-    // the rest states
+    vector<size_t> mismatch_update(len, 0);
     for (int i = 1, reset = 0; i < len; ++i) {
-      for (int j = 0; j < char_num; ++j) DFA[i][j] = DFA[reset][j];
-      DFA[i][s[i] - base] = i + 1;
-      reset = DFA[ reset ][ s[i] - base ];
+      mismatch_update[i] = reset;
+      while (s[i] != s[reset] && reset > 0) reset = mismatch_update[reset];
+      if (s[i] == s[reset]) ++reset;
     }
+
+    #ifdef DEBUG
+    for (int i = 0; i < len; ++i)
+      cout << s[i] << ":" << mismatch_update[i] << ", ";
+    cout << endl;
+    #endif
 
     // Find palindrome in the original string, using the DFA in reversed order
     // that is, run until left and right meet at the center of the sub-palindrome
     int left = 0, right = s.size();
     while (left < right) {
-      unsigned char inp = s[--right] - base;
-      left = DFA[left][inp];
+      --right;
+      while ( (s[left] != s[right]) && (left > 0))
+        left = mismatch_update[left];
+      if (s[left] == s[right]) ++left;
     }
 
     // Build the return
@@ -46,7 +48,7 @@ public:
     }
     for (int i = s.size(); i > pali_end; --i) ret.append(1, s[i - 1]);
     #ifdef DEBUG
-    cout << "append " << ret << endl;
+    cout << "append " << ret << ", left = " << left << endl;
     #endif
     ret.append(s);
 
@@ -58,13 +60,17 @@ public:
 int main()
 {
   Solution solver;
-  string test1 = "xsbuyiszrlmbzqlmdtzmfkgcomdapmzhtltbzqaz";
-  string test2 = "aaa";
+  string test1 = "aacecaaa";
+  string test2 = "babbbabbaba";
+  string test3 = "ababbbabbaba";
+
 
   cout << "size " << test1.size() << ": "
        << solver.shortestPalindrome(test1) << endl;
   cout << "size " << test2.size() << ": "
        << solver.shortestPalindrome(test2) << endl;
+  cout << "size " << test3.size() << ": "
+       << solver.shortestPalindrome(test3) << endl;
 
   return 0;
 }
