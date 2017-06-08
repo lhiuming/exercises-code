@@ -71,9 +71,9 @@ public:
   // Operations //
 
   // Copy&Move an element into the queue
-  void insert(const T& v) { heap.push_back(v); swim(++N); }
+  void push(const T& v) { heap.push_back(v); swim(++N); }
   // Move a element into the queue
-  void insert(T&& v) { heap.push_back(v); swim(++N); }
+  void push(T&& v) { heap.push_back(v); swim(++N); }
 
   // Emplace an element in the queue
   // TODO
@@ -99,6 +99,13 @@ public:
   // Swap
   // TODO
   void swap();
+
+  // Non-standards //
+
+  // Alias for `push`
+  void inline insert(const T& v) { push(v); }
+    // Move a element into the queue
+  void inline insert(T&& v) { push(std::move(v)); }
 
   // Print the queue
   friend std::ostream& operator<<(std::ostream& os, const PQ& pq) {
