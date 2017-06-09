@@ -32,3 +32,11 @@ set(graph_list
 foreach(name ${graph_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
+
+# strings.hpp
+set(strings_list
+  "string_sort"
+)
+foreach(name ${strings_list})
+  add_executable("test_${name}" "test_${name}.cpp")
+endforeach(name)

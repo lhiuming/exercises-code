@@ -39,6 +39,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 0. Shellsort ([simple_sort.hpp](include/sorting/simple_sort.hpp))
 0. Mergesort (top-down and bottom-up) ([mergesort.hpp](include/sorting/mergesort.hpp))
 0. Heapsort (and Priority Queue) ([heapsort.hpp](include/sorting/heapsort.hpp))
+0. Radix sort ([linear.hpp](include/sorting/linear_sort.hpp))
 
 ### [Symbol Tables](include/symbol_tables/)
 

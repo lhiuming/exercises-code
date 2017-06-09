@@ -8,11 +8,12 @@
 #include "../utils/misc.hpp" // SFINAE
 
 /*
- * Index counting; Radix sort based on index-counting.
+ * Radix sort (based on index-counting) for integral types (std::is_integral).
  */
 
 namespace algs {
 
+// Raidx sort based on index-counting. Only appliable to Integral type.
 template<
   class RandomIt,
   meta::EnableIf< std::is_integral<meta::IterValue<RandomIt>> >...
