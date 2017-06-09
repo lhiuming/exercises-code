@@ -21,7 +21,6 @@ packages here: https://github.com/kevin-wayne/algs4.
   - RedBlack BST
   - KD tree
   - quick-select
-  - A* algorithm
 - Implement some of the most interesting algorithms from the exercise.
 
 ## Implemented Algorithms and Data Structures
@@ -56,6 +55,7 @@ packages here: https://github.com/kevin-wayne/algs4.
 0. Prim's MST algorithm (lazy ver.) ([mst.hpp](include/graphs/mst.hpp))
 
 ### Strings
+
 
 <!-- Algorithms and Data Structures : Complete List
 
@@ -131,11 +131,12 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ## Addition Algorithms List
 
-1. Quick-select (todo; page 346)
+1. Quick-select (todo; page 346) (todo)
 0. A* algorithm (page 358)
-0. AVL tree (page 452)
-0. kd-tree (http://algs4.cs.princeton.edu/92search/ and http://algs4.cs.princeton.edu/lectures/99GeometricSearch-2x2.pdf)
-0. B-tree (page 872)
-0. B*-tree (page 924)
+  - embed in Graph module? (todo)
+0. AVL tree (page 452) (todo)
+0. kd-tree (http://algs4.cs.princeton.edu/92search/ and http://algs4.cs.princeton.edu/lectures/99GeometricSearch-2x2.pdf) (todo)
+0. B-tree (page 872) (todo)
+0. B*-tree (page 924) (todo)
 
 end of the list -->
