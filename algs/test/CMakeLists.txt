@@ -13,7 +13,7 @@ foreach(name ${fundamentals_list})
 endforeach(name)
 
 # sorting.hpp
-set(sort_list "simple_sort" "heapsort" "mergesort")
+set(sort_list "simple_sort" "heapsort" "mergesort" "linear_sort")
 foreach(name ${sort_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)
