@@ -57,6 +57,9 @@ packages here: https://github.com/kevin-wayne/algs4.
 
 ### Strings
 
+1. Least-significant-digit-first string sort ([string_sort.hpp](include/strings/string_sort.hpp))
+0.
+
 
 <!-- Algorithms and Data Structures : Complete List
 
@@ -114,20 +117,19 @@ packages here: https://github.com/kevin-wayne/algs4.
 17. Bellman-ford shortest-path          (todo)
 
 -- Chapter 5, strings --
-1. Least-significant-digit-first string sort (todo)
+1. Least-significant-digit-first string sort
 2. Most-significant-digit-first string sort (todo)
-3. Three-way string quicksort (todo)
+3. Three-way string quicksort              (todo)
 -- trie --
-4. Trie Symbol Table class (todo)
+4. Trie Symbol Table class          (todo)
 5. Ternary Search Trie Symbol Table (todo)
 -- substring search --
 6. Knuth-Morris-Pratt substring search (todo)
-    - @NOTE: very hard to understand; worthwhile to implement.
-7. Boyer-Moore substring search (todo)
-8. Rabin-Karp fingerprint search (todo)
+7. Boyer-Moore substring search        (todo)
+8. Rabin-Karp fingerprint search       (todo)
 9. Regular expression pattern matching (todo)
 -- data compression --
-10. Huffman compression (todo)
+10. Huffman compression           (todo)
 11. LZW compression and expansion (todo)
 
 ## Addition Algorithms List
