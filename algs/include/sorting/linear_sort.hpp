@@ -23,15 +23,17 @@ template<
   using Integral = meta::IterValue<RandomIt>;
   constexpr int digits = std::numeric_limits<Integral>::digits; // as binary!
   constexpr int radix = std::numeric_limits<Integral>::radix; // should be 2
-  auto len = std::distance(beg, end);
+  std::size_t len = std::distance(beg, end);
 
   // use binary radix
   static_assert(radix == 2, "Require bit implementation of interger");
 
-  std::vector<Integral> aux(len);
   // Do index-counting on each digit (except sign-bit)
-  for (int d = 0; d < digits; ++d) {
-    std::vector<size_t> count(radix + 1, 0);
+  std::vector<Integral> aux(len);
+  std::vector<size_t> count(radix + 1);
+  for (int d = 0; d < digits; ++d)
+  {
+    count.clear();
     for (auto iter = beg; iter != end; ++iter) // counting
       ++count[ (((*iter)>>d) & 1) + 1 ];
     for (int r = 0; r < radix; ++r) // make indices
@@ -42,6 +44,8 @@ template<
     for (size_t i = 0; i < len; ++i) // copy back
       *(iter++) = aux[i];
   }
+
+  // Special procudure for signed-integer
   if (std::is_signed<Integral>::value)
   {
     auto iter = beg;
@@ -52,6 +56,7 @@ template<
     for (size_t i = 0; i < len; ++i) // second pass for non-negatives
       if (aux[i] >= 0) *(iter++) = aux[i];
   }
+
 } // end radix_sort
 
 

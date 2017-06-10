@@ -11,9 +11,9 @@ using namespace algs;
 int main()
 {
   vector<string> a { "abd", "ZZZ", "Abd", "Qdd", "dZZ" , "Abd"};
-  cout << a << endl;
-  lsd_string_sort(a.begin(), a.end());
-  cout << "sorted : " << a << endl;
+  cout << "origin: " << a << endl;
+  lsd_string_sort(a.begin(), a.end(), 3);
+  cout << "sorted: " << a << endl;
 
   return 0;
 }
