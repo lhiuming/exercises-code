@@ -5,6 +5,7 @@
 #include <functional> // std::less
 #include <utility>    // std::pair
 #include <ostream>    // std::ostream
+#include <cassert> // debug
 
 /*
  * rb_tree.hpp
@@ -50,7 +51,7 @@ private:
 
   // Node class, with triple-link and color
   struct Node {
-    value_type val; // key and mapped
+    value_type val; // std::pair<key, mapped_value>
     size_type count;
     Node* left = nullptr;
     Node* right = nullptr;
@@ -58,7 +59,7 @@ private:
     Color color;
 
     Node(Key&& k, T&& t, Node* par, Color c)
-    : val(k, t), count(1), parent(par), color(c) {}
+    : val(std::move(k), std::move(t)), count(1), parent(par), color(c) {}
   };
 
 public:
@@ -82,8 +83,7 @@ public:
   RedBlackBST(const RedBlackBST& rhs) = delete;
 
   // Destructors
-  // TODO
-  ~RedBlackBST() = default;
+  ~RedBlackBST() { delete_down(root); }
 
   // Others
   // TODO
@@ -105,11 +105,14 @@ public:
   // mapped_type at(Key)
   // mapped_type operator[](Key )
 
-  // Element access and modifiers
+  // Modifiers
   void clear() noexcept { delete_down(root); }
   // TODO complete family of inserts
   void insert(const Key& k, const T& t);
-  void insert(Key&& k, T&& t);
+  void insert(Key&& k, T&& t) {
+    root = put(root, k, t); // actually moved
+    root->color = Color::black; // make sure always black
+  }
   // TODO
   // std::pair emplace();
   // std::pair emplace_hint();
@@ -121,7 +124,7 @@ public:
 
   // Capacity
   bool empty() const { return root == nullptr; }
-  size_type size() const { return node_size(root); }
+  size_type size() const { return size(root); }
   size_type max_size() const; // TODO
 
   // Lookups
@@ -155,8 +158,17 @@ public:
 
   // Printing
   friend std::ostream& operator<<(std::ostream& os, const RedBlackBST& rb) {
-    // TODO
-    os << "RedBlackBST(" << rb.size() << ")[Not implemented]";
+    os << "RedBlackBST(" << rb.size() << "){";
+    if (rb.root) os << "\n" << rb.root;
+    return os << "}";
+  }
+  friend std::ostream& operator<<(std::ostream& os, const Node* r) {
+    const char* sp = ", \n";
+    if (r) {
+      if (r->left) os << r->left << sp;
+      os << r->val.first << " : " << r->val.second;
+      if (r->right) os << sp << r->right;
+    }
     return os;
   }
 
@@ -168,7 +180,103 @@ private:
   // Implementation Helpers //
 
   // Get node size with checking
-  static size_type node_size(Node* x) { return (x == nullptr) ? 0 : x->count; }
+  static size_type size(Node* x) { return (x == nullptr) ? 0 : x->count; }
+
+  // Check color
+  static bool is_red(Node* x) { return x && (x->color == Color::red); }
+  static bool is_black(Node* x) { return !x || (x->color == Color::black); }
+
+  // Re-link helpers
+  static void take_parent(Node* x, Node* old_child) {
+    Node* new_parent = old_child->parent;
+    x->parent = new_parent;
+    if (new_parent) { // check the parent direction
+      if (new_parent->left == old_child) new_parent->left = x;
+      else new_parent->right = x;
+    }
+  }
+
+  // Delete a tree
+  static void delete_down(Node* x) {
+    if (x == nullptr) return;
+    delete_down(x->left);
+    delete_down(x->right);
+    delete x;
+  }
+
+  // Tree rotations //
+
+  // Left rotation; return new root
+  static Node* rotate_left(Node* x) {
+    Node* y = x->right;
+    assert(y->color == Color::red);
+    // relink the middle node
+    x->right = y->left;
+    if (y->left) y->left->parent = x;
+    y->left = nullptr; // TODO : no need
+    // change position of x and y
+    take_parent(y, x); // y take the parent of x
+    y->color = x->color;
+    x->color = Color::red;
+    y->left = x; // relink x and y
+    x->parent = y;
+    // reset counts
+    y->count = x->count;
+    x->count = 1 + size(x->left) + size(x->right);
+
+    return y;
+  }
+
+  // Right rotation; return new root
+  static Node* rotate_right(Node* y) {
+    Node* x = y->left;
+    assert(x->color == Color::red);
+    // relink the middle node
+    y->left = x->right;
+    if (x->right) x->right->parent = y;
+    x->right = nullptr; // TODO : not need
+    // change position of x and y
+    take_parent(x, y);
+    x->color = y->color;
+    y->color = Color::red;
+    x->right = y; // relink y and x
+    y->parent = x;
+    // reset counts
+    x->count = y->count;
+    y->count = 1 + size(y->left) + size(y->right);
+
+    return x;
+  }
+
+  // Change 4-node to red node
+  static void flip_colors(Node* x) {
+    assert(x->left->color == Color::red);
+    assert(x->right->color == Color::red);
+    assert(x->color == Color::black);
+    x->left->color = Color::black;
+    x->right->color = Color::black;
+    x->color = Color::red;
+  }
+
+  // Insertion and deletion of tree-nodes //
+
+  // Insert/Put a pair into a tree; return the root after insertion
+  // NOTE: the input pair (k, mapped) is alyways moved !
+  Node* put(Node* x, Key& k, T& mapped, Node* parent = nullptr) {
+    if (x == nullptr) // default color is red
+      return new Node(std::move(k), std::move(mapped), parent, Color::red);
+
+    if (less(k, x->val.first)) x->left = put(x->left, k, mapped, x);
+    else if (less(x->val.first, k)) x->right = put(x->right, k, mapped, x);
+    else x->val.second = std::move(mapped);
+
+    if (is_red(x->right) && is_black(x->left)) x = rotate_left(x);
+    if (is_red(x->left) && is_red(x->left->left)) x = rotate_right(x);
+    if (is_red(x->left) && is_red(x->right)) flip_colors(x);
+
+    x->count = 1 + size(x->left) + size(x->right);
+    return x;
+  }
 
 };
 
