@@ -19,7 +19,7 @@ foreach(name ${sort_list})
 endforeach(name)
 
 # symbol_tables.hpp
-set(st_list "binary" "bst")
+set(st_list "binary" "bst" "rb_tree")
 foreach(name ${st_list})
   add_executable("test_${name}" "test_${name}.cpp")
 endforeach(name)

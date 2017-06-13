@@ -29,7 +29,7 @@ int main()
 
   cout << "-- try iterating -- " << endl;
   int count = 0;
-  for (auto& kvp : static_cast<const decltype(st)>(st)) {
+  for (auto& kvp : static_cast<const decltype(st)&>(st)) {
     ++count;
     cout << count << " : (" << kvp.first << ", " << kvp.second << ")" << endl;
     //kvp.second = "Smith"; // change is forbidden
