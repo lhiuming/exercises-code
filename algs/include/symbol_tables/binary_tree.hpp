@@ -11,6 +11,7 @@
  * Binary Search Tree (BST) Symbol Table Implementation.
  * Interface naming is mimicing std::map.
  *
+ * TODO: add complete constructo family
  * TODO: thre rest interface (rank-based query) (probably never do it)
  */
 
@@ -95,11 +96,12 @@ public:
   using iterator = BidirectIt;
   using const_iterator = ConstBidirectIt;
 
-  // Default constructor
+  // Constructors
   BST(Compare comp = Compare()) : root(nullptr), less(comp) {};
+  BST(const BST& rhs); // TODO
 
-  // Copy controls
-  ~BST() = default;
+  // Destructors
+  ~BST() { delete_down(root); }
 
   // Iterators
   iterator begin() { // the role of min in ALGS book
@@ -179,6 +181,14 @@ private:
 
   // Take the node size
   static size_type node_size(Node* x) { return (x == nullptr) ? 0 : x->count; }
+
+  // Delete a tree
+  static void delete_down(Node* x) {
+    if (x == nullptr) return;
+    delete_down(x->left);
+    delete_down(x->right);
+    delete x;
+  }
 
   // Put a pair into a (sub-)tree, return the new (subtree-)root
   void put(Node* &x, Key& key, T& mapped, Node* parent = nullptr) {
