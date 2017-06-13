@@ -12,6 +12,7 @@
  * Interface naming is mimicing std::map.
  *
  * TODO: add complete constructo family
+ * TODO: check compability with STL 11 std::map
  * TODO: thre rest interface (rank-based query) (probably never do it)
  */
 
