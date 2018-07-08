@@ -2,3 +2,7 @@
 
 # macOS files
 .DS_Store
+
+# IDE&editor temps
+.vs
+*~
