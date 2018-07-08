@@ -7,8 +7,8 @@ My programming exercises for a variety of books. Each book has a corresponding s
 ### Working
 
 Books that are been working on.
+- Pawel Lapinski, [Vulkan Cookbook: Work through recipis to unlock the full potential of the next generation graphics API](vulkancb/).
 
-- Robert Sedgewick, Kevin Wayne, [Algorithms](algs/), Fourth Edition.
 
 ### Paused
 
@@ -23,3 +23,4 @@ Those that I had worked on and considered finished.
 
 - Andrew Koenig, Barbara E. Moo., [Accelerated C++: Practical Programming by Example](acceleratedcpp/).
 - Randal E. Bryant, David R. O'Hallaron, [Computer Systems: A Programmer's Perspective](csapp/), Third Edition.
+- Robert Sedgewick, Kevin Wayne, [Algorithms](algs/), Fourth Edition.
