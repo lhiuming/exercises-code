@@ -20,8 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{F7B6BCE6-D912-4350-B803-A7B2768D6C7B}</ProjectGuid>
+    <ProjectGuid>{194D196C-CAD4-4DF5-B21B-02BA51E18A4D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -98,8 +99,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\common.cpp" />
+    <ClCompile Include="source\vulkan_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="external\vk_platform.h" />
     <ClInclude Include="external\vulkan.h" />
+    <ClInclude Include="source\common.h" />
+    <ClInclude Include="source\vulkan_functions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\list_of_vulkan_functions.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

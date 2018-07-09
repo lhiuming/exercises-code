@@ -15,11 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\vulkan_functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="external\vk_platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="external\vulkan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\vulkan_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\list_of_vulkan_functions.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
