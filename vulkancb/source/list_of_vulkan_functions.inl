@@ -9,7 +9,7 @@
 #define EXPORTED_VULKAN_FUNCTION( function )
 #endif
 
-EXPORTED_VULKAN_FUNCTION(vkGetInstanceProcAddr)
+//EXPORTED_VULKAN_FUNCTION(vkGetInstanceProcAddr)
 
 #undef EXPORTED_VULKAN_FUNCTION( function )
 
