@@ -7,14 +7,15 @@ My programming exercises for a variety of books. Each book has a corresponding s
 ### Working
 
 Books that are been working on.
-- Pawel Lapinski, [Vulkan Cookbook: Work through recipis to unlock the full potential of the next generation graphics API](vulkancb/).
+
+- None.
 
 
 ### Paused
 
- The following are scheduled for later improvement.
+The following are scheduled for later improvement.
 
- - Harold Abelson, Gerald Jay Sussman, Julie Sussman, [Structure and Interpretation of Computer Programs](sicp/), Second Edition.
+- Harold Abelson, Gerald Jay Sussman, Julie Sussman, [Structure and Interpretation of Computer Programs](sicp/), Second Edition.
 - Stanley B. Lippman, Josée Lajoie, Barbara E. Moo, [C++ Primer](cppprimer/), Fifth Edition.
 
 ### Finished
